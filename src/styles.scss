@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "ngx-toastr/toastr";
+*{
+    padding: 0;
+    margin: 0;
+}
+:root{
+    --prim:#E31E24;
+    --sec:#FFD8D9;
+}
+.bttn{
+    box-sizing: content-box;
+    background-color: var(--prim);
+    padding: 5px 45px;
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 19px;
+    color: white;
+    border-radius: 10px;
+  
+    transition: 250ms ease-in;
+    &:active{
+        transform: translateY(5px) scale(0.96);
+    }
+    &:disabled{
+        background-color: gray;
+        color: white;
+    }
+}
+.center-child{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@layer utilities {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+   /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+  }
+}

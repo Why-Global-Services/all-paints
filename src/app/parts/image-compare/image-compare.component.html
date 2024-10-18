@@ -1,0 +1,111 @@
+<div *ngIf="data | async as value" class="all-box">
+  <div class="image-container">
+    <div class="img-box">
+      <img src="../../../assets/images/ap.png" alt="" />
+    </div>
+    <div class="img-box">
+      <img src="../../../assets/images/berger.png" alt="" srcset="" />
+    </div>
+    <div class="img-box">
+      <img src="../../../assets/images/jandN.png" alt="" srcset="" />
+    </div>
+    <div class="img-box">
+      <img src="../../../assets/images/sheenlac.png" alt="" srcset="" />
+    </div>
+  </div>
+  <div class="image-container img-grid">
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div
+      (click)="sendDetail(item)"
+        class="p-box"
+        [class.na-box]="item.asiaN_PAINTS == 'NA'"
+      >
+        <section *ngIf="check(item.asiaN_PAINTS, 'NA')">
+          <p>NA</p>
+        </section>
+        <section style="display: contents" *ngIf="item.asiaN_PAINTS !== 'NA'">
+          <img
+            src="../../../assets/images/asian paints 1.png"
+            alt=""
+            srcset=""
+          />
+          <h3>{{ item.asiaN_PAINTS }}</h3>
+          <div class="flex products-center gap-[10px]">
+            <h3>₹{{ item.asian_details[0].price }}</h3>
+          </div>
+        </section>
+      </div>
+      }
+    </div>
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div
+      (click)="sendDetail(item)"
+        class="p-box"
+        [class.na-box]="item.bergeR_PAINTS == 'NA'"
+      >
+        <section *ngIf="check(item.bergeR_PAINTS, 'NA')">
+          <p>NA</p>
+        </section>
+        <section style="display: contents" *ngIf="item.bergeR_PAINTS !== 'NA'">
+          <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
+          <h3>{{ item.bergeR_PAINTS }}</h3>
+          <div class="flex products-center gap-[10px]">
+            <h3>₹{{ item.bergeR_details[0].price }}</h3>
+          </div>
+        </section>
+      </div>
+      }
+    </div>
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div
+        
+      (click)="sendDetail(item)"
+        class="p-box"
+        [class.na-box]="item.jN_PAINTS == 'NA'"
+      >
+        <section *ngIf="check(item.jN_PAINTS, 'NA')">
+          <p>NA</p>
+        </section>
+        <section style="display: contents" *ngIf="item.jN_PAINTS !== 'NA'">
+          <img
+            src="../../../assets/images/jenson 1.png"
+            alt=""
+            srcset=""
+          />
+          <h3>{{ item.jN_PAINTS }}</h3>
+          <div class="flex products-center gap-[10px]">
+            <h3>₹{{ item.jN_details[0].price }}</h3>
+          </div>
+        </section>
+      </div>
+      }
+    </div>
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div
+      (click)="sendDetail(item)"
+        class="p-box"
+        [class.na-box]="!item.sheenlac_PAINTS"
+      >
+        <section *ngIf="!item.sheenlac_PAINTS">
+          <p>NA</p>
+        </section>
+        <section style="display: contents" *ngIf="item.sheenlac_PAINTS">
+          <img
+            src="../../../assets/images/asian paints 1.png"
+            alt=""
+            srcset=""
+          />
+          <h3>{{ item.asiaN_PAINTS }}</h3>
+          <div class="flex products-center gap-[10px]">
+            <h3>₹{{ item.asian_detils[0].price }}</h3>
+          </div>
+        </section>
+      </div>
+      }
+    </div>
+  </div>
+</div>

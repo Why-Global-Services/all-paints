@@ -1,0 +1,584 @@
+<div class="all-box">
+  <div class="image-container img-grid">
+    <div class="img-col">
+      <div class="img-box">
+        <img src="../../../assets/images/ap.png" alt="" />
+      </div>
+      <div class="view-box">
+        <div class="p-box">
+          <img
+            src="../../../assets/images/asian paints 1.png"
+            alt=""
+            srcset=""
+          />
+          <h3>{{ data.asiaN_PAINTS }}</h3>
+
+          <div class="flex items-center gap-[10px]">
+            <h3>{{ data.asian_details[0].price }}</h3>
+            <span class="stk">8,999</span>
+          </div>
+        </div>
+        <button #pack style="display: none;" onclick="my_modal_2.showModal()" >summa</button>
+        <div  class="a-box cursor-pointer" (click)="pack2(data.asiaN_PAINTS,data.asian_details[0],1)" >
+          <p>Pack & Color</p>
+          <svg
+            viewBox="0 0 1024 1024"
+            class="icon right-[10px] h-[20px]"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                fill="#000000"
+              ></path>
+            </g>
+          </svg>
+        </div>
+        <div class="tt">
+          <h3>Viscosity</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Gloss 60°c</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Opacity</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Scrub Resistance</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Dirt Pick up Resistance</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>QUV Weather Stability Test</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Coverage</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <p>{{ data.asian_details[0].description }}</p>
+        </div>
+        <div class="tt">
+          <button class="bttn" (click)="addCart(data.asiaN_PAINTS,data.asian_details[0],'asian')">
+            <svg
+              class="h-[25px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                  stroke="#ffffff"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g></svg
+            >Add to Cart
+          </button>
+          <button class="bttn">
+            <svg
+              fill="#ffffff"
+              class="h-[25px]"
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 483.1 483.1"
+              xml:space="preserve"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <g>
+                  <path
+                    d="M434.55,418.7l-27.8-313.3c-0.5-6.2-5.7-10.9-12-10.9h-58.6c-0.1-52.1-42.5-94.5-94.6-94.5s-94.5,42.4-94.6,94.5h-58.6 c-6.2,0-11.4,4.7-12,10.9l-27.8,313.3c0,0.4,0,0.7,0,1.1c0,34.9,32.1,63.3,71.5,63.3h243c39.4,0,71.5-28.4,71.5-63.3 C434.55,419.4,434.55,419.1,434.55,418.7z M241.55,24c38.9,0,70.5,31.6,70.6,70.5h-141.2C171.05,55.6,202.65,24,241.55,24z M363.05,459h-243c-26,0-47.2-17.3-47.5-38.8l26.8-301.7h47.6v42.1c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h141.2v42.1 c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h47.6l26.8,301.8C410.25,441.7,389.05,459,363.05,459z"
+                  ></path>
+                </g>
+              </g></svg
+            >Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="img-col">
+      <div class="img-box">
+        <img src="../../../assets/images/berger.png" alt="" />
+      </div>
+      <div class="view-box">
+        <div class="p-box">
+          <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
+          <h3>{{ data.bergeR_PAINTS }}</h3>
+
+          <div class="flex items-center gap-[10px]">
+            <h3>{{ data.bergeR_details[0].price }}</h3>
+            <span class="stk">8,999</span>
+          </div>
+        </div>
+        <button #packTwo style="display: none;" onclick="my_modal_2.showModal()" >summa</button>
+        <div  class="a-box cursor-pointer" (click)="pack2(data.bergeR_PAINTS,data.bergeR_details[0],2)" >
+          <p>Pack & Color</p>
+          <svg
+            viewBox="0 0 1024 1024"
+            class="icon right-[10px] h-[20px]"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                fill="#000000"
+              ></path>
+            </g>
+          </svg>
+        </div>
+        <div class="tt">
+          <h3>Viscosity</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Gloss 60°c</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Opacity</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Scrub Resistance</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Dirt Pick up Resistance</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>QUV Weather Stability Test</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Coverage</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <p>{{ data.bergeR_details[0].description }}</p>
+        </div>
+        <div class="tt">
+          <button (click)="addCart(data.bergeR_PAINTS,data.bergeR_details[0],'berger')" class="bttn">
+            <svg
+              class="h-[25px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                  stroke="#ffffff"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g></svg
+            >Add to Cart
+          </button>
+          <button class="bttn">
+            <svg
+              fill="#ffffff"
+              class="h-[25px]"
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 483.1 483.1"
+              xml:space="preserve"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <g>
+                  <path
+                    d="M434.55,418.7l-27.8-313.3c-0.5-6.2-5.7-10.9-12-10.9h-58.6c-0.1-52.1-42.5-94.5-94.6-94.5s-94.5,42.4-94.6,94.5h-58.6 c-6.2,0-11.4,4.7-12,10.9l-27.8,313.3c0,0.4,0,0.7,0,1.1c0,34.9,32.1,63.3,71.5,63.3h243c39.4,0,71.5-28.4,71.5-63.3 C434.55,419.4,434.55,419.1,434.55,418.7z M241.55,24c38.9,0,70.5,31.6,70.6,70.5h-141.2C171.05,55.6,202.65,24,241.55,24z M363.05,459h-243c-26,0-47.2-17.3-47.5-38.8l26.8-301.7h47.6v42.1c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h141.2v42.1 c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h47.6l26.8,301.8C410.25,441.7,389.05,459,363.05,459z"
+                  ></path>
+                </g>
+              </g></svg
+            >Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="img-col">
+      <div class="img-box">
+        <img src="../../../assets/images/jandN.png" alt="" srcset="" />
+      </div>
+      <div class="view-box">
+        <div class="p-box">
+          <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
+          <h3>{{ data.jN_PAINTS }}</h3>
+
+          <div class="flex items-center gap-[10px]">
+            <h3>{{ data.jN_details[0].price }}</h3>
+            <span class="stk">8,999</span>
+          </div>
+        </div>
+        <button #packThree style="display: none;" onclick="my_modal_2.showModal()" >summa</button>
+        <div  class="a-box cursor-pointer" (click)="pack2(data.jN_PAINTS,data.jN_details[0],3)" >
+          <p>Pack & Color</p>
+          <svg
+            viewBox="0 0 1024 1024"
+            class="icon right-[10px] h-[20px]"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                fill="#000000"
+              ></path>
+            </g>
+          </svg>
+        </div>
+        <div class="tt">
+          <h3>Viscosity</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Gloss 60°c</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Opacity</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Scrub Resistance</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Dirt Pick up Resistance</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>QUV Weather Stability Test</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <h3>Coverage</h3>
+          <p>--</p>
+        </div>
+        <div class="tt">
+          <p>{{ data.jN_details[0].description }}</p>
+        </div>
+        <div class="tt">
+          <button (click)="addCart(data.jN_PAINTS,data.jN_details[0],'jenson')" class="bttn">
+            <svg
+              class="h-[25px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                  stroke="#ffffff"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g></svg
+            >Add to Cart
+          </button>
+          <button class="bttn">
+            <svg
+              fill="#ffffff"
+              class="h-[25px]"
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 483.1 483.1"
+              xml:space="preserve"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <g>
+                  <path
+                    d="M434.55,418.7l-27.8-313.3c-0.5-6.2-5.7-10.9-12-10.9h-58.6c-0.1-52.1-42.5-94.5-94.6-94.5s-94.5,42.4-94.6,94.5h-58.6 c-6.2,0-11.4,4.7-12,10.9l-27.8,313.3c0,0.4,0,0.7,0,1.1c0,34.9,32.1,63.3,71.5,63.3h243c39.4,0,71.5-28.4,71.5-63.3 C434.55,419.4,434.55,419.1,434.55,418.7z M241.55,24c38.9,0,70.5,31.6,70.6,70.5h-141.2C171.05,55.6,202.65,24,241.55,24z M363.05,459h-243c-26,0-47.2-17.3-47.5-38.8l26.8-301.7h47.6v42.1c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h141.2v42.1 c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h47.6l26.8,301.8C410.25,441.7,389.05,459,363.05,459z"
+                  ></path>
+                </g>
+              </g></svg
+            >Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="img-col">
+      <div class="img-box">
+        <img src="../../../assets/images/sheenlac.png" alt="" />
+      </div>
+      <div class="view-box view-na">
+        <p>NA</p>
+      </div>
+      <!-- <div class="view-box">
+        <div class="p-box">
+          <img
+            src="../../../assets/images/asian paints 1.png"
+            alt=""
+            srcset=""
+          />
+          <h3>Apex Dust Proof</h3>
+
+          <div class="flex items-center gap-[10px]">
+            <h3>6,999</h3>
+            <span class="stk">8,999</span>
+          </div>
+        </div>
+        <div class="a-box">
+          <p>Pack & Color</p>
+          <svg
+            viewBox="0 0 1024 1024"
+            class="icon right-[10px] h-[20px]"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                fill="#000000"
+              ></path>
+            </g>
+          </svg>
+        </div>
+        <div class="tt">
+          <h3>Viscosity</h3>
+          <p>Moderate</p>
+        </div>
+        <div class="tt">
+          <h3>Gloss 60°c</h3>
+          <p>5-10 units</p>
+        </div>
+        <div class="tt">
+          <h3>Opacity</h3>
+          <p>Good</p>
+        </div>
+        <div class="tt">
+          <h3>Scrub Resistance</h3>
+          <p>Moderate</p>
+        </div>
+        <div class="tt">
+          <h3>Dirt Pick up Resistance</h3>
+          <p>Moderate</p>
+        </div>
+        <div class="tt">
+          <h3>QUV Weather Stability Test</h3>
+          <p>Moderate</p>
+        </div>
+        <div class="tt">
+          <h3>Coverage</h3>
+          <p>11-13 m²/L</p>
+        </div>
+        <div class="tt">
+          <p>
+            Walmasta is a water based acrylic exterior emulsion suitable for for
+            dry and low humid climatic condition. It is a matt finish paint
+          </p>
+        </div>
+        <div class="tt">
+          <button class="bttn"> <svg class="h-[25px]"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#ffffff"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </g></svg>Add to Cart</button>
+          <button class="bttn">   <svg
+            fill="#ffffff"
+            class="h-[25px]"
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 483.1 483.1"
+            xml:space="preserve"
+            stroke="#ffffff"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <g>
+                <path
+                  d="M434.55,418.7l-27.8-313.3c-0.5-6.2-5.7-10.9-12-10.9h-58.6c-0.1-52.1-42.5-94.5-94.6-94.5s-94.5,42.4-94.6,94.5h-58.6 c-6.2,0-11.4,4.7-12,10.9l-27.8,313.3c0,0.4,0,0.7,0,1.1c0,34.9,32.1,63.3,71.5,63.3h243c39.4,0,71.5-28.4,71.5-63.3 C434.55,419.4,434.55,419.1,434.55,418.7z M241.55,24c38.9,0,70.5,31.6,70.6,70.5h-141.2C171.05,55.6,202.65,24,241.55,24z M363.05,459h-243c-26,0-47.2-17.3-47.5-38.8l26.8-301.7h47.6v42.1c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h141.2v42.1 c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h47.6l26.8,301.8C410.25,441.7,389.05,459,363.05,459z"
+                ></path>
+              </g>
+            </g>
+          </svg>Buy Now</button>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Open the modal using ID.showModal() method -->
+
+<dialog id="my_modal_2" class="modal">
+  <div class="modal-box bg-white pop-box">
+    <div>
+      <h4>Available packs</h4>
+      <table border="20" class="w-full border-black border-solid border-[2px]">
+        <tr style="background-color: var(--sec)">
+          <th align="center" colspan="7">Pack Size</th>
+        </tr>
+        <tr>
+          <td>100ml</td>
+          <td>500ml</td>
+          <td>1L</td>
+          <td>4L</td>
+          <td>7L</td>
+          <td>10L</td>
+          <td>20L</td>
+        </tr>
+        <tr>
+          <td><input min="0" type="number" /></td>
+          <td><input min="0" type="number" /></td>
+          <td><input min="0" type="number" /></td>
+          <td><input min="0" type="number" /></td>
+          <td><input min="0" type="number" /></td>
+          <td><input min="0" type="number" /></td>
+          <td><input min="0" type="number" /></td>
+        </tr>
+      </table>
+      <div class="colors-box">
+        <h4>Colors</h4>
+        <div class="col-sep">
+          <div class="image-box" [style.background-color]="ctnClr">
+            <!-- <img src="../../../assets/images/Living room (1).png" alt="" srcset=""> -->
+          </div>
+          <div class="color">
+            <div>
+              <input type="text" #search (keyup)="searchColor(search.value)" >
+            </div>
+            <div class="cl-title no-scrollbar">
+              <!-- @for (item of colors.title; track colors) { -->
+              <p
+                [ngStyle]="{
+                  'text-decoration':
+                    selectedColor === item.title ? 'underline' : 'none'
+                }"
+                *ngFor="let item of colors"
+                (click)="selectColor(item.title)"
+              >
+                {{ item.title }}
+              </p>
+              <!-- } -->
+            </div>
+            <div class="og-color">
+              @for (item of selectedColors; track $index) {
+              <div class="tooltip clr"  [attr.data-tip]="item.colorname"
+                (click)="selectOg(item.hexcode)"
+                (mouseenter)="onMouseEnter(item.hexcode)"
+                class="clr"
+                [style.background-color]="item.hexcode"
+              ></div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

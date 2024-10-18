@@ -1,0 +1,63 @@
+<app-header></app-header>
+<div class="relative">
+  <div class="home-box">
+    <div class="h-[620px] w-[1100px] bg-front flex">
+      <div class="w-1/2">
+        <img
+          class="logo-img"
+          src="../../../assets/images/allpaintsLogo_tagline 2.png"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div class="w-1/2 h-full content-box">
+        <div class="wel-box">
+          <img src="../../../assets/images/title.png" alt="" srcset="" />
+        </div>
+
+        <div
+          [formGroup]="cusForm"
+          class="h-[350px] flex flex-col w-3/4 mx-auto"
+        >
+          <label for="Sp">Customer Name:</label>
+          <input formControlName="customer_Name" type="text" />
+          <label for="num">Number:</label>
+          <input id="num"  formControlName="customer_Mobile"
+            onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57"
+            type="text"
+          />
+          <div class="checkboxes">
+            <input type="checkbox" name="" id="phn" />
+            <label for="phn">Phone</label>
+            <input type="checkbox" name="" id="wp" />
+            <label for="wp">Whatsapp</label>
+          </div>
+          <label for="em">Email:</label>
+          <input formControlName="customer_Email" id="em" type="email" />
+          <div class="buttons">
+            <button (click)="formReset()">Reset</button>
+            <button [disabled]="cusForm.invalid" (click)="formSubmit()">Proceed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button #popbtn style="display: none;"  class="btn" onclick="my_modal_2.showModal()">open modal</button>
+<dialog id="my_modal_2" class="modal">
+  <div [formGroup]="otpForm" class="modal-box bg-white pop-box">
+    <h3 class="text-lg font-bold">Verify with OTP</h3>
+    <p class="py-4">To ensure your security, Please enter  the One-Time Password
+      (OTP) sent to your registered mobile number/email below</p>
+      <input formControlName="filtervalue2" type="text">
+   <div class="w-[300px] flex justify-end">
+    <p [style.display]="countdownTime > 0 ? 'block':'none'" class="bg-(var(--prim))">{{ formatTime(countdownTime) }}</p>
+    <p  [style.display]="countdownTime > 0 ? 'none':'block'" (click)="resendOtp()" class="underline text-[var(--prim)]">resend Otp</p>
+   </div>  
+      <button [disabled]="otpForm.get('filtervalue2')?.invalid" (click)="verfiyOtp()" class="bttn">Submit</button>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <!-- <button>close</button> -->
+  </form>
+</dialog>

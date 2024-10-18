@@ -1,0 +1,243 @@
+<div class="myCart-box">
+  <div class="offer box">
+    <div class="sep-2">
+      <div class="sel-items">
+        <div class="content">
+          <div class="title">
+            <h3>Selected items</h3>
+          </div>
+          @for (item of cartData; track $index) {
+            <div class="p-box">
+              <div class="img-box">
+                @switch (item.brandName) { @case ('berger') {
+                  <img src="../../../assets/images/berger 5.png" alt="" srcset="" />
+        
+                  }@case ('asian') {
+                  <img
+                    src="../../../assets/images/asian paints 1.png"
+                    alt=""
+                    srcset=""
+                  />
+                  } @case ('jenson') {
+                  <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
+        
+                  } }
+              </div>
+              <div class="p-details">
+                <h4>{{ item.selectedPack }}</h4>
+  
+                <div class="flex items-center gap-[5px] font-[600] text-[20px]">
+                  <p>₹{{ item.selectDetails.price }}</p>
+                  <span
+                    style="text-decoration: line-through"
+                    class="text-gray-400 text-[16px]"
+                    >₹5,999</span
+                  >
+                </div>
+              </div>
+            </div>
+          }
+        
+        </div>
+        <div class="total">
+          <h2>Total:₹{{selectedTotal}}</h2>
+        </div>
+      </div>
+      <div class="brand-item">
+        <div class="content">
+          <div class="flex justify-center h-[100px] pt-[20px]">
+            <details class="dropdown dropdown-end">
+              <summary
+                role="button"
+                style="height: 40px; min-height: 40px"
+                class="btn m-1 dd px-[20px]"
+              >
+                compared by brands
+                <svg
+                  viewBox="0 0 1024 1024"
+                  class="icon absolute right-[7px] h-[15px]"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                      fill="#000000"
+                    ></path>
+                  </g>
+                </svg>
+              </summary>
+              <ul
+                class="dropdown-content menu bg-white rounded-box z-[1] w-52 p-2 shadow ul-box"
+              >
+                <li><a class="">Asian paints</a></li>
+                <li><a>Berger</a></li>
+                <li><a class="">Jenson & Nicholson</a></li>
+                <li><a>Sheenlac</a></li>
+              </ul>
+            </details>
+          </div>
+          <div class="p-box">
+            <div class="hover-me">
+              <p>switch</p>
+            </div>
+            <div class="img-box">
+              <img
+                src="../../../assets/images/asian paints 1.png"
+                alt=""
+                srcset=""
+              />
+            </div>
+            <div class="p-details">
+              <h4>Apex Ultima</h4>
+
+              <div class="flex items-center gap-[5px] font-[600] text-[20px]">
+                <p>₹5,999</p>
+                <span
+                  style="text-decoration: line-through"
+                  class="text-gray-400 text-[16px]"
+                  >₹4,999</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="total">
+          <h2>Total:₹12,500</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cart box">
+    <div class="content">
+      <div class="title">
+        <h3>My Cart ({{ cartLength }})</h3>
+      </div>
+      @for (item of cartData; track $index) {
+      <div class="p-box">
+        <div class="img-box">
+          @switch (item.brandName) { @case ('berger') {
+          <img src="../../../assets/images/berger 5.png" alt="" srcset="" />
+
+          }@case ('asian') {
+          <img
+            src="../../../assets/images/asian paints 1.png"
+            alt=""
+            srcset=""
+          />
+          } @case ('jenson') {
+          <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
+
+          } }
+          <!-- <img src="../../../assets/images/berger 5.png" alt="" srcset="" /> -->
+        </div>
+        <div class="p-details">
+          <h4>{{ item.selectedPack }}</h4>
+          <div class="color-details">
+            <span [style.background-color]="item.color" class="color"></span>
+            <span>10 Ltr</span>
+          </div>
+          <div class="flex items-center gap-[5px] font-[600] text-[20px]">
+            <p>{{ item.selectDetails.price }}</p>
+            <span
+              style="text-decoration: line-through"
+              class="text-gray-400 text-[16px]"
+              >₹5,999</span
+            >
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    <div class="total">
+      <h2>Total:₹{{ total }}</h2>
+    </div>
+  </div>
+
+  <div class="price box">
+    <div class="content">
+      <div class="title">
+        <h3>Packs</h3>
+      </div>
+      @for (item of selectedPaints; track $index) {
+      <div class="price-box">
+        <div class="info">
+          <h4>{{ item.selectedPack }}</h4>
+          <div class="flex items-center gap-[5px] font-[600] text-[20px]">
+            <p>₹{{ item.selectDetails.price }}</p>
+            <span
+              style="text-decoration: line-through"
+              class="text-gray-400 text-[16px]"
+              >₹5,999</span
+            >
+          </div>
+        </div>
+        <div class="drop">
+          <details class="dropdown dropdown-end w-[80px]">
+            <summary
+              role="button"
+              style="height: 40px; min-height: 40px"
+              class="btn m-1 dd w-full"
+            >
+              4L
+              <svg
+                viewBox="0 0 1024 1024"
+                class="icon absolute right-[10px] h-[20px]"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#000000"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                    fill="#000000"
+                  ></path>
+                </g>
+              </svg>
+            </summary>
+            <ul
+              class="dropdown-content menu bg-white rounded-box z-[1] w-52 p-2 shadow ul-box"
+            >
+              <li><a class="">100ml</a></li>
+              <li><a>500 ml</a></li>
+              <li><a class="">1L</a></li>
+              <li><a>4L</a></li>
+            </ul>
+          </details>
+        </div>
+        <div class="in-dec">
+          <button (click)="sum($index, item.count, 1)">+</button>
+          <p>{{ item.count }}</p>
+          <button
+            [disabled]="item.count == 1"
+            (click)="sum($index, item.count, -1)"
+          >
+            -
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    <div class="total">
+      <h2>Total:₹{{ selectedTotal }}</h2>
+    </div>
+  </div>
+</div>
+<div class="h-[80px] flex w-full items-center justify-end pr-[20px]">
+  <button routerLink="/checkOut" style="margin: 0; width: auto" class="bttn">
+    Submit
+  </button>
+</div>

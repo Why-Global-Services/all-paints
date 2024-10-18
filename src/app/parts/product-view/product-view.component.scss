@@ -1,0 +1,223 @@
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  scrollbar-width: none
+ 
+}
+.all-box {
+  // border: 1px solid rgba(0, 0, 0, 0.26);
+  width: 100%;
+}
+.image-container {
+  width: 100%;
+  // background-color: rgba(255, 255, 0, 0.388);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 5px;
+  border-radius: 10px;
+  .img-col {
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.26);
+    border-radius: 10px;
+    position: relative;
+  }
+  .img-col,
+  .img-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // gap: 10px;
+
+    .img-box {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: white;
+      height: 120px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .view-box {
+    height: 100%;
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .tt {
+      height: auto;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &:has(button) {
+        height: 150px;
+        justify-content: space-evenly;
+      }
+      h3 {
+        font-weight: 600;
+      }
+      .bttn {
+        width: 140px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 10px 40px;
+      }
+    }
+    .p-box {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      .stk {
+        text-decoration: line-through;
+      }
+      h3 {
+        font-size: 21px;
+        font-weight: 600;
+      }
+    }
+    .a-box {
+      width: 165px;
+      // border: 1px solid black;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      border-radius: 10px;
+      padding: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin: 20px 0;
+      p {
+        font-weight: 600;
+      }
+    }
+  }
+  .na-box {
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 21px;
+  }
+  .down-box {
+    height: 150px;
+    background: red;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
+.img-grid {
+  height: 850px;
+  overflow-y: auto;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--prim);
+  border-radius: 35px;
+}
+.pop-box {
+  height: 600px;
+  width: 840px;
+  max-width: 1000px;
+  table {
+    td {
+      text-align: center;
+    }
+    tr,
+    td {
+      height: 45px;
+      border: 1px solid rgba(0, 0, 0, 0.545);
+    }
+    input {
+      border: 1px solid black;
+      width: 60px;
+      border-radius: 5px;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: auto !important;
+    }
+    margin-bottom: 10px;
+  }
+  .colors-box {
+    width: 100%;
+    height: 360px;
+    margin-top: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    .col-sep {
+      display: grid;
+      grid-template-columns: 60% 40%;
+      width: 100%;
+      height: 90%;
+      gap: 10px;
+      .image-box {
+        display: flex;
+        transition: 250ms ease-in-out;
+        background-image: url("../../../assets/images/living\ room\ final.png");
+        align-items: inherit;
+        object-fit: cover;
+        background-color: burlywood;
+        background-position: bottom;
+        background-size: 525px;
+        background-repeat: no-repeat;
+        background-position-y: 40px;
+      }
+    }
+    .color{
+      width: 100%;
+      height: 100%;
+      input{
+        border: 1px solid black;
+        border-radius: 7px;
+        padding-left: 10px;
+      }
+      .cl-title{
+        height: 40px;
+        display: flex;
+        gap: 5px;
+        width: 100%;
+        cursor: pointer;
+        overflow-x: scroll;
+        p{
+          text-wrap: nowrap;
+        }
+       
+      }
+      .og-color{
+        // height: calc(100% - 80px);
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 235px;
+        overflow-y: scroll;
+        .clr{
+          height: 30px;
+          width: 30px;
+          cursor: pointer;
+         border:2px solid white;
+          
+        }
+      }
+    }
+  }
+}
+.view-na{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p{
+    font-weight: 600;
+    font-size: 20px;
+  }
+}
+.clr{
+  background-color: white;
+  z-index:1000000;
+}
