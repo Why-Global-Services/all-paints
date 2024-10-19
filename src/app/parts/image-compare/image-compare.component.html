@@ -19,20 +19,20 @@
       <div
       (click)="sendDetail(item)"
         class="p-box"
-        [class.na-box]="item.asiaN_PAINTS == 'NA'"
+        [class.na-box]="item.ASIAN_PAINTS == null"
       >
-        <section *ngIf="check(item.asiaN_PAINTS, 'NA')">
+        <section *ngIf="check(item.ASIAN_PAINTS, null)">
           <p>NA</p>
         </section>
-        <section style="display: contents" *ngIf="item.asiaN_PAINTS !== 'NA'">
+        <section style="display: contents" *ngIf="item.ASIAN_PAINTS !== null">
           <img
             src="../../../assets/images/asian paints 1.png"
             alt=""
             srcset=""
           />
-          <h3>{{ item.asiaN_PAINTS }}</h3>
+          <h3>{{ item.ASIAN_PAINTS }}</h3>
           <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.asian_details[0].price }}</h3>
+            <h3>₹{{ item.Asian_detils[0].price }}</h3>
           </div>
         </section>
       </div>
@@ -43,16 +43,16 @@
       <div
       (click)="sendDetail(item)"
         class="p-box"
-        [class.na-box]="item.bergeR_PAINTS == 'NA'"
+        [class.na-box]="item.BERGER_PAINTS == null"
       >
-        <section *ngIf="check(item.bergeR_PAINTS, 'NA')">
+        <section *ngIf="check(item.BERGER_PAINTS, null)">
           <p>NA</p>
         </section>
-        <section style="display: contents" *ngIf="item.bergeR_PAINTS !== 'NA'">
+        <section style="display: contents" *ngIf="item.BERGER_PAINTS !== null">
           <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
-          <h3>{{ item.bergeR_PAINTS }}</h3>
+          <h3>{{ item.BERGER_PAINTS }}</h3>
           <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.bergeR_details[0].price }}</h3>
+            <h3>₹{{ item.BERGER_details[0].price }}</h3>
           </div>
         </section>
       </div>
@@ -64,20 +64,20 @@
         
       (click)="sendDetail(item)"
         class="p-box"
-        [class.na-box]="item.jN_PAINTS == 'NA'"
+        [class.na-box]="item.JN_PAINTS == null"
       >
-        <section *ngIf="check(item.jN_PAINTS, 'NA')">
+        <section *ngIf="check(item.JN_PAINTS, null)">
           <p>NA</p>
         </section>
-        <section style="display: contents" *ngIf="item.jN_PAINTS !== 'NA'">
+        <section style="display: contents" *ngIf="item.JN_PAINTS !== null">
           <img
             src="../../../assets/images/jenson 1.png"
             alt=""
             srcset=""
           />
-          <h3>{{ item.jN_PAINTS }}</h3>
+          <h3>{{ item.JN_PAINTS }}</h3>
           <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.jN_details[0].price }}</h3>
+            <h3>₹{{ item.jN_details[0].price || 0}}</h3>
           </div>
         </section>
       </div>
@@ -99,7 +99,7 @@
             alt=""
             srcset=""
           />
-          <h3>{{ item.asiaN_PAINTS }}</h3>
+          <h3>{{ item.ASIAN_PAINTS }}</h3>
           <div class="flex products-center gap-[10px]">
             <h3>₹{{ item.asian_detils[0].price }}</h3>
           </div>

@@ -26,26 +26,31 @@ export class CustomerLoginComponent {
   router = inject(Router);
   cusForm = this.fb.group({
     customer_Gst_no: [''],
-    customer_Type: [''],
-    customer_Name: ['', Validators.required],
-    customer_Mobile: ['', Validators.required],
+    firstname: ['',Validators.required],
+    lastName: [''],
+    customer_Mobile: ['',[Validators.required,Validators.minLength(10),Validators.maxLength(10)]],
     customer_Mobile2: [''],
-    customer_Land_1: [''],
-    customer_Email: ['', [Validators.required, Validators.email]],
-    customer_State: [''],
-    customer_city: [''],
-    customer_Contact_1: [''],
-    customer_Contact_Mob1: [''],
-    customer_Contact2: [''],
-    customer_Contact_Mob2: [''],
-    customer_Address: [''],
-    customer_pin: [''],
-    customer_Sales_Manager: [''],
-    customer_Distributor: [''],
-    distributor_Code: [''],
-    customer_Channel: [''],
-    attach1: [''],
+    customer_Email: ['',[Validators.required,Validators.email]],
+    gender: ['MALE'],
+    dateOfBirth: [''],
+    customer_pin: ['600021'],
     customercode: [''],
+    customername: [''],
+    customerstatus: [''],
+    distributor_Code: ['95000000'],
+    customer_Distributor: [''],
+    id_proff: [''],
+    customer_State: ['TN'],
+    customer_city: ['chennai'],
+    attach1: [''],
+    attach2: [''],
+    attach3: [''],
+    cremarks1: [''],
+    cremarks2: [''],
+    cremarks3: [''],
+    cremarks4: [''],
+    cremarks5: [''],
+    lcreateddate: ['']
   });
   number: any;
   formSubmit() {
@@ -53,7 +58,7 @@ export class CustomerLoginComponent {
     this.number = this.cusForm.get('customer_Mobile')?.value;
     if (this.cusForm.valid) {
       console.log('working2');
-      let name =this.cusForm.get('customer_Name')?.value
+      let name =this.cusForm.get('firstname')?.value
       let number = this.cusForm.get('customer_Mobile')?.value
       let email = this.cusForm.get('customer_Email')?.value
       localStorage.setItem('apName',name || 'not found')
@@ -61,7 +66,8 @@ export class CustomerLoginComponent {
       localStorage.setItem('apEmail',email|| 'no email')
       const formData = this.cusForm.value;
       this.service.createCustomer(formData).subscribe((res: any) => {
-        console.log(res);
+        console.log(res[0][0]);
+        localStorage.setItem('apCusId',res[0][0].CUSTOMER.CUSTOMER)
         if (res != 'Mobile Number Already Registered') {
           if (this.cusForm.get('customer_Mobile')?.value) {
             this.otpForm.patchValue({

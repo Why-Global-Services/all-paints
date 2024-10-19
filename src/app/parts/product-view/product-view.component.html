@@ -4,22 +4,25 @@
       <div class="img-box">
         <img src="../../../assets/images/ap.png" alt="" />
       </div>
-      <div class="view-box">
+      <div class="view-box view-na" *ngIf="data.ASIAN_PAINTS == null">
+        <p>NA</p>
+      </div>
+      <div class="view-box" *ngIf="data.ASIAN_PAINTS !== null">
         <div class="p-box">
           <img
             src="../../../assets/images/asian paints 1.png"
             alt=""
             srcset=""
           />
-          <h3>{{ data.asiaN_PAINTS }}</h3>
+          <h3>{{ data.ASIAN_PAINTS }}</h3>
 
           <div class="flex items-center gap-[10px]">
-            <h3>{{ data.asian_details[0].price }}</h3>
+            <h3>{{ data.Asian_detils[0].price }}</h3>
             <span class="stk">8,999</span>
           </div>
         </div>
         <button #pack style="display: none;" onclick="my_modal_2.showModal()" >summa</button>
-        <div  class="a-box cursor-pointer" (click)="pack2(data.asiaN_PAINTS,data.asian_details[0],1)" >
+        <div  class="a-box cursor-pointer" (click)="pack2(data.ASIAN_PAINTS,data.Asian_detils[0],1)" >
           <p>Pack & Color</p>
           <svg
             viewBox="0 0 1024 1024"
@@ -71,10 +74,10 @@
           <p>--</p>
         </div>
         <div class="tt">
-          <p>{{ data.asian_details[0].description }}</p>
+          <p>{{ data.Asian_detils[0].description }}</p>
         </div>
         <div class="tt">
-          <button class="bttn" (click)="addCart(data.asiaN_PAINTS,data.asian_details[0],'asian')">
+          <button class="bttn" (click)="addCart(data.ASIAN_PAINTS,data.Asian_detils[0],'asian')">
             <svg
               class="h-[25px]"
               viewBox="0 0 24 24"
@@ -133,18 +136,21 @@
       <div class="img-box">
         <img src="../../../assets/images/berger.png" alt="" />
       </div>
-      <div class="view-box">
+      <div class="view-box view-na" *ngIf="data.BERGER_PAINTS == null">
+        <p>NA</p>
+      </div>
+      <div class="view-box" *ngIf="data.BERGER_PAINTS !== null">
         <div class="p-box">
           <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
-          <h3>{{ data.bergeR_PAINTS }}</h3>
+          <h3>{{ data.BERGER_PAINTS }}</h3>
 
           <div class="flex items-center gap-[10px]">
-            <h3>{{ data.bergeR_details[0].price }}</h3>
+            <h3>{{ data.BERGER_details[0].price }}</h3>
             <span class="stk">8,999</span>
           </div>
         </div>
         <button #packTwo style="display: none;" onclick="my_modal_2.showModal()" >summa</button>
-        <div  class="a-box cursor-pointer" (click)="pack2(data.bergeR_PAINTS,data.bergeR_details[0],2)" >
+        <div  class="a-box cursor-pointer" (click)="pack2(data.BERGER_PAINTS,data.BERGER_details[0],2)" >
           <p>Pack & Color</p>
           <svg
             viewBox="0 0 1024 1024"
@@ -196,10 +202,10 @@
           <p>--</p>
         </div>
         <div class="tt">
-          <p>{{ data.bergeR_details[0].description }}</p>
+          <p>{{ data.BERGER_details[0].description }}</p>
         </div>
         <div class="tt">
-          <button (click)="addCart(data.bergeR_PAINTS,data.bergeR_details[0],'berger')" class="bttn">
+          <button (click)="addCart(data.BERGER_PAINTS,data.BERGER_details[0],'berger')" class="bttn">
             <svg
               class="h-[25px]"
               viewBox="0 0 24 24"
@@ -258,18 +264,21 @@
       <div class="img-box">
         <img src="../../../assets/images/jandN.png" alt="" srcset="" />
       </div>
-      <div class="view-box">
+      <div class="view-box view-na" *ngIf="data.JN_PAINTS == null">
+        <p>NA</p>
+      </div>
+      <div class="view-box" *ngIf="data.JN_PAINTS !== null">
         <div class="p-box">
           <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
-          <h3>{{ data.jN_PAINTS }}</h3>
+          <h3>{{ data.JN_PAINTS }}</h3>
 
           <div class="flex items-center gap-[10px]">
-            <h3>{{ data.jN_details[0].price }}</h3>
+            <h3>{{ data.JN_details[0].price }}</h3>
             <span class="stk">8,999</span>
           </div>
         </div>
         <button #packThree style="display: none;" onclick="my_modal_2.showModal()" >summa</button>
-        <div  class="a-box cursor-pointer" (click)="pack2(data.jN_PAINTS,data.jN_details[0],3)" >
+        <div  class="a-box cursor-pointer" (click)="pack2(data.JN_PAINTS,data.JN_details[0],3)" >
           <p>Pack & Color</p>
           <svg
             viewBox="0 0 1024 1024"
@@ -321,10 +330,10 @@
           <p>--</p>
         </div>
         <div class="tt">
-          <p>{{ data.jN_details[0].description }}</p>
+          <p>{{ data.JN_details[0].description }}</p>
         </div>
         <div class="tt">
-          <button (click)="addCart(data.jN_PAINTS,data.jN_details[0],'jenson')" class="bttn">
+          <button (click)="addCart(data.JN_PAINTS,data.JN_details[0],'jenson')" class="bttn">
             <svg
               class="h-[25px]"
               viewBox="0 0 24 24"

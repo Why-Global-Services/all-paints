@@ -16,7 +16,7 @@ export class ApiService {
     // const headers = new HttpHeaders({
     //   'Content-Type': 'application/json'
     // });
-    return this.http.post(this.api+'api/FranchiOrder/SaveCustomerCreation',body)
+    return this.http.post(this.api+'api/FranchiOrder/Savecustomercreation',body)
   }
   getAllProducts(body:any){
     return this.http.post(this.api+'api/Stock/GetAllPaintsProducts',body)
@@ -36,4 +36,5 @@ export class ApiService {
   payment(body:any){
     return this.http.post(this.api+'api/FranchiStock/CustomerPayment',body)
   }
+  
 }

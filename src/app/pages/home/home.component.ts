@@ -42,12 +42,12 @@ export class HomeComponent implements OnInit {
   show: string = 'image';
   showDisplay: any = 'Display By Image';
   logic = inject(LogicsService);
-  dummyData: any = this.logic.dummyData;
+  // dummyData: any = this.logic.dummyData;
   arData: any = [];
   cats: any = [];
-  selectedCat:any;
-  selectedCatSub:any
-  selectedSubIndex!:number;
+  selectedCat: any;
+  selectedCatSub: any;
+  selectedSubIndex: number=0
   final: any = [];
   originalData: any = [];
   // sortDisplay: Observable<string>=of('Low to High')
@@ -73,93 +73,81 @@ export class HomeComponent implements OnInit {
   private productsSubject = new BehaviorSubject<any[]>([]);
   data$ = this.productsSubject.asObservable();
 
-  filterDummy() {
-    this.dummyData.forEach((v: any) => {
-      // console.log('cee');
-
-      let index = this.cats.findIndex((item:any)=>{
-        // console.log(item.cat, v.category,'compare');
-        
-        return item.cat == v.category
-      });
-      // console.log(index,'index');
+  // filterDummy() {
+  //   this.dummyData.forEach((v: any) => {
       
-      if (index >= 0) {
-        this.cats[index].subcat.push(v.suB_CATEGORY)
-      } else {
-        this.cats.push({ cat: v.category, subcat: [v.suB_CATEGORY] });
-      }
-    });
-    console.log(this.cats,'cats');
-    this.selectedCat = this.cats[0].cat
-    this.selectedSubIndex =0
-    this.selectedCatSub =this.cats[0].subcat[0]
-    this.selectSub(this.selectedCatSub)
-    this.sortValue === 'High to Low'
-    this.sortProducts()
-    
-  }
+
+  //     let index = this.cats.findIndex((item: any) => {
+
+  //       return item.cat == v.category;
+  //     });
+
+  //     if (index >= 0) {
+  //       this.cats[index].subcat.push(v.suB_CATEGORY);
+  //     } else {
+  //       this.cats.push({ cat: v.category, subcat: [v.suB_CATEGORY] });
+  //     }
+  //   });
+  //   console.log(this.cats, 'cats');
+  //   this.selectedCat = this.cats[0].cat;
+  //   this.selectedSubIndex = 0;
+  //   this.selectedCatSub = this.cats[0].subcat[0];
+  //   this.selectSub(this.selectedCatSub);
+  //   this.sortValue === 'High to Low';
+  //   this.sortProducts();
+  // }
   ngOnInit(): void {
-    this.filterDummy();
-    
+    // this.filterDummy();
+
     this.activatedRoute.fragment.subscribe((fragment: string | null) => {
       if (fragment) {
         this.show = fragment;
       }
     });
     // if(this.show == 'cart'){
-      console.log(this.logic.cart,'cart',this.show);
-      
+    console.log(this.logic.cart, 'cart', this.show);
+
     // }
     console.log(this.show);
-    this.activatedRoute.queryParams.subscribe((res:any)=>{
-      console.log(res,'routes');
-      if(res.cat){
-        this.selectedCat = res.cat
-      
-        // console.log(this.selectedCat);
-        this.selectedSubIndex = this.cats.findIndex((r:any)=>{
-          // console.log(r.cat == v);
-          
-          return r.cat == this.selectedCat
-        })
-      }
-      if(res.subCat){
-        this.selectedCatSub = res.subCat
-        this.dummyData.forEach((item:any)=>{
-          if(item.category == this.selectedCat && this.selectedCatSub == item.suB_CATEGORY){
-            // console.log(item.category == this.selectedCat && this.selectedCatSub == item.suB_CATEGORY,'send',item.products
-            // );
-          
-            if(this.sortValue){
-              console.log('auto sorted');
-              
-              this.final = item.products
-              this.data$=of(item.products)
-              this.originalData = item.products
-              this.sortProducts()
-            }else{
-              this.final = item.products
-              this.originalData = item.products
-              this.data$=of(item.products)
-            }
+    this.getAll();
+    if (this.show == 'image' || this.show == 'list') {
+     
+      this.activatedRoute.queryParams.subscribe((res: any) => {
+        console.log(res, 'routes');
+        if (res.cat) {
+          this.selectedCat = res.cat;
+
+          console.log(this.selectedCat);
+          this.selectedSubIndex = this.final.findIndex((r: any) => {
+            return r.CATEGORY == this.selectedCat;
+          });
+          console.log(this.selectedSubIndex);
+        }
+        if (res.subCat) {
+          this.selectedCatSub = res.subCat;
+          this.final.forEach((item: any) => {
+            if (
+              item.CATEGORY == this.selectedCat &&
+              this.selectedCatSub == item.SUB_CATEGORY
+            ) {
            
-            
-            console.log(this.data$);
-            
-          }
-        })
-      }
-      
-    })
-    
-      this.getAll();
+                this.data$ = of(item.items);
+                this.originalData = item.items;
+              
+
+              console.log(this.originalData);
+            }
+          });
+        }
+      });
+    }
+
+   
   }
   searchNow(value: any) {
     let searchTerm = value.trim().toLowerCase();
     // console.log(searchTerm,this.originalData);
-    
-    
+
     if (!searchTerm) {
       // If no search term, revert to original data
       this.final = this.originalData;
@@ -173,62 +161,62 @@ export class HomeComponent implements OnInit {
         );
       });
     }
-    this.data$ = of(this.final)
-    console.log(this.final,'search');
-    
+    this.data$ = of(this.final);
+    console.log(this.final, 'search');
   }
-  
-  selectCat(v:any){
-    if(this.show == 'detail'){
-      window.history.back()
+
+  selectCat(v: any) {
+    if (this.show == 'detail') {
+      window.history.back();
     }
-    this.router.navigateByUrl(`/home?cat=${v}#${this.show}`)
-    this.selectedCatSub=''
-    this.selectedCat = v
+    this.router.navigateByUrl(`/home?cat=${v}#${this.show}`);
+    this.selectedCatSub = '';
+    this.selectedCat = v;
     // console.log(this.selectedCat);
-    this.selectedSubIndex = this.cats.findIndex((r:any)=>{
+    this.selectedSubIndex = this.cats.findIndex((r: any) => {
       // console.log(r.cat == v);
-      
-      return r.cat == v
-    })
+
+      return r.cat == v;
+    });
     // console.log(this.selectedSubIndex);
   }
-  selectSub(v:any){
-  
-    this.selectedCatSub = v
-    console.log(this.selectedCatSub,'sub');
-    this.router.navigateByUrl(`/home?cat=${this.selectedCat}&subCat=${v}#${this.show}`)
-    this.dummyData.forEach((item:any)=>{
-      if(item.category == this.selectedCat && this.selectedCatSub == item.suB_CATEGORY){
-        console.log(item.category == this.selectedCat && this.selectedCatSub == item.suB_CATEGORY,'send',item.products
-        );
-      
-        if(this.sortValue){
-          console.log('auto sorted');
-          
-          this.final = item.products
-          this.data$=of(item.products)
-          this.sortProducts()
-        }else{
-          this.final = item.products
-          this.data$=of(item.products)
-        }
+  selectSub(v: any) {
+    this.selectedCatSub = v;
+    console.log(this.selectedCatSub, 'sub');
+    this.router.navigateByUrl(
+      `/home?cat=${this.selectedCat}&subCat=${v}#${this.show}`
+    );
+    this.final.forEach((item: any) => {
+      console.log( item.CATEGORY , this.selectedCat ,
+        this.selectedCatSub , item.SUB_CATEGORY);
+      if (
+        item.CATEGORY == this.selectedCat &&
+        this.selectedCatSub == item.SUB_CATEGORY
+      ) {
        
         
-        console.log(this.data$);
+          this.data$ = of(item.products);
+          this.originalData = item.products;
         
+
+       
       }
-    })
+    });
+    console.log(this.originalData,'send data');
   }
 
   getAll() {
     this.api.getAllProducts(this.filterForm.value).subscribe((res: any) => {
-      console.log(res,'data from api');
-      this.data$ = of(res);
-      this.final = res;
+      console.log(res, 'data from api');
+      this.arData = res;
+      this.selectedCat = res[0].CATEGORY
+     
+            // this.data$ = of(res);
+
+      // this.final = res;
       // console.log(this.arData);
 
-      // this.filterData();
+      this.filterData();
     });
   }
 
@@ -239,22 +227,23 @@ export class HomeComponent implements OnInit {
       let index = this.final.findIndex((value: any) => {
         return (
           item.CATEGORY == value.CATEGORY &&
-          item['SUB CATEGORY'] == value.SUB_CATEGORY
+          item.SUB_CATEGORY == value.SUB_CATEGORY
         );
       });
       // console.log(index);
 
       if (index > -1) {
-        this.final[index].items.push(item);
+        this.final[index].items.push(item.products[0]);
       } else {
         this.final.push({
           CATEGORY: item.CATEGORY,
-          SUB_CATEGORY: item['SUB CATEGORY'],
-          items: [item],
+          SUB_CATEGORY: item.SUB_CATEGORY,
+          items: [item.products[0]],
         });
       }
     });
-    console.log(this.final);
+    this.selectSub(this.final[0].SUB_CATEGORY)
+    console.log(this.final, 'filter data');
   }
 
   close(tag: HTMLElement, value: any) {
@@ -263,11 +252,11 @@ export class HomeComponent implements OnInit {
     tag.click();
   }
   sortDisplay!: Observable<string>;
-  sortValue:any='High to Low'
+  sortValue: any = 'High to Low';
   closeSort(tag: HTMLElement, val: any) {
     this.sortValue = val;
     tag.click();
-    this.sortProducts()
+    this.sortProducts();
   }
   sortProducts(): void {
     if (this.sortValue === 'Low to High') {
@@ -283,10 +272,10 @@ export class HomeComponent implements OnInit {
         return priceB - priceA; // Descending order
       });
     }
-  
-    console.log('Sorted data:', this.final,this.sortValue);
+
+    console.log('Sorted data:', this.final, this.sortValue);
   }
-  
+
   sortBackend(tag: HTMLElement, v: any) {
     this.filterForm.patchValue({
       filtervalue6: v,
