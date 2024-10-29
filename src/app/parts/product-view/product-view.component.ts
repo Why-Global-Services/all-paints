@@ -7,6 +7,22 @@ import {
 } from '@angular/core';
 import { LogicsService } from '../../shared/logics.service';
 import { CommonModule } from '@angular/common';
+import { FormBuilder } from '@angular/forms';
+import { ApiService } from '../../shared/api.service';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+
+type PaintData = {
+  [key: string]: string | Array<{ pack: string; price: string }> | null;
+};
+interface TargetData {
+  customerId: string;
+  pack: string;
+  price: string;
+  qty: string;
+  cdate: string;
+  productname: string;
+}
 
 @Component({
   selector: 'product-details',
@@ -37,12 +53,23 @@ export class ProductViewComponent implements OnInit {
     // })
   }
   logic = inject(LogicsService);
+  fb = inject(FormBuilder);
+  api = inject(ApiService);
+  router = inject(Router)
   ctnClr = '#ffffff';
   ogColor: any = '';
   selectedColor: any;
-  packDetails: any = [];
+  // packDetails: any = [];
+  packDetails: any[] = [];
   selectedColors: any = [];
   defaultColors: any = [];
+  details: any = []
+  cartValues: any
+  customerId: any
+  quantities: number[] = []; // Array to hold quantities for each pack
+  totalPrice: number = 0;
+  filteredData: PaintData = {};
+  productDetails: any = []
   selectColor(v: any) {
     this.selectedColor = v;
     let index = this.colors.findIndex((item: any) => {
@@ -57,10 +84,26 @@ export class ProductViewComponent implements OnInit {
   onMouseEnter(v: any) {
     this.ctnClr = v;
   }
+
   pack2(v: any, details: any, num: number) {
+    console.log(details, "on pack click");
+
     this.selectedPack = v;
-    this.packDetails = details;
-    console.log(v, 'selected');
+    this.details = details;
+    if (typeof details === 'object' && !Array.isArray(details)) {
+      this.packDetails = [details]; // Wrap the object in an array
+    } else if (Array.isArray(details)) {
+      this.packDetails = details; // Assign directly if it's an array
+    } else {
+      console.error('Expected details to be an object or an array, but received:', details);
+      this.packDetails = []; // Reset if unexpected type
+    }
+
+    // console.log(this.packDetails, 'packdetails');
+    // console.log(v, 'selected');
+    // console.log(this.selectedPack, 'selected');
+
+    console.log(this.packDetails, 'packdetails');
     if (num == 1) {
       this.packP.nativeElement.click();
     } else if (num == 2) {
@@ -69,17 +112,155 @@ export class ProductViewComponent implements OnInit {
       this.packThree.nativeElement.click();
     }
   }
-  addCart(paints:any,paint_details:any,brand:any) {
-    this.logic.cart.push({
-      ...this.data,
-      selectedPack: paints,
-      color: this.ogColor,
-      selectDetails: paint_details,
-      brandName:brand
-    });
-    console.log('added to cart');
-    this.logic.cus('success','','Added to the cart!')
+  updateQuantity(index: number, event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.quantities[index] = parseInt(inputElement.value, 10) || 0;
   }
+
+  //change data as per out format
+  filterNonEmpty(obj: PaintData): PaintData {
+    return Object.entries(obj)
+      .filter(([_, value]) => value !== null && !(Array.isArray(value) && value.length === 0))
+      .reduce((acc, [key, value]) => {
+        if ((key === 'JN_details' || key == 'BERGER_details' || key == 'Asian_detils') && Array.isArray(value)) {
+          acc[key] = value.map((item, index) => ({
+            ...item,
+            quantity: this.quantities[index] || 0
+          }));
+        } else {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as PaintData);
+  }
+
+  convertData = (data: PaintData[]): TargetData[] => {
+    return data
+      .map(item => {
+        const brandKey = Object.keys(item).find(key => key.includes("_details")) as string;
+        const productKey = Object.keys(item).find(key => key.includes("_PAINTS")) as string;
+
+        if (brandKey && productKey && item[brandKey] && Array.isArray(item[brandKey])) {
+          const details = item[brandKey] as Array<{ pack: string; price: string; quantity: number }>;
+          return {
+            customerId: localStorage.getItem("apCusId"),
+            pack: details[0].pack,
+            price: details[0].price,
+            qty: details[0].quantity.toString(),
+            cdate: "",
+            productname: item[productKey] as string
+          };
+        }
+
+        return undefined; // Return undefined if fields are missing
+      })
+      .filter((item): item is TargetData => item !== undefined); // Filter out undefined items
+  };
+
+
+  addtocart() {
+    // Calculate the total price
+    this.totalPrice = this.calculateTotalPrice();
+
+    this.filteredData = this.filterNonEmpty(this.data);
+
+    const cartItem = [
+      this.filteredData
+    ]
+    this.productDetails = this.convertData(cartItem);
+    console.log(this.productDetails[0], "productDetails");
+
+    this.logic.cartItems = [...this.logic.cartItems, cartItem]
+
+    this.logic.cart = {
+      "customerId": localStorage.getItem("apCusId"),
+      "products": [
+        this.logic.cartItems
+      ]
+    }
+
+    console.log(this.logic.cart, "cart details");
+
+    this.logic.cus('success', '', 'Added to the cart!');
+
+    // Optionally navigate to the cart page
+    // this.router.navigate(['/cart']);
+  }
+
+
+  calculateTotalPrice(): number {
+    let total = 0;
+
+    this.packDetails.forEach((detail, index) => {
+      // Assuming detail.price holds the price for each pack
+      const pricePerPack = parseFloat(detail.price) || 0; // Ensure it's a number
+      const quantity = this.quantities[index] || 0; // Get the quantity or default to 0
+      total += pricePerPack * quantity; // Calculate total price
+    });
+
+    return total;
+  }
+
+  addCart() {
+    this.api.cartCreate(this.productDetails[0]).subscribe({
+      next: (res: any) => {
+        // Assuming res is a success response
+        console.log('Response received:', res);
+        this.logic.cus('success', '', 'Cart Updated!');
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log('Error occurred:', err);
+
+        // Check if the status is available in the error
+        if (err.status === 200) {
+          console.log("test");
+          this.logic.cus('success', '', 'Cart Updated!');
+        } else {
+          // Handle other error statuses
+          console.error(`Error Status: ${err.status} - ${err.message}`);
+        }
+      }
+    });
+  }
+
+  // addCart(paints: any, paint_details: any, brand: any) {
+  //   // this.logic.cart.push({
+  //   //   ...this.data,
+  //   //   selectedPack: paints,
+  //   //   color: this.ogColor,
+  //   //   selectDetails: paint_details,
+  //   //   brandName: brand
+  //   // });
+
+  //   // this.logic.cart.push({
+  //   //   customerId: localStorage.getItem("apCusId"),
+  //   //   products: [
+  //   //     {
+
+  //   //     }
+  //   //   ]
+  //   // })
+  //   console.log(this.logic.cart, 'added to cart');
+  //   this.logic.cus('success', '', 'Added to the cart!')
+  // }
+
+  // addCart() {
+  //   this.api.cartCreate(this.productDetails[0]).subscribe((res: any) => {
+  //     console.log(res.status, "response")
+  //     console.log();
+
+
+  //     if (res.status == 200) {
+  //       console.log("test");
+
+  //       this.logic.cus('success', '', 'Cart Updated!')
+  //     }
+  //   }, (err) => {
+  //     console.log(err);
+
+  //   })
+  // }
+
   selectedPack: any;
   colors: any = [];
   searchColor(v: any) {

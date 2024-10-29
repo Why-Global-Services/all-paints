@@ -112,8 +112,8 @@
   <div>
     <div class="main-title">
       <!-- @for (item of final ; track $index) { -->
-      <div [class.a-cat]="this.selectedCat == v.CATEGORY" (click)="selectCat(v.CATEGORY)" class="title-b" *ngFor="let v of final">
-        <p>{{ v.CATEGORY }}</p>
+      <div [class.a-cat]="this.selectedCat == v.Name" (click)="selectCat(v)" class="title-b" *ngFor="let v of newCats">
+        <p>{{ v.Name }}</p>
       </div>
       <!-- } -->
     </div>
@@ -121,6 +121,7 @@
       <!-- @for (item of final; track $index) { -->
       <div class="title-b" [style]="{display:this.selectedSubIndex == i ?'block':'none'}" [class.a-cat]="this.selectedCatSub == v.SUB_CATEGORY" (click)="selectSub(v.SUB_CATEGORY)" class="title-b" *ngFor="let v of final;let i = index">
         <p>{{ v.SUB_CATEGORY }}</p>
+        <!-- <p>{{ this.selectedSubIndex }}</p> -->
       </div>
       <!-- } -->
     </div>

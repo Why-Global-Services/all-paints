@@ -43,11 +43,13 @@ export class HomeComponent implements OnInit {
   showDisplay: any = 'Display By Image';
   logic = inject(LogicsService);
   // dummyData: any = this.logic.dummyData;
+  dummyCategories: any = this.logic.dummyCategories;
   arData: any = [];
   cats: any = [];
+  newCats: any = [];
   selectedCat: any;
   selectedCatSub: any;
-  selectedSubIndex: number=0
+  selectedSubIndex: number = 0
   final: any = [];
   originalData: any = [];
   // sortDisplay: Observable<string>=of('Low to High')
@@ -75,7 +77,7 @@ export class HomeComponent implements OnInit {
 
   // filterDummy() {
   //   this.dummyData.forEach((v: any) => {
-      
+
 
   //     let index = this.cats.findIndex((item: any) => {
 
@@ -98,11 +100,15 @@ export class HomeComponent implements OnInit {
   // }
   ngOnInit(): void {
     // this.filterDummy();
-
+    this.newCats = this.dummyCategories;
+    console.log(this.newCats, "static cats");
     this.activatedRoute.fragment.subscribe((fragment: string | null) => {
+      console.log(this.show, "show");
       if (fragment) {
         this.show = fragment;
       }
+
+
     });
     // if(this.show == 'cart'){
     console.log(this.logic.cart, 'cart', this.show);
@@ -111,17 +117,19 @@ export class HomeComponent implements OnInit {
     console.log(this.show);
     this.getAll();
     if (this.show == 'image' || this.show == 'list') {
-     
+
       this.activatedRoute.queryParams.subscribe((res: any) => {
-        console.log(res, 'routes');
+        console.log(res, 'res');
         if (res.cat) {
           this.selectedCat = res.cat;
 
-          console.log(this.selectedCat);
+          console.log(this.selectedCat, "selectedCat");
           this.selectedSubIndex = this.final.findIndex((r: any) => {
-            return r.CATEGORY == this.selectedCat;
+            console.log(r.Division, "sub index");
+
+            return r.Division == this.selectedCat;
           });
-          console.log(this.selectedSubIndex);
+          console.log(this.selectedSubIndex, "sub Index");
         }
         if (res.subCat) {
           this.selectedCatSub = res.subCat;
@@ -130,10 +138,10 @@ export class HomeComponent implements OnInit {
               item.CATEGORY == this.selectedCat &&
               this.selectedCatSub == item.SUB_CATEGORY
             ) {
-           
-                this.data$ = of(item.items);
-                this.originalData = item.items;
-              
+
+              this.data$ = of(item.items);
+              this.originalData = item.items;
+
 
               console.log(this.originalData);
             }
@@ -142,7 +150,7 @@ export class HomeComponent implements OnInit {
       });
     }
 
-   
+
   }
   searchNow(value: any) {
     let searchTerm = value.trim().toLowerCase();
@@ -169,16 +177,37 @@ export class HomeComponent implements OnInit {
     if (this.show == 'detail') {
       window.history.back();
     }
-    this.router.navigateByUrl(`/home?cat=${v}#${this.show}`);
+    console.log(v, "select cat");
+
+    this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
     this.selectedCatSub = '';
     this.selectedCat = v;
-    // console.log(this.selectedCat);
-    this.selectedSubIndex = this.cats.findIndex((r: any) => {
-      // console.log(r.cat == v);
+    console.log(this.selectedCat, "selected cat select category");
+    this.selectedSubIndex = 0;
+    // this.selectedSubIndex = this.newCats.findIndex((r: any) => {
+    //   console.log(r, "data for 35");
+    //   console.log(v, "new v data");
 
-      return r.cat == v;
+    //   return r.Division == v.Division;
+    // });
+    // console.log(this.selectedSubIndex, "new sub index");
+    this.final.forEach((item: any) => {
+      console.log(item, "item")
+      console.log(item.Division, this.selectedCat.Division, "test");
+      // if (
+      //   item.Division == this.selectedCat &&
+      //   this.selectedCatSub == item.SUB_CATEGORY
+      // )
+      if (
+        item.Division == this.selectedCat.Division
+      ) {
+        console.log(item.items, "products");
+
+        this.data$ = of(item.items);
+        this.originalData = item.items;
+      }
     });
-    // console.log(this.selectedSubIndex);
+    console.log(this.originalData, 'send data');
   }
   selectSub(v: any) {
     this.selectedCatSub = v;
@@ -187,22 +216,22 @@ export class HomeComponent implements OnInit {
       `/home?cat=${this.selectedCat}&subCat=${v}#${this.show}`
     );
     this.final.forEach((item: any) => {
-      console.log( item.CATEGORY , this.selectedCat ,
-        this.selectedCatSub , item.SUB_CATEGORY);
+      console.log(item.CATEGORY, this.selectedCat,
+        this.selectedCatSub, item.SUB_CATEGORY);
       if (
         item.CATEGORY == this.selectedCat &&
         this.selectedCatSub == item.SUB_CATEGORY
       ) {
-       
-        
-          this.data$ = of(item.products);
-          this.originalData = item.products;
-        
 
-       
+
+        this.data$ = of(item.products);
+        this.originalData = item.products;
+
+
+
       }
     });
-    console.log(this.originalData,'send data');
+    console.log(this.originalData, 'send data');
   }
 
   getAll() {
@@ -210,8 +239,8 @@ export class HomeComponent implements OnInit {
       console.log(res, 'data from api');
       this.arData = res;
       this.selectedCat = res[0].CATEGORY
-     
-            // this.data$ = of(res);
+
+      // this.data$ = of(res);
 
       // this.final = res;
       // console.log(this.arData);
@@ -221,7 +250,7 @@ export class HomeComponent implements OnInit {
   }
 
   filterData() {
-    console.log(typeof this.arData);
+    console.log(this.arData, "arData");
 
     this.arData.forEach((item: any) => {
       let index = this.final.findIndex((value: any) => {
@@ -238,11 +267,12 @@ export class HomeComponent implements OnInit {
         this.final.push({
           CATEGORY: item.CATEGORY,
           SUB_CATEGORY: item.SUB_CATEGORY,
+          Division: item.Division,
           items: [item.products[0]],
         });
       }
     });
-    this.selectSub(this.final[0].SUB_CATEGORY)
+    this.selectSub(this.final[0].Division)
     console.log(this.final, 'filter data');
   }
 

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import{base}from '../environment'
+import { base } from '../environment'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
@@ -8,33 +8,36 @@ export class ApiService {
   api = base.api
   http = inject(HttpClient)
   constructor() { }
-  
-  loginStaff(body:any){
-    return this.http.post(this.api +'security/createToken',body)
+
+  loginStaff(body: any) {
+    return this.http.post(this.api + 'security/createToken', body)
   }
-  createCustomer(body:any){
+  createCustomer(body: any) {
     // const headers = new HttpHeaders({
     //   'Content-Type': 'application/json'
     // });
-    return this.http.post(this.api+'api/FranchiOrder/Savecustomercreation',body)
+    return this.http.post(this.api + 'api/FranchiOrder/Savecustomercreation', body)
   }
-  getAllProducts(body:any){
-    return this.http.post(this.api+'api/Stock/GetAllPaintsProducts',body)
+  getAllProducts(body: any) {
+    return this.http.post(this.api + 'api/stock/GetAllPaintsProducts', body)
   }
-  reSendOtp(body:any){
-    return this.http.post(this.api+'api/FranchiOrder/misexotelotp',body)
+  reSendOtp(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/misexotelotp', body)
   }
-  verfiyOtp(body:any){
-    return this.http.post(this.api+'api/FranchiOrder/OTPverify',body)
+  verfiyOtp(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/OTPverify', body)
   }
-  createCart(body:any){
-    return this.http.post(this.api+'api/FranchiOrder/Cartcreation',body)
+  cartCreate(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/Cartorder', body)
   }
-  getCart(body:any){
-    return this.http.get(this.api+'')
+  createCart(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/Cartcreation', body)
   }
-  payment(body:any){
-    return this.http.post(this.api+'api/FranchiStock/CustomerPayment',body)
+  getCart(body: any) {
+    return this.http.get(this.api + '')
   }
-  
+  payment(body: any) {
+    return this.http.post(this.api + 'api/FranchiStock/CustomerPayment', body)
+  }
+
 }

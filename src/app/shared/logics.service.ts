@@ -8,16 +8,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class LogicsService {
   toaster = inject(ToastrService)
   http = inject(HttpClient)
-  productDetails  = new BehaviorSubject<any[]>([])
-  cart:any=[]
-  colorUrl :any ='assets/categorized_sheenlac_colors.json'
-  
+  productDetails = new BehaviorSubject<any[]>([])
+  cart: any = []
+  cartItems: any = []
+  cartTotal: any
+  colorUrl: any = 'assets/categorized_sheenlac_colors.json'
+
   constructor() { }
   getcolor(): Observable<any> {
-   return this.http.get(this.colorUrl)
+    return this.http.get(this.colorUrl)
   }
-  error(head:string,body:string){
-    this.toaster.error(head,body,{
+  error(head: string, body: string) {
+    this.toaster.error(head, body, {
       positionClass: 'toast-bottom-right',
     })
   }
@@ -51,6 +53,7 @@ export class LogicsService {
     {
       "category": "EXT EMULSION",
       "suB_CATEGORY": "ECONOMY",
+      "Division": "35",
       "products": [
         {
           "asiaN_PAINTS": "ACE",
@@ -357,4 +360,26 @@ export class LogicsService {
       ]
     }
   ];
+  dummyCategories = [
+    {
+      "Division": "30",
+      "Name": "Wood coatings"
+    },
+    {
+      "Division": "35",
+      "Name": "Wall paints"
+    },
+    {
+      "Division": "50",
+      "Name": "Spray"
+    },
+    {
+      "Division": "10",
+      "Name": "Ancillaries"
+    },
+    {
+      "Division": "61",
+      "Name": "Floor"
+    },
+  ]
 }

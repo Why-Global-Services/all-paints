@@ -33,14 +33,14 @@ export class CustomerLoginComponent {
     customer_Email: ['',[Validators.required,Validators.email]],
     gender: ['MALE'],
     dateOfBirth: [''],
-    customer_pin: ['600021'],
+    customer_pin: ['600119'],
     customercode: [''],
     customername: [''],
     customerstatus: [''],
-    distributor_Code: ['95000000'],
+    distributor_Code: ['91037014'],
     customer_Distributor: [''],
     id_proff: [''],
-    customer_State: ['TN'],
+    customer_State: ['Tamilnadu'],
     customer_city: ['chennai'],
     attach1: [''],
     attach2: [''],
@@ -66,7 +66,7 @@ export class CustomerLoginComponent {
       localStorage.setItem('apEmail',email|| 'no email')
       const formData = this.cusForm.value;
       this.service.createCustomer(formData).subscribe((res: any) => {
-        console.log(res[0][0]);
+        console.log(res[0][0], "login data");
         localStorage.setItem('apCusId',res[0][0].CUSTOMER.CUSTOMER)
         if (res != 'Mobile Number Already Registered') {
           if (this.cusForm.get('customer_Mobile')?.value) {

@@ -22,6 +22,7 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
 
   logic = inject(LogicsService);
   router = inject(Router)
+  
   // dummyData: any = this.logic.dummyData;
   arData:any
   final: any[] = []; 
@@ -85,6 +86,8 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   filterData(): void {
+    console.log(this.arData, "arrdata");
+    
     this.arData.forEach((item: any) => {
       const index = this.final.findIndex((value: any) => {
         return item.CATEGORY === value.CATEGORY && item['SUB CATEGORY'] === value.SUB_CATEGORY;
