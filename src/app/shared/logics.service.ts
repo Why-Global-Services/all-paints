@@ -12,6 +12,7 @@ export class LogicsService {
   cart: any = []
   cartItems: any = []
   cartTotal: any
+  paymentDetails:any
   colorUrl: any = 'assets/categorized_sheenlac_colors.json'
 
   constructor() { }

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../parts/header/header.component';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../shared/api.service';
 import { CommonModule } from '@angular/common';
@@ -54,17 +54,9 @@ export class CheckOutComponent implements OnInit {
   fb = inject(FormBuilder)
   api = inject(ApiService)
   logic = inject(LogicsService);
-
+  router = inject(Router)
   totalPay: any = '0'
   customerData: any;
-  customerForm = this.fb.group({
-    filtervalue7: "",
-    filtervalue14: "",
-    filtervalue10: "",
-    filtervalue5: "",
-
-
-  })
   form = this.fb.group({
     filtervalue1: [''],
     filtervalue2: [''],
@@ -167,11 +159,15 @@ export class CheckOutComponent implements OnInit {
     //   console.log(res);
 
     // })
+    console.log(this.form.value, "form data");
+
+    this.logic.paymentDetails = this.form.value;
     this.api.createCart(this.customerData).subscribe({
       next: (res: any) => {
         // Assuming res is a success response
         console.log('Response received:', res);
         this.logic.cus('success', '', 'Cart Updated!');
+        this.router.navigate(['/payment']);
       },
       error: (err: HttpErrorResponse) => {
         console.log('Error occurred:', err);
@@ -180,6 +176,7 @@ export class CheckOutComponent implements OnInit {
         if (err.status === 200) {
           console.log("test");
           this.logic.cus('success', '', 'Order Created Successfully!');
+          this.router.navigate(['/payment']);
         } else {
           // Handle other error statuses
           console.error(`Error Status: ${err.status} - ${err.message}`);
