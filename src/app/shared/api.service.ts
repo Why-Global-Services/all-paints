@@ -39,5 +39,8 @@ export class ApiService {
   payment(body: any) {
     return this.http.post(this.api + 'api/FranchiStock/CustomerPayment', body)
   }
+  getCustomerDetails(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/AllPaintsOrderData', body);
+  }
 
 }

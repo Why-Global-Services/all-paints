@@ -134,9 +134,12 @@ export class HomeComponent implements OnInit {
         if (res.subCat) {
           this.selectedCatSub = res.subCat;
           this.final.forEach((item: any) => {
+            // if (
+            //   item.CATEGORY == this.selectedCat &&
+            //   this.selectedCatSub == item.SUB_CATEGORY
+            // ) {
             if (
-              item.CATEGORY == this.selectedCat &&
-              this.selectedCatSub == item.SUB_CATEGORY
+              item.CATEGORY == this.selectedCat
             ) {
 
               this.data$ = of(item.items);
@@ -209,30 +212,30 @@ export class HomeComponent implements OnInit {
     });
     console.log(this.originalData, 'send data');
   }
-  selectSub(v: any) {
-    this.selectedCatSub = v;
-    console.log(this.selectedCatSub, 'sub');
-    this.router.navigateByUrl(
-      `/home?cat=${this.selectedCat}&subCat=${v}#${this.show}`
-    );
-    this.final.forEach((item: any) => {
-      console.log(item.CATEGORY, this.selectedCat,
-        this.selectedCatSub, item.SUB_CATEGORY);
-      if (
-        item.CATEGORY == this.selectedCat &&
-        this.selectedCatSub == item.SUB_CATEGORY
-      ) {
+  // selectSub(v: any) {
+  //   this.selectedCatSub = v;
+  //   console.log(this.selectedCatSub, 'sub');
+  //   this.router.navigateByUrl(
+  //     `/home?cat=${this.selectedCat}&subCat=${v}#${this.show}`
+  //   );
+  //   this.final.forEach((item: any) => {
+  //     console.log(item.CATEGORY, this.selectedCat,
+  //       this.selectedCatSub, item.SUB_CATEGORY);
+  //     if (
+  //       item.CATEGORY == this.selectedCat &&
+  //       this.selectedCatSub == item.SUB_CATEGORY
+  //     ) {
 
 
-        this.data$ = of(item.products);
-        this.originalData = item.products;
+  //       this.data$ = of(item.products);
+  //       this.originalData = item.products;
 
 
 
-      }
-    });
-    console.log(this.originalData, 'send data');
-  }
+  //     }
+  //   });
+  //   console.log(this.originalData, 'send data');
+  // }
 
   getAll() {
     this.api.getAllProducts(this.filterForm.value).subscribe((res: any) => {
@@ -272,7 +275,7 @@ export class HomeComponent implements OnInit {
         });
       }
     });
-    this.selectSub(this.final[0].Division)
+    //this.selectSub(this.final[0].Division)
     console.log(this.final, 'filter data');
   }
 

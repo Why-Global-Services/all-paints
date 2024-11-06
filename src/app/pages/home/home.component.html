@@ -117,14 +117,14 @@
       </div>
       <!-- } -->
     </div>
-    <div class="sub-title">
+    <!-- <div class="sub-title"> -->
       <!-- @for (item of final; track $index) { -->
-      <div class="title-b" [style]="{display:this.selectedSubIndex == i ?'block':'none'}" [class.a-cat]="this.selectedCatSub == v.SUB_CATEGORY" (click)="selectSub(v.SUB_CATEGORY)" class="title-b" *ngFor="let v of final;let i = index">
-        <p>{{ v.SUB_CATEGORY }}</p>
+      <!-- <div class="title-b" [style]="{display:this.selectedSubIndex == i ?'block':'none'}" [class.a-cat]="this.selectedCatSub == v.SUB_CATEGORY" (click)="selectSub(v.SUB_CATEGORY)" class="title-b" *ngFor="let v of final;let i = index"> -->
+        <!-- <p>{{ v.SUB_CATEGORY }}</p> -->
         <!-- <p>{{ this.selectedSubIndex }}</p> -->
-      </div>
+      <!-- </div> -->
       <!-- } -->
-    </div>
+    <!-- </div> -->
     @if(show=='cart'){
       <cart></cart>
     }
