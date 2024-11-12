@@ -36,7 +36,7 @@ export class PaymentComponent {
       "filtervalue6": "0094000001",
       "filtervalue7": "All_paints_HO",
       "filtervalue8": "cash",
-      "filtervalue9": "3333",
+      "filtervalue9": JSON.stringify(this.logic.cartTotal),
       "filtervalue10": "00500000",
       "filtervalue11": "",
       "filtervalue12": "0",
@@ -49,8 +49,8 @@ export class PaymentComponent {
     this.api.payment(this.form.value).subscribe({
       next: (res: any) => {
         // Assuming res is a success response
-        console.log('Response received:', res);
-        this.logic.cus('success', '', 'Cart Updated!');
+        this.logic.cus('success', '', 'Order Created Successfully!');
+        this.router.navigate(['/paid']);
       },
       error: (err: HttpErrorResponse) => {
         console.log('Error occurred:', err);

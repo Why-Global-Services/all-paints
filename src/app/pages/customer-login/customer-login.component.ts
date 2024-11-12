@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild, AfterViewInit } from '@angular/core';
 import { HeaderComponent } from '../../parts/header/header.component';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,8 @@ import { interval, takeWhile } from 'rxjs';
 })
 export class CustomerLoginComponent {
   @ViewChild('popbtn') popbtn!: ElementRef<HTMLButtonElement>;
-  @ViewChild('customerModal') customerModal!: HTMLDialogElement
+  @ViewChild('customerModal') customerModal!: ElementRef<HTMLButtonElement>;
+
   fb = inject(FormBuilder);
   service = inject(ApiService);
   logic = inject(LogicsService);
@@ -66,6 +67,7 @@ export class CustomerLoginComponent {
     "filtervalue7": "",
     "filtervalue8": ""
   })
+
   formSubmit() {
     console.log('working');
     this.number = this.cusForm.get('customer_Mobile')?.value;
@@ -132,21 +134,47 @@ export class CustomerLoginComponent {
         }
       });
   }
-getCustomerDetails() {
-  this.service.getCustomerDetails(this.customerRequest.value).subscribe(
-    (res: any) => {
-      console.log('API Response:', res); 
+  getCustomerDetails() {
+    this.service.getCustomerDetails(this.customerRequest.value).subscribe(
+      (res: any) => {
+        console.log('API Response:', res);
 
-      this.customerDetails = Array.isArray(res) ? res : (res?.data || []);
+        // Check if the response is a JSON string and parse it if necessary
+        if (typeof res === 'string') {
+          try {
+            // Parse the string if it's JSON formatted
+            this.customerDetails = JSON.parse(res);
+          } catch (e) {
+            console.error('Failed to parse response:', e);
+            this.customerDetails = [];
+          }
+        } else if (Array.isArray(res)) {
+          // If it's already an array, assign it directly
+          this.customerDetails = res;
+        } else {
+          // If the response is neither a string nor an array, assume empty
+          this.customerDetails = [];
+        }
 
-      console.log(this.customerDetails, 'customer details'); 
-      this.customerModal.showModal();
-    },
-    (err) => {
-      console.log('error in this api', err);
-    }
-  );
-}
+        console.log(this.customerDetails, 'Parsed customer details');
+        this.customerModal.nativeElement.click();
+      },
+      (err) => {
+        console.log('Error in this API', err);
+      }
+    );
+  }
+
+  storeCustomerCode(customercode: any, name: string) {
+    localStorage.setItem("apCusId", customercode)
+    localStorage.setItem("apName", name)
+    window.history.back()
+  }
+
+  closeCustomerModal() {
+    this.customerModal.nativeElement.click(); // Adjust based on your modal close mechanism
+  }
+
 
   formReset() {
     console.log('working');

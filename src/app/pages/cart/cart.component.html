@@ -40,38 +40,38 @@
       <!-- Second Column: Compare Brands -->
       <div class="brand-item col-span-1">
         <div class="content">
-          <div class="flex justify-center h-[100px] pt-[20px]">
-            <details class="dropdown dropdown-end">
-              <summary role="button" style="height: 40px; min-height: 40px" class="btn m-1 dd px-[20px]">
-                Compared by Brands
-                <svg viewBox="0 0 1024 1024" class="icon absolute right-[7px] h-[15px]" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                  <path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#000000">
-                  </path>
-                </svg>
-              </summary>
-              <ul class="dropdown-content menu bg-white rounded-box z-[1] w-52 p-2 shadow ul-box">
-                <li><a>Asian Paints</a></li>
-                <li><a>Berger</a></li>
-                <li><a>Jenson & Nicholson</a></li>
-                <li><a>Sheenlac</a></li>
-              </ul>
-            </details>
-          </div>
-          <div class="p-box">
+          <select [(ngModel)]="selectedBrand" (change)="onBrandChange()"
+            class="block w-full p-2 border border-gray-300 rounded-md">
+            <option value="Asian">Asian Paints</option>
+            <option value="Berger">Berger</option>
+            <option value="JN">Jenson & Nicholson</option>
+            <option value="Sheenlac">Sheenlac</option>
+          </select>
+          <div class="p-box" *ngIf="products && products.length > 0">
             <div class="hover-me">
               <p>Switch</p>
             </div>
             <div class="img-box">
-              <img src="../../../assets/images/asian paints 1.png" alt="Asian Paints" />
+              <img src="../../../assets/products/{{products[0].materialCode}}.png" alt="Asian Paints" />
             </div>
-            <div class="p-details">
+            <!-- <div class="p-details">
               <h4>Apex Ultima</h4>
               <div class="flex items-center gap-[5px] font-[600] text-[20px]">
                 <p>₹5,999</p>
                 <span style="text-decoration: line-through" class="text-gray-400 text-[16px]">₹4,999</span>
               </div>
+            </div> -->
+            <div class="p-details">
+              <h4>{{ products[0].brand }}</h4> <!-- Dynamically displays the product brand -->
+
+              <div class="flex items-center gap-[5px] font-[600] text-[20px]">
+                <p>₹{{ products[0].details[0]?.price || 0 }}</p> <!-- Dynamically displays the price -->
+                <span style="text-decoration: line-through" class="text-gray-400 text-[16px]">
+                  ₹{{ products[0].details[0]?.originalPrice || 0 }} <!-- Dynamically displays the original price -->
+                </span>
+              </div>
             </div>
+
           </div>
         </div>
       </div>

@@ -16,89 +16,61 @@
   <div class="image-container img-grid">
     <div class="img-col">
       @for (item of final; track $index) {
-      <div
-      (click)="sendDetail(item)"
-        class="p-box"
-        [class.na-box]="item.ASIAN_PAINTS == null"
-      >
+      <div (click)="sendDetail(item)" class="p-box flex justify-center items-center" [class.na-box]="item.ASIAN_PAINTS == null">
         <section *ngIf="check(item.ASIAN_PAINTS, null)">
-          <p>NA</p>
+          <!-- <p>NA</p> -->
         </section>
-        <section style="display: contents" *ngIf="item.ASIAN_PAINTS !== null">
-          <img
-            src="../../../assets/images/asian paints 1.png"
-            alt=""
-            srcset=""
-          />
-          <h3>{{ item.ASIAN_PAINTS }}</h3>
-          <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.Asian_detils[0].price }}</h3>
-          </div>
+        <section class="flex flex-col" *ngIf="item.ASIAN_PAINTS !== null">
+          <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
+          <h5 class="text-center font-bold">{{ item.ASIAN_PAINTS }}</h5>
+          <!-- <div class="flex products-center gap-[10px]"> -->
+          <h5 class="text-center pt-5">₹{{ item.Asian_detils[0].price }}</h5>
+          <!-- </div> -->
         </section>
       </div>
       }
     </div>
     <div class="img-col">
       @for (item of final; track $index) {
-      <div
-      (click)="sendDetail(item)"
-        class="p-box"
-        [class.na-box]="item.BERGER_PAINTS == null"
-      >
+      <div (click)="sendDetail(item)" class="p-box" [class.na-box]="item.BERGER_PAINTS == null">
         <section *ngIf="check(item.BERGER_PAINTS, null)">
-          <p>NA</p>
+          <!-- <p>NA</p> -->
         </section>
-        <section style="display: contents" *ngIf="item.BERGER_PAINTS !== null">
+        <!-- <section style="display: contents" *ngIf="item.BERGER_PAINTS !== null"> -->
+        <section class="flex flex-col" *ngIf="item.BERGER_PAINTS !== null">
           <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
-          <h3>{{ item.BERGER_PAINTS }}</h3>
-          <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.BERGER_details[0].price }}</h3>
-          </div>
+          <h5 class="text-center font-bold">{{ item.BERGER_PAINTS }}</h5>
+          <!-- <div class="flex products-center gap-[10px]"> -->
+          <h5 class="text-center pt-5">₹{{ item.BERGER_details[0].price }}</h5>
+          <!-- </div -->
         </section>
       </div>
       }
     </div>
     <div class="img-col">
       @for (item of final; track $index) {
-      <div
-        
-      (click)="sendDetail(item)"
-        class="p-box"
-        [class.na-box]="item.JN_PAINTS == null"
-      >
+      <div (click)="sendDetail(item)" class="p-box" [class.na-box]="item.JN_PAINTS == null">
         <section *ngIf="check(item.JN_PAINTS, null)">
-          <p>NA</p>
+          <!-- <p>NA</p> -->
         </section>
-        <section style="display: contents" *ngIf="item.JN_PAINTS !== null">
-          <img
-            src="../../../assets/images/jenson 1.png"
-            alt=""
-            srcset=""
-          />
-          <h3>{{ item.JN_PAINTS }}</h3>
-          <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.jN_details[0].price || 0}}</h3>
-          </div>
+        <section class="flex flex-col justify-center items-center" *ngIf="item.JN_PAINTS !== null">
+          <img class="" src="../../../assets/images/jenson 1.png" alt="" srcset="" />
+          <h5 class="text-center font-bold">{{ item.JN_PAINTS }}</h5>
+          <!-- <div class="text-center pb-10"> -->
+          <h5 class="text-center pt-5">₹{{ item.JN_details[0].price}}</h5>
+          <!-- </div> -->
         </section>
       </div>
       }
     </div>
     <div class="img-col">
       @for (item of final; track $index) {
-      <div
-      (click)="sendDetail(item)"
-        class="p-box"
-        [class.na-box]="!item.sheenlac_PAINTS"
-      >
+      <div (click)="sendDetail(item)" class="p-box" [class.na-box]="!item.sheenlac_PAINTS">
         <section *ngIf="!item.sheenlac_PAINTS">
           <p>NA</p>
         </section>
         <section style="display: contents" *ngIf="item.sheenlac_PAINTS">
-          <img
-            src="../../../assets/images/asian paints 1.png"
-            alt=""
-            srcset=""
-          />
+          <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
           <h3>{{ item.ASIAN_PAINTS }}</h3>
           <div class="flex products-center gap-[10px]">
             <h3>₹{{ item.asian_detils[0].price }}</h3>

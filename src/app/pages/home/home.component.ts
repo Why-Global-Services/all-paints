@@ -10,13 +10,28 @@ import {
 import { ImageCompareComponent } from '../../parts/image-compare/image-compare.component';
 import { ListCompareComponent } from '../../parts/list-compare/list-compare.component';
 import { ApiService } from '../../shared/api.service';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { Comment } from '@angular/compiler';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProductViewComponent } from '../../parts/product-view/product-view.component';
 import { CartComponent } from '../cart/cart.component';
 import { LogicsService } from '../../shared/logics.service';
+
+interface ProductItem {
+  CATEGORY: string;
+  SUB_CATEGORY: string;
+  Division: string;
+  Discount: number;
+  ECOMCODE: string;
+  MaterialCode: string;
+  items: Array<{ pack: string; price: number }>; // Adjust item structure as needed
+}
+interface ProductGroup {
+  ECOMCODE: string;
+  Division: string;
+  products: ProductItem[];
+}
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -47,14 +62,15 @@ export class HomeComponent implements OnInit {
   arData: any = [];
   cats: any = [];
   newCats: any = [];
-  selectedCat: any;
+  selectedCat: any = { "Division": 35 };
   selectedCatSub: any;
   selectedSubIndex: number = 0
   final: any = [];
   originalData: any = [];
+  groupedData: any = {};
   // sortDisplay: Observable<string>=of('Low to High')
   filterForm = this.fb.group({
-    filtervalue1: [''],
+    filtervalue1: ['brandwise'],
     filtervalue2: [''],
     filtervalue3: [''],
     filtervalue4: [''],
@@ -111,10 +127,11 @@ export class HomeComponent implements OnInit {
 
     });
     // if(this.show == 'cart'){
-    console.log(this.logic.cart, 'cart', this.show);
-
+    // console.log(this.logic.cart, 'cart', this.show);
+    this.selectCat({ "Division": 35 })
     // }
-    console.log(this.show);
+    // console.log(this.show);
+    this.getAllBrandwise();
     this.getAll();
     if (this.show == 'image' || this.show == 'list') {
 
@@ -146,7 +163,7 @@ export class HomeComponent implements OnInit {
               this.originalData = item.items;
 
 
-              console.log(this.originalData);
+              //console.log(this.originalData);
             }
           });
         }
@@ -176,42 +193,43 @@ export class HomeComponent implements OnInit {
     console.log(this.final, 'search');
   }
 
-  selectCat(v: any) {
-    if (this.show == 'detail') {
-      window.history.back();
-    }
-    console.log(v, "select cat");
+  // selectCat(v: any) {
+  //   if (this.show == 'detail') {
+  //     window.history.back();
+  //   }
+  //   //console.log(v, "select cat");
 
-    this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
-    this.selectedCatSub = '';
-    this.selectedCat = v;
-    console.log(this.selectedCat, "selected cat select category");
-    this.selectedSubIndex = 0;
-    // this.selectedSubIndex = this.newCats.findIndex((r: any) => {
-    //   console.log(r, "data for 35");
-    //   console.log(v, "new v data");
+  //   this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
+  //   this.selectedCatSub = '';
+  //   this.selectedCat = v;
+  //   //console.log(this.selectedCat, "selected cat select category");
+  //   this.selectedSubIndex = 0;
+  //   // this.selectedSubIndex = this.newCats.findIndex((r: any) => {
+  //   //   console.log(r, "data for 35");
+  //   //   console.log(v, "new v data");
 
-    //   return r.Division == v.Division;
-    // });
-    // console.log(this.selectedSubIndex, "new sub index");
-    this.final.forEach((item: any) => {
-      console.log(item, "item")
-      console.log(item.Division, this.selectedCat.Division, "test");
-      // if (
-      //   item.Division == this.selectedCat &&
-      //   this.selectedCatSub == item.SUB_CATEGORY
-      // )
-      if (
-        item.Division == this.selectedCat.Division
-      ) {
-        console.log(item.items, "products");
+  //   //   return r.Division == v.Division;
+  //   // });
+  //   // console.log(this.selectedSubIndex, "new sub index");
+  //   this.final.forEach((item: any) => {
+  //     console.log(item, "item")
+  //     //console.log(item.Division, this.selectedCat.Division, "test");
+  //     // if (
+  //     //   item.Division == this.selectedCat &&
+  //     //   this.selectedCatSub == item.SUB_CATEGORY
+  //     // )
+  //     if (
+  //       item.Division == this.selectedCat.Division
+  //     ) {
+  //       console.log(item.items, "products");
 
-        this.data$ = of(item.items);
-        this.originalData = item.items;
-      }
-    });
-    console.log(this.originalData, 'send data');
-  }
+  //       this.data$ = of(item.items);
+  //       this.originalData = item.items;
+  //     }
+  //   });
+  //   console.log(this.originalData, 'send data');
+  // }
+
   // selectSub(v: any) {
   //   this.selectedCatSub = v;
   //   console.log(this.selectedCatSub, 'sub');
@@ -237,6 +255,176 @@ export class HomeComponent implements OnInit {
   //   console.log(this.originalData, 'send data');
   // }
 
+  //On catgeory select
+
+  // selectCat(v: any) {
+  //   if (this.show === 'detail') {
+  //     window.history.back();
+  //   }
+
+  //   this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
+  //   this.selectedCatSub = '';
+  //   this.selectedCat = v;
+  //   this.selectedSubIndex = 0;
+
+  //   // Temporary array to collect all items for the selected Division
+  //   const allDivisionItems: any[] = [];
+
+  //   // Loop through the final grouped data and collect items matching the Division
+  //   this.final.forEach((group: ProductGroup) => {
+  //     group.products.forEach((item: ProductItem) => {
+  //       if (item.Division === this.selectedCat.Division ) {
+  //         allDivisionItems.push(...item.items); // Collect all items for this Division
+  //       }
+  //     });
+  //   });
+
+  //   // Set data$ and originalData to the collected items for the Division
+  //   this.data$ = of(allDivisionItems);
+  //   this.originalData = allDivisionItems;
+
+  //   console.log(this.originalData, 'send data');
+  // }
+
+  // selectCat(v: any) {
+  //   if (this.show === 'detail') {
+  //     window.history.back();
+  //   }
+
+  //   this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
+  //   this.selectedCatSub = '';
+  //   this.selectedCat = v;
+  //   this.selectedSubIndex = 0;
+
+  //   // Object to store common data for each unique ECOMCODE
+  //   const commonDataByEcomcode: { [key: string]: any } = {};
+
+  //   // Loop through the final grouped data and collect items matching the Division
+  //   this.final.forEach((group: ProductGroup) => {
+  //     group.products.forEach((item: ProductItem) => {
+  //       if (item.Division === this.selectedCat.Division) {
+  //         const ecomcode = item.ECOMCODE;
+
+  //         // Initialize common data for the ECOMCODE if it doesn't exist
+  //         if (!commonDataByEcomcode[ecomcode]) {
+  //           commonDataByEcomcode[ecomcode] = {
+  //             ASIAN_PAINTS: null,
+  //             Asian_detils: [],
+  //             BERGER_PAINTS: null,
+  //             BERGER_details: [],
+  //             JN_PAINTS: null,
+  //             JN_details: []
+  //           };
+  //         }
+
+  //         // Populate the common details by checking each brand in the item
+  //         item.items.forEach((brandItem: any) => {
+  //           if (brandItem.ASIAN_PAINTS) commonDataByEcomcode[ecomcode].ASIAN_PAINTS = brandItem.ASIAN_PAINTS;
+  //           if (brandItem.Asian_detils.length) commonDataByEcomcode[ecomcode].Asian_detils = brandItem.Asian_detils;
+  //           if (brandItem.BERGER_PAINTS) commonDataByEcomcode[ecomcode].BERGER_PAINTS = brandItem.BERGER_PAINTS;
+  //           if (brandItem.BERGER_details.length) commonDataByEcomcode[ecomcode].BERGER_details = brandItem.BERGER_details;
+  //           if (brandItem.JN_PAINTS) commonDataByEcomcode[ecomcode].JN_PAINTS = brandItem.JN_PAINTS;
+  //           if (brandItem.JN_details.length) commonDataByEcomcode[ecomcode].JN_details = brandItem.JN_details;
+  //         });
+  //       }
+  //     });
+  //   });
+
+  //   // Convert the common data object into an array of only common details
+  //   const commonDataArray = Object.values(commonDataByEcomcode);
+
+  //   // Set data$ and originalData to the array of common data
+  //   this.data$ = of(commonDataArray);
+  //   this.originalData = commonDataArray;
+
+  //   console.log(this.originalData, 'send common data');
+  // }
+
+  selectCat(v: any) {
+    if (this.show === 'detail') {
+      window.history.back();
+    }
+
+    this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
+    this.selectedCatSub = '';
+    this.selectedCat = v;
+    this.selectedSubIndex = 0;
+
+    // Object to store common data for each unique ECOMCODE
+    const commonDataByEcomcode: { [key: string]: any } = {};
+
+    // Loop through the final grouped data and collect items matching the Division
+    this.final.forEach((group: ProductGroup) => {
+      group.products.forEach((item: ProductItem) => {
+
+
+        if (item.Division == this.selectedCat.Division) {
+          console.log(this.selectedCat.Division, item.Division, "on load seleced division");
+
+          const ecomcode = item.ECOMCODE;
+
+          // Initialize common data for the ECOMCODE if it doesn't exist
+          if (!commonDataByEcomcode[ecomcode]) {
+            commonDataByEcomcode[ecomcode] = {
+              ASIAN_PAINTS: null,
+              Asian_MaterialCode: "",
+              Asian_detils: [],
+              BERGER_PAINTS: null,
+              Berger_MaterialCode: "",
+              BERGER_details: [],
+              JN_PAINTS: null,
+              JN_MaterialCode: "",
+              JN_details: []
+            };
+          }
+
+          // Populate the common details by checking each brand in the item
+          item.items.forEach((brandItem: any) => {
+            // Check and assign ASIAN_PAINTS and its MaterialCode
+            if (brandItem.ASIAN_PAINTS) {
+              commonDataByEcomcode[ecomcode].ASIAN_PAINTS = brandItem.ASIAN_PAINTS;
+              commonDataByEcomcode[ecomcode].Asian_MaterialCode = item.MaterialCode;
+            }
+            if (brandItem.Asian_detils.length) {
+              commonDataByEcomcode[ecomcode].Asian_detils = brandItem.Asian_detils;
+            }
+
+            // Check and assign BERGER_PAINTS and its MaterialCode
+            if (brandItem.BERGER_PAINTS) {
+              commonDataByEcomcode[ecomcode].BERGER_PAINTS = brandItem.BERGER_PAINTS;
+              commonDataByEcomcode[ecomcode].Berger_MaterialCode = item.MaterialCode;
+            }
+            if (brandItem.BERGER_details.length) {
+              commonDataByEcomcode[ecomcode].BERGER_details = brandItem.BERGER_details;
+            }
+
+            // Check and assign JN_PAINTS and its MaterialCode
+            if (brandItem.JN_PAINTS) {
+              commonDataByEcomcode[ecomcode].JN_PAINTS = brandItem.JN_PAINTS;
+              commonDataByEcomcode[ecomcode].JN_MaterialCode = item.MaterialCode;
+            }
+            if (brandItem.JN_details.length) {
+              commonDataByEcomcode[ecomcode].JN_details = brandItem.JN_details;
+            }
+          });
+        }
+      });
+    });
+
+    // Convert the common data object into an array of only common details
+    const commonDataArray = Object.values(commonDataByEcomcode);
+
+    // Set data$ and originalData to the array of common data
+    this.data$ = of(commonDataArray);
+    this.originalData = commonDataArray;
+
+    console.log(this.originalData, 'send common data');
+  }
+
+  getAllBrandwise() {
+
+  }
+
   getAll() {
     this.api.getAllProducts(this.filterForm.value).subscribe((res: any) => {
       console.log(res, 'data from api');
@@ -251,33 +439,95 @@ export class HomeComponent implements OnInit {
       this.filterData();
     });
   }
+  // filterData() {
+  //   console.log(this.arData, "arData");
+
+  //   this.arData.forEach((item: any) => {
+  //     console.log(item, "log item");
+
+  //     let index = this.final.findIndex((value: any) => {
+  //       //console.log(item.Division, value.Division, "category");
+
+  //       return (
+  //         item.Division == value.Division && item.ECOMCODE == value.ECOMCODE
+  //       );
+  //       // return (
+  //       //   item.CATEGORY == value.CATEGORY
+  //       // );
+  //       // return (
+  //       //   item.CATEGORY == value.CATEGORY &&
+  //       //   item.SUB_CATEGORY == value.SUB_CATEGORY
+  //       // );
+  //     });
+  //     console.log(index, 'index');
+
+  //     if (index > -1) {
+  //       this.final[index].items.push(item.products[0]);
+  //       console.log(this.final, 'filter data if');
+
+  //     } else {
+  //       this.final.push({
+  //         CATEGORY: item.CATEGORY,
+  //         SUB_CATEGORY: item.SUB_CATEGORY,
+  //         Division: item.Division,
+  //         Discount: item.DISCOUNT,
+  //         ECOMCODE: item.ECOMCODE,
+  //         MaterialCode: item.MaterialCode,
+  //         items: [item.products[0]],
+  //       });
+  //       console.log(this.final, 'filter data else');
+
+  //     }
+  //   });
+  //   //this.selectSub(this.final[0].Division)
+  // }
 
   filterData() {
     console.log(this.arData, "arData");
 
-    this.arData.forEach((item: any) => {
-      let index = this.final.findIndex((value: any) => {
-        return (
-          item.CATEGORY == value.CATEGORY &&
-          item.SUB_CATEGORY == value.SUB_CATEGORY
-        );
-      });
-      // console.log(index);
+    const groupedProducts = new Map<string, ProductGroup>();
 
-      if (index > -1) {
-        this.final[index].items.push(item.products[0]);
-      } else {
-        this.final.push({
+    this.arData.forEach((item: any) => {
+      const key = item.ECOMCODE + '-' + item.Division;  // Combine ECOMCODE and Division to form the key
+
+      if (groupedProducts.has(key)) {
+        // Append product to the existing ECOMCODE and Division group
+        groupedProducts.get(key)?.products.push({
           CATEGORY: item.CATEGORY,
           SUB_CATEGORY: item.SUB_CATEGORY,
           Division: item.Division,
-          items: [item.products[0]],
+          Discount: item.DISCOUNT,
+          ECOMCODE: item.ECOMCODE,
+          MaterialCode: item.MaterialCode,
+          items: item.products,
+        });
+      } else {
+        // Create a new group for the combined ECOMCODE and Division if it doesn't exist
+        groupedProducts.set(key, {
+          ECOMCODE: item.ECOMCODE,
+          Division: item.Division,
+          products: [{
+            CATEGORY: item.CATEGORY,
+            SUB_CATEGORY: item.SUB_CATEGORY,
+            Division: item.Division,
+            Discount: item.DISCOUNT,
+            ECOMCODE: item.ECOMCODE,
+            MaterialCode: item.MaterialCode,
+            items: item.products,
+          }]
         });
       }
     });
-    //this.selectSub(this.final[0].Division)
-    console.log(this.final, 'filter data');
+
+    // Convert the map values to an array and then to an observable
+    this.final = Array.from(groupedProducts.values());  // Convert the Map to an array
+    this.data$ = from(this.final) as Observable<ProductGroup[]>; // Create an observable from the array of ProductGroup
+    console.log(this.final, "final grouped output");
+    this.selectCat({ "Division": 35 });
+
   }
+
+
 
   close(tag: HTMLElement, value: any) {
     // console.log('working');

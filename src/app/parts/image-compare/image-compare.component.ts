@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, from } from 'rxjs';
 import { LogicsService } from '../../shared/logics.service';
 
 @Component({
@@ -21,15 +21,11 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
   private dataSubscription!: Subscription;
 
   logic = inject(LogicsService);
-  router = inject(Router)
+  router = inject(Router);
   
-  // dummyData: any = this.logic.dummyData;
-  arData:any
-  final: any[] = []; 
-
+  arData: any;
+  final: any[] = [];  // Final data to be used in the template
   ngOnInit(): void {
-   
-
     if (this.data) { 
       this.subscribeToData();  
     }
@@ -45,8 +41,7 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes['sort2'] && this.sort2) {
-      console.log('sortingss');
-      
+      console.log('Sorting data');
       this.subscribeToSort(); 
     }
   }
@@ -56,7 +51,7 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
       this.dataSubscription.unsubscribe();  
     }
     this.dataSubscription = this.data.subscribe((value: any) => {
-      console.log('Data received:', value);  
+      //console.log('Data received:', value);  
       this.final = value;  // Update the final data with the latest
     });
   }
@@ -85,22 +80,7 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
     console.log('Sorted data:', this.final);
   }
 
-  filterData(): void {
-    console.log(this.arData, "arrdata");
-    
-    this.arData.forEach((item: any) => {
-      const index = this.final.findIndex((value: any) => {
-        return item.CATEGORY === value.CATEGORY && item['SUB CATEGORY'] === value.SUB_CATEGORY;
-      });
 
-      if (index > -1) {
-        this.final[index].items.push(item);  // Add the item if the category exists
-      } else {
-        this.final.push({ CATEGORY: item.CATEGORY, SUB_CATEGORY: item['SUB CATEGORY'], items: [item] });
-      }
-    });
-    console.log('Filtered data:', this.final);
-  }
 
   check(first: any, second: any): boolean {
     return first === second;
@@ -114,9 +94,9 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
       this.dataSubscription.unsubscribe();  // Ensure all subscriptions are unsubscribed
     }
   }
-  sendDetail(v:any){
-    // console.log(v);
-    this.logic.productDetails.next(v)
-    this.router.navigateByUrl(`/home#detail`)
+
+  sendDetail(v: any): void {
+    this.logic.productDetails.next(v);
+    this.router.navigateByUrl(`/home#detail`);
   }
 }

@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { LogicsService } from '../../shared/logics.service';
 import { ApiService } from '../../shared/api.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface SelectDetails {
   price: number; // Price of the selected product
@@ -44,7 +45,7 @@ export interface CartData {
 @Component({
   selector: 'cart',
   standalone: true,
-  imports: [HeaderComponent, RouterModule, ToolsMenuComponent, NzButtonModule, CommonModule],
+  imports: [HeaderComponent, RouterModule, ToolsMenuComponent, NzButtonModule, CommonModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
@@ -61,6 +62,9 @@ export class CartComponent implements OnInit {
   selectedPaints: SelectedPaints = []; // Selected paints array
   selectedTotal: number = 0; // Total price for selected paints
   total: number = 0; // Total price for the cart
+  selectedBrand: string = ''; // Default selection
+  products: any[] = [];
+  selectedProducts: any[] = [];
   router = inject(Router)
 
   ngOnInit(): void {
@@ -89,6 +93,63 @@ export class CartComponent implements OnInit {
       return 'ASIAN_PAINTS';
     }
     return null; // Return null if none found
+  }
+  onBrandChange() {
+    this.selectedProducts = this.getProductsByBrand(this.selectedBrand);
+  }
+  // Filter products based on the selected brand
+  getProductsByBrand(brand: string): any[] {
+
+    console.log(brand, "brand");
+    this.products = [];
+    // Loop through the product set
+    this.logic.cart.products.forEach((productSet: any[]) => {
+      console.log(productSet, "productset");
+
+      // Loop through each product in the set
+      productSet.forEach((product) => {
+        console.log(product, "product");
+        product.forEach((p: any) => {
+          console.log(p, "product loop");
+
+          // Check the selected brand and add the respective product details
+          if (brand === 'Asian' && p.ASIAN_PAINTS) {
+            console.log(p.ASIAN_PAINTS, "asian");
+
+            this.products.push({
+              brand: p.ASIAN_PAINTS,
+              materialCode: p.Asian_MaterialCode,
+              details: p.Asian_detils
+            });
+          } else if (brand === 'Berger' && p.BERGER_PAINTS) {
+            console.log(product.BERGER_PAINTS, "berger");
+
+            this.products.push({
+              brand: p.BERGER_PAINTS,
+              materialCode: p.Berger_MaterialCode,
+              details: p.BERGER_details
+            });
+          } else if (brand === 'JN' && p.JN_PAINTS) {
+            console.log("Jenson & Nicholson brand found");
+
+            // Assuming the JN brand has some specific properties (if not, you can modify the condition accordingly)
+            this.products.push({
+              brand: p.JN_PAINTS, // Example name for JN brand
+              materialCode: product.JN_MaterialCode,
+              details: p.JN_details // Add the appropriate details if any
+            });
+          } else if (brand === 'Sheenlac') {
+            // Since you don't have Sheenlac in the data yet, you can either add it here or leave it for future data updates
+            console.log("Sheenlac brand is not available in this product set");
+          }
+        })
+
+      });
+    });
+
+    console.log(this.products, "selected product");
+
+    return this.products;
   }
 
 

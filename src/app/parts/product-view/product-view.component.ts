@@ -16,6 +16,7 @@ type PaintData = {
   [key: string]: string | Array<{ pack: string; price: string }> | null;
 };
 interface TargetData {
+  materialCode: string;
   customerId: string;
   pack: string;
   price: string;
@@ -134,13 +135,43 @@ export class ProductViewComponent implements OnInit {
       }, {} as PaintData);
   }
 
+  // convertData = (data: PaintData[]): TargetData[] => {
+  //   console.log(data, "convert data")
+  //   return data
+  //     .map(item => {
+  //       const brandKey = Object.keys(item).find(key => key.includes("_details")) as string;
+  //       const productKey = Object.keys(item).find(key => key.includes("_PAINTS")) as string;
+
+  //       if (brandKey && productKey && item[brandKey] && Array.isArray(item[brandKey])) {
+  //         const details = item[brandKey] as Array<{ pack: string; price: string; quantity: number }>;
+  //         return {
+  //           customerId: localStorage.getItem("apCusId"),
+  //           pack: details[0].pack,
+  //           price: details[0].price,
+  //           qty: details[0].quantity.toString(),
+  //           cdate: "",
+  //           productname: item[productKey] as string
+  //         };
+  //       }
+
+  //       return undefined; // Return undefined if fields are missing
+  //     })
+  //     .filter((item): item is TargetData => item !== undefined); // Filter out undefined items
+  // };
+
   convertData = (data: PaintData[]): TargetData[] => {
     return data
       .map(item => {
-        const brandKey = Object.keys(item).find(key => key.includes("_details")) as string;
-        const productKey = Object.keys(item).find(key => key.includes("_PAINTS")) as string;
+        console.log(item, "item");
 
-        if (brandKey && productKey && item[brandKey] && Array.isArray(item[brandKey])) {
+        const brandKey = Object.keys(item).find(key => key.includes("_details")) as string;
+        console.log(brandKey, "brandKey");
+        const prefix = brandKey.split('_')[0];
+        const productKey = Object.keys(item).find(key => key.includes("_PAINTS")) as string;
+        const materialCodeKey = Object.keys(item).find(key => key.includes(prefix+"_MaterialCode")) as string; // Get material code key
+        console.log(materialCodeKey, "MaterialCode");
+
+        if (brandKey && productKey && materialCodeKey && item[brandKey] && Array.isArray(item[brandKey])) {
           const details = item[brandKey] as Array<{ pack: string; price: string; quantity: number }>;
           return {
             customerId: localStorage.getItem("apCusId"),
@@ -148,7 +179,8 @@ export class ProductViewComponent implements OnInit {
             price: details[0].price,
             qty: details[0].quantity.toString(),
             cdate: "",
-            productname: item[productKey] as string
+            productname: item[productKey] as string,
+            materialCode: item[materialCodeKey] as string // Add material code to the returned object
           };
         }
 
@@ -163,6 +195,7 @@ export class ProductViewComponent implements OnInit {
     this.totalPrice = this.calculateTotalPrice();
 
     this.filteredData = this.filterNonEmpty(this.data);
+    console.log(this.filteredData, "filter");
 
     const cartItem = [
       this.filteredData
@@ -202,6 +235,8 @@ export class ProductViewComponent implements OnInit {
   }
 
   addCart() {
+    console.log(this.productDetails[0]);
+    
     this.api.cartCreate(this.productDetails[0]).subscribe({
       next: (res: any) => {
         // Assuming res is a success response

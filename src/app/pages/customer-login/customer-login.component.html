@@ -39,6 +39,7 @@
   </div>
 </div>
 <button #popbtn style="display: none;" class="btn" onclick="my_modal_2.showModal()">open modal</button>
+<button #customerModal style="display: none;" class="btn" onclick="customerModal.showModal()">open modal</button>
 <dialog id="my_modal_2" class="modal">
   <div [formGroup]="otpForm" class="modal-box bg-white pop-box">
     <h3 class="text-lg font-bold">Verify with OTP</h3>
@@ -58,18 +59,29 @@
     <!-- <button>close</button> -->
   </form>
 </dialog>
-<dialog id="customerModal" class="modal">
-  <div class="modal-box bg-white pop-box">
-    <div>
-      <h4>Customer's List</h4>
-      <table border="20" class="w-full border-black border-solid border-[2px]">
-        <tr style="background-color: var(--sec)">
-          <th align="center" colspan="7">Name</th>
-        </tr>
-        <tr>
-          <td *ngFor="let customer of customerDetails">{{customer.name }}</td>
-        </tr>
-      </table>
+<dialog #customerModal id="customerModal" class="modal">
+  <div class="">
+    <div class="customer-list-container">
+      <!-- <h4 class="font-bold text-lg mb-4 text-center">Customer's List</h4> -->
+      <button class="close-button" (click)="closeCustomerModal()">✕</button>
+      <div class="table-container">
+        <table class="w-full bg-white border border-gray-300 rounded-lg shadow-md">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="p-3 text-left text-gray-700 font-semibold">Customer Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of customerDetails"
+              (click)="storeCustomerCode(customer.customercode, customer.customername)"
+              class="cursor-pointer hover:bg-gray-100 border-b border-gray-200">
+              <td class="p-4 text-gray-800">{{ customer.customername || 'Unnamed Customer' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
+
   </div>
 </dialog>
