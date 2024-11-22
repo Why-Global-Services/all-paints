@@ -23,6 +23,7 @@ interface TargetData {
   qty: string;
   cdate: string;
   productname: string;
+  distributorcode: string;
 }
 
 @Component({
@@ -37,6 +38,7 @@ export class ProductViewComponent implements OnInit {
   @ViewChild('pack') packP!: ElementRef<HTMLButtonElement>;
   @ViewChild('packTwo') packTwo!: ElementRef<HTMLButtonElement>;
   @ViewChild('packThree') packThree!: ElementRef<HTMLButtonElement>;
+  @ViewChild('packFour') packFour!: ElementRef<HTMLButtonElement>;
   ngOnInit(): void {
     this.logic.getcolor().subscribe((res: any) => {
       console.log(res, 'colors');
@@ -67,10 +69,11 @@ export class ProductViewComponent implements OnInit {
   details: any = []
   cartValues: any
   customerId: any
-  quantities: number[] = []; // Array to hold quantities for each pack
+  quantities: any; // Array to hold quantities for each pack
   totalPrice: number = 0;
   filteredData: PaintData = {};
   productDetails: any = []
+  paint_index: any
   selectColor(v: any) {
     this.selectedColor = v;
     let index = this.colors.findIndex((item: any) => {
@@ -87,10 +90,9 @@ export class ProductViewComponent implements OnInit {
   }
 
   pack2(v: any, details: any, num: number) {
-    console.log(details, "on pack click");
-
     this.selectedPack = v;
     this.details = details;
+    this.paint_index = num;
     if (typeof details === 'object' && !Array.isArray(details)) {
       this.packDetails = [details]; // Wrap the object in an array
     } else if (Array.isArray(details)) {
@@ -111,19 +113,43 @@ export class ProductViewComponent implements OnInit {
       this.packTwo.nativeElement.click();
     } else if (num == 3) {
       this.packThree.nativeElement.click();
+    } else if (num == 4) {
+      this.packFour.nativeElement.click();
     }
   }
   updateQuantity(index: number, event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    this.quantities[index] = parseInt(inputElement.value, 10) || 0;
+    const value = parseInt(inputElement.value, 10) || 0;
+
+    // Ensure `this.quantities` is properly initialized
+    if (!Array.isArray(this.quantities)) {
+      this.quantities = [];
+    }
+
+    // Expand the array if the index exceeds the current length
+    while (this.quantities.length <= index) {
+      this.quantities.push(0); // Fill with default values
+    }
+
+    // Set the quantity at the specified index
+    this.quantities[index] = value;
   }
+
+  // updateQuantity(index: number, event: Event) {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   this.quantities[index] = parseInt(inputElement.value, 10) || 0;
+  // }
+  // updateQuantityIndividual(index: number, event: Event) {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   this.quantities = parseInt(inputElement.value, 10) || 0;
+  // }
 
   //change data as per out format
   filterNonEmpty(obj: PaintData): PaintData {
     return Object.entries(obj)
       .filter(([_, value]) => value !== null && !(Array.isArray(value) && value.length === 0))
       .reduce((acc, [key, value]) => {
-        if ((key === 'JN_details' || key == 'BERGER_details' || key == 'Asian_detils') && Array.isArray(value)) {
+        if ((key === 'JN_details' || key == 'BERGER_details' || key == 'Asian_detils' || key == 'Sheenlac_details') && Array.isArray(value)) {
           acc[key] = value.map((item, index) => ({
             ...item,
             quantity: this.quantities[index] || 0
@@ -134,6 +160,7 @@ export class ProductViewComponent implements OnInit {
         return acc;
       }, {} as PaintData);
   }
+
 
   // convertData = (data: PaintData[]): TargetData[] => {
   //   console.log(data, "convert data")
@@ -159,16 +186,65 @@ export class ProductViewComponent implements OnInit {
   //     .filter((item): item is TargetData => item !== undefined); // Filter out undefined items
   // };
 
-  convertData = (data: PaintData[]): TargetData[] => {
+  // convertData = (data: PaintData[], index: any): TargetData[] => {
+  //   return data
+  //     .map(item => {
+  //       console.log(item, "item");
+
+  //       const brandKey = Object.keys(item).find(key => key.includes("_details") || key.includes("_detils")) as string;
+  //       console.log(brandKey, "brandKey");
+  //       const prefix = brandKey.split('_')[0];
+  //       const productKey = Object.keys(item).find(key => key.includes("_PAINTS")) as string;
+  //       const materialCodeKey = Object.keys(item).find(key => key.includes(prefix + "_MaterialCode")) as string; // Get material code key
+  //       console.log(materialCodeKey, "MaterialCode");
+
+  //       if (brandKey && productKey && materialCodeKey && item[brandKey] && Array.isArray(item[brandKey])) {
+  //         const details = item[brandKey] as Array<{ pack: string; price: string; quantity: number }>;
+  //         return {
+  //           customerId: localStorage.getItem("apCusId"),
+  //           pack: details[0].pack,
+  //           price: details[0].price,
+  //           qty: details[0].quantity.toString(),
+  //           cdate: "",
+  //           productname: item[productKey] as string,
+  //           materialCode: item[materialCodeKey] as string // Add material code to the returned object
+  //         };
+  //       }
+
+  //       return undefined; // Return undefined if fields are missing
+  //     })
+  //     .filter((item): item is TargetData => item !== undefined); // Filter out undefined items
+  // };
+
+  convertData = (data: PaintData[], index: any): TargetData[] => {
+    const brandMapping: { [key: number]: string } = {
+      1: "ASIAN",
+      2: "BERGER",
+      3: "JN",
+      4: "Sheenlac",
+    };
+    let brandKey = "";
     return data
       .map(item => {
         console.log(item, "item");
 
-        const brandKey = Object.keys(item).find(key => key.includes("_details")) as string;
+        const brandPrefix = brandMapping[index];
+        if (!brandPrefix) {
+          console.error(`Invalid index: ${index}`);
+          return undefined;
+        }
+        const capitalizedBrandPrefix = brandPrefix.charAt(0).toUpperCase() + brandPrefix.slice(1).toLowerCase();
+        if (brandPrefix == "ASIAN") {
+          brandKey = Object.keys(item).find(key => key.includes(`${capitalizedBrandPrefix}_details`) || key.includes(`${capitalizedBrandPrefix}_detils`)) as string;
+        } else {
+          brandKey = Object.keys(item).find(key => key.includes(`${brandPrefix}_details`) || key.includes(`${capitalizedBrandPrefix}_detils`)) as string;
+        }
+
+
+        const productKey = Object.keys(item).find(key => key.includes(`${brandPrefix}_PAINTS`)) as string;
+        const materialCodeKey = Object.keys(item).find(key => key.includes(`${brandPrefix}_MaterialCode`)) as string;
+
         console.log(brandKey, "brandKey");
-        const prefix = brandKey.split('_')[0];
-        const productKey = Object.keys(item).find(key => key.includes("_PAINTS")) as string;
-        const materialCodeKey = Object.keys(item).find(key => key.includes(prefix+"_MaterialCode")) as string; // Get material code key
         console.log(materialCodeKey, "MaterialCode");
 
         if (brandKey && productKey && materialCodeKey && item[brandKey] && Array.isArray(item[brandKey])) {
@@ -180,7 +256,8 @@ export class ProductViewComponent implements OnInit {
             qty: details[0].quantity.toString(),
             cdate: "",
             productname: item[productKey] as string,
-            materialCode: item[materialCodeKey] as string // Add material code to the returned object
+            materialCode: item[materialCodeKey] as string,
+            distributorcode: localStorage.getItem("distributorcode") || ""
           };
         }
 
@@ -188,7 +265,6 @@ export class ProductViewComponent implements OnInit {
       })
       .filter((item): item is TargetData => item !== undefined); // Filter out undefined items
   };
-
 
   addtocart() {
     // Calculate the total price
@@ -200,7 +276,7 @@ export class ProductViewComponent implements OnInit {
     const cartItem = [
       this.filteredData
     ]
-    this.productDetails = this.convertData(cartItem);
+    this.productDetails = this.convertData(cartItem, this.paint_index);
     console.log(this.productDetails[0], "productDetails");
 
     this.logic.cartItems = [...this.logic.cartItems, cartItem]
@@ -211,6 +287,11 @@ export class ProductViewComponent implements OnInit {
         this.logic.cartItems
       ]
     }
+    console.log(this.logic.cart, "cart");
+
+    this.logic.cartLength = this.logic.cart.products.length;
+    console.log(this.logic.cartLength);
+
 
     console.log(this.logic.cart, "cart details");
 
@@ -235,8 +316,9 @@ export class ProductViewComponent implements OnInit {
   }
 
   addCart() {
-    console.log(this.productDetails[0]);
-    
+    this.logic.cartProducts = [...this.logic.cartProducts, this.productDetails[0]];
+    console.log(this.logic.cartProducts, "product details");
+
     this.api.cartCreate(this.productDetails[0]).subscribe({
       next: (res: any) => {
         // Assuming res is a success response

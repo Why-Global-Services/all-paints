@@ -68,9 +68,11 @@ export class HomeComponent implements OnInit {
   final: any = [];
   originalData: any = [];
   groupedData: any = {};
+  username: any
+  cartCount: any
   // sortDisplay: Observable<string>=of('Low to High')
   filterForm = this.fb.group({
-    filtervalue1: ['brandwise'],
+    filtervalue1: [''],
     filtervalue2: [''],
     filtervalue3: [''],
     filtervalue4: [''],
@@ -78,6 +80,16 @@ export class HomeComponent implements OnInit {
     filtervalue6: [''],
     filtervalue7: [''],
   });
+  schemesForm = this.fb.group({
+    "filtervalue1": "",
+    "filtervalue2": "",
+    "filtervalue3": "scheme_v11",
+    "filtervalue4": "",
+    "filtervalue5": "",
+    "filtervalue6": "",
+    "filtervalue7": "",
+    "filtervalue8": ""
+  })
   mainTItle = [
     'Specialty Coating',
     'Wood Coating',
@@ -123,15 +135,15 @@ export class HomeComponent implements OnInit {
       if (fragment) {
         this.show = fragment;
       }
-
-
+      this.username = localStorage.getItem("apName");
+      this.cartCount = this.logic.cartItems.length
     });
     // if(this.show == 'cart'){
     // console.log(this.logic.cart, 'cart', this.show);
     this.selectCat({ "Division": 35 })
     // }
     // console.log(this.show);
-    this.getAllBrandwise();
+    // this.getAllBrandwise();
     this.getAll();
     if (this.show == 'image' || this.show == 'list') {
 
@@ -174,18 +186,22 @@ export class HomeComponent implements OnInit {
   }
   searchNow(value: any) {
     let searchTerm = value.trim().toLowerCase();
-    // console.log(searchTerm,this.originalData);
+    console.log(searchTerm, "search");
 
     if (!searchTerm) {
       // If no search term, revert to original data
-      this.final = this.originalData;
+      // console.log(this.final, "final data");
+
+      // this.final = this.originalData;
+      // this.data$ = this.originalData;
+      this.getAll();
     } else {
       // Filter the original data based on the search term
       this.final = this.originalData.filter((item: any) => {
         return (
-          item.asiaN_PAINTS?.toLowerCase().includes(searchTerm) ||
-          item.bergeR_PAINTS?.toLowerCase().includes(searchTerm) ||
-          item.jN_PAINTS?.toLowerCase().includes(searchTerm)
+          item.ASIAN_PAINTS?.toLowerCase().includes(searchTerm) ||
+          item.BERGER_PAINTS?.toLowerCase().includes(searchTerm) ||
+          item.JN_PAINTS?.toLowerCase().includes(searchTerm)
         );
       });
     }
@@ -356,25 +372,30 @@ export class HomeComponent implements OnInit {
     // Loop through the final grouped data and collect items matching the Division
     this.final.forEach((group: ProductGroup) => {
       group.products.forEach((item: ProductItem) => {
+        console.log(this.final, "final");
 
 
         if (item.Division == this.selectedCat.Division) {
           console.log(this.selectedCat.Division, item.Division, "on load seleced division");
 
           const ecomcode = item.ECOMCODE;
+// console.log(ecomcode, item, "ecomcodee");
 
           // Initialize common data for the ECOMCODE if it doesn't exist
           if (!commonDataByEcomcode[ecomcode]) {
             commonDataByEcomcode[ecomcode] = {
               ASIAN_PAINTS: null,
-              Asian_MaterialCode: "",
+              ASIAN_MaterialCode: "",
               Asian_detils: [],
               BERGER_PAINTS: null,
-              Berger_MaterialCode: "",
+              BERGER_MaterialCode: "",
               BERGER_details: [],
               JN_PAINTS: null,
               JN_MaterialCode: "",
-              JN_details: []
+              JN_details: [],
+              Sheenlac_PAINTS: null,
+              Sheenlac_MaterialCode: "",
+              Sheenlac_details: []
             };
           }
 
@@ -383,7 +404,7 @@ export class HomeComponent implements OnInit {
             // Check and assign ASIAN_PAINTS and its MaterialCode
             if (brandItem.ASIAN_PAINTS) {
               commonDataByEcomcode[ecomcode].ASIAN_PAINTS = brandItem.ASIAN_PAINTS;
-              commonDataByEcomcode[ecomcode].Asian_MaterialCode = item.MaterialCode;
+              commonDataByEcomcode[ecomcode].ASIAN_MaterialCode = item.MaterialCode;
             }
             if (brandItem.Asian_detils.length) {
               commonDataByEcomcode[ecomcode].Asian_detils = brandItem.Asian_detils;
@@ -392,7 +413,7 @@ export class HomeComponent implements OnInit {
             // Check and assign BERGER_PAINTS and its MaterialCode
             if (brandItem.BERGER_PAINTS) {
               commonDataByEcomcode[ecomcode].BERGER_PAINTS = brandItem.BERGER_PAINTS;
-              commonDataByEcomcode[ecomcode].Berger_MaterialCode = item.MaterialCode;
+              commonDataByEcomcode[ecomcode].BERGER_MaterialCode = item.MaterialCode;
             }
             if (brandItem.BERGER_details.length) {
               commonDataByEcomcode[ecomcode].BERGER_details = brandItem.BERGER_details;
@@ -405,6 +426,13 @@ export class HomeComponent implements OnInit {
             }
             if (brandItem.JN_details.length) {
               commonDataByEcomcode[ecomcode].JN_details = brandItem.JN_details;
+            }
+            if (brandItem.Sheenlac_PAINTS) {
+              commonDataByEcomcode[ecomcode].Sheenlac_PAINTS = brandItem.Sheenlac_PAINTS;
+              commonDataByEcomcode[ecomcode].Sheenlac_MaterialCode = item.MaterialCode;
+            }
+            if (brandItem.Sheenlac_details.length) {
+              commonDataByEcomcode[ecomcode].Sheenlac_details = brandItem.Sheenlac_details;
             }
           });
         }
@@ -419,10 +447,6 @@ export class HomeComponent implements OnInit {
     this.originalData = commonDataArray;
 
     console.log(this.originalData, 'send common data');
-  }
-
-  getAllBrandwise() {
-
   }
 
   getAll() {

@@ -6,7 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { LogicsService } from '../../shared/logics.service';
 import { ApiService } from '../../shared/api.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 
 interface SelectDetails {
   price: number; // Price of the selected product
@@ -29,11 +29,16 @@ export interface Product {
   selectDetails: any;
   count: number;
   JN_PAINTS?: string;
+  Asian_MaterialCode?: string;
+  Berger_MaterialCode?: string;
+  JN_MaterialCode?: string;
   BERGER_PAINTS?: string;
   ASIAN_PAINTS?: string;
+  Sheenlac_PAINTS?: string;
   JN_details?: CartItemDetail[];
   BERGER_details?: CartItemDetail[];
-  ASIAN_details?: CartItemDetail[];
+  Sheenlac_details?: CartItemDetail[];
+  Asian_detils?: CartItemDetail[];
 }
 
 export interface CartData {
@@ -52,7 +57,7 @@ export interface CartData {
 export class CartComponent implements OnInit {
   logic = inject(LogicsService);
   api = inject(ApiService);
-
+  fb = inject(FormBuilder);
   // cartData: any[] = []; // Ensure cartData is an array
   cartData: CartData = {
     customerId: '',
@@ -65,10 +70,25 @@ export class CartComponent implements OnInit {
   selectedBrand: string = ''; // Default selection
   products: any[] = [];
   selectedProducts: any[] = [];
+  schemes: any[] = [];
   router = inject(Router)
+  leastPricedProducts: any[] = [];
+  schemesForm = this.fb.group({
+    "filtervalue1": "",
+    "filtervalue2": "",
+    "filtervalue3": "scheme_v11",
+    "filtervalue4": "",
+    "filtervalue5": "",
+    "filtervalue6": "",
+    "filtervalue7": "",
+    "filtervalue8": ""
+  })
+  data: any[] = [];
+  cartlogicData: any[] = [];
 
   ngOnInit(): void {
     this.cartData = this.logic.cart;
+    this.findLeastPricedProducts()
     console.log(this.logic.cart, "cart data");
     let totalProductCount = 0;
     this.logic.cart.products.forEach((firstLevel: any[]) =>
@@ -77,11 +97,99 @@ export class CartComponent implements OnInit {
 
       )
     );
+    this.api.getAllSchemes(this.schemesForm.value).subscribe((res: any) => {
+      const parsedData = JSON.parse(res);
+      console.log(parsedData);
+
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        this.schemes = parsedData;
+
+        let result: any[] = [];
+        let discountAmount: number = 0;
+        parsedData.forEach((schems: any) => {
+          this.logic.cartProducts.forEach((product: any) => {
+            console.log(product.materialCode);
+            console.log(schems.cproductgroup);
+
+            // Ensure we match the product and scheme by both material code and scheme type
+            if (schems.cproductgroup === product.materialCode && schems.cschemetype === "Seasoning") {
+              // Append scheme values to product
+              product.discounttype = schems.cdistype;
+              product.cdisdesc = schems.cdisdesc;
+              product.schno = schems.schno;
+              product.nmaxqty = schems.nmaxqty;
+              product.nminqty = schems.nminqty;
+              product.cdisvalue = schems.cdisvalue;
+              product.cschemetype = schems.cschemetype;
+              if (product.qty >= schems.nminqty && product.qty <= schems.nmaxqty) {
+                console.log("inside condition", schems.cdistype);
+                if (schems.cdistype === "Rupees") {
+                  console.log(product.qty, schems.cdisvalue, "data");
+
+                  discountAmount = product.qty * schems.cdisvalue
+                  console.log(discountAmount, 'amt');
+
+
+                } else if (schems.cdistype == "Percentage") {
+                  const discountvalue = (product.price * schems.cdisvalue) / 100;
+                  discountAmount = product.qty * discountvalue
+                  console.log(discountAmount, "else amt");
+
+                }
+              }
+              product.totaldisamount = discountAmount
+              // Check if the product has already been added to result to avoid duplicates
+              const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
+              if (!isDuplicate) {
+                result.push(product);  // Add the updated product to result
+              }
+            }
+          });
+        });
+        this.cartlogicData = result
+        console.log(result, "matched schemes");
+        this.calculateTotalPrice();
+      }
+    });
+
+
+
     this.cartLength = totalProductCount;
     console.log('Total number of products:', totalProductCount);
     console.log(this.cartLength, "cart length");
 
-    this.calculateTotalPrice(); // Calculate initial total price
+    // Calculate initial total price
+  }
+  findLeastPricedProducts(): void {
+    this.leastPricedProducts = this.logic.cart.products[0].map((productGroup: any[]) => {
+      const prices = productGroup.map(product => {
+        const priceDetails = [
+          { brand: "ASIAN_PAINTS", value: product.ASIAN_PAINTS, materialcode: product.ASIAN_MaterialCode, details: product.Asian_detils },
+          { brand: "BERGER_PAINTS", value: product.BERGER_PAINTS, materialcode: product.BERGER_MaterialCode, details: product.BERGER_details },
+          { brand: "JN_PAINTS", value: product.JN_PAINTS, materialcode: product.JN_MaterialCode, details: product.JN_details },
+          { brand: "Sheenlac_PAINTS", value: product.Sheenlac_PAINTS, materialcode: product.Sheenlac_MaterialCode, details: product.Sheenlac_details }
+        ]
+          .filter(item => item.details?.length > 0)
+          .map(item => ({
+            name: item.brand,
+            brand: item.value,
+            price: parseFloat(item.details[0].price), // Convert price to a number
+            pack: item.details[0].pack
+          }));
+
+        console.log(priceDetails, "pricedetails");
+
+
+        // Return the least priced product for the current product
+        return priceDetails.reduce((min, current) =>
+          current.price < min.price ? current : min
+        );
+      });
+
+      return prices[0]; // Since each sub-array contains only one product object
+    });
+
+    console.log("Least Priced Products:", this.leastPricedProducts);
   }
 
   getPaintBrandKey(product: Product): string | null {
@@ -90,6 +198,8 @@ export class CartComponent implements OnInit {
     } else if (product.BERGER_PAINTS) {
       return 'BERGER_PAINTS';
     } else if (product.ASIAN_PAINTS) {
+      return 'ASIAN_PAINTS';
+    } else if (product.Sheenlac_PAINTS) {
       return 'ASIAN_PAINTS';
     }
     return null; // Return null if none found
@@ -108,7 +218,7 @@ export class CartComponent implements OnInit {
 
       // Loop through each product in the set
       productSet.forEach((product) => {
-        console.log(product, "product");
+        console.log(product[0].JN_MaterialCode, "product");
         product.forEach((p: any) => {
           console.log(p, "product loop");
 
@@ -151,7 +261,10 @@ export class CartComponent implements OnInit {
 
     return this.products;
   }
+  ChangeProduct(product: any) {
+    console.log(product, "changed product");
 
+  }
 
   getQuantitiesAndPrices(data: CartData): Detail[] {
     const result: Detail[] = [];
@@ -166,13 +279,15 @@ export class CartComponent implements OnInit {
         productCategory.forEach((brandCategory) => {
           if (Array.isArray(brandCategory)) {
             brandCategory.forEach((product) => {
-              const details = product.JN_details || product.BERGER_details || product.ASIAN_details || []; // Adjust based on your structure
+              console.log(product.JN_MaterialCode, "product");
+
+              const details = product.JN_details || product.BERGER_details || product.Asian_detils || []; // Adjust based on your structure
 
               details.forEach((detail) => {
                 const price = parseFloat(detail.price);
                 const quantity = detail.quantity;
 
-                if (detail && !isNaN(price) && typeof quantity === 'number') {
+                if (detail && !isNaN(price)) {
                   result.push({
                     price: price,
                     quantity: quantity,
@@ -197,12 +312,25 @@ export class CartComponent implements OnInit {
 
 
 
-  calculateTotalPrice(): void {
+  calculateTotalPrice() {
     const quantitiesAndPrices = this.getQuantitiesAndPrices(this.cartData);
     this.total = quantitiesAndPrices.reduce(
       (sum, detail) => sum + detail.price * detail.quantity,
       0
     );
+
+    const totalDiscountAmount = this.cartlogicData.reduce((discountSum, product: any) => {
+      if (product.totaldisamount) {
+        discountSum += product.totaldisamount;
+      }
+      return discountSum;
+    }, 0);
+
+    console.log("Total Discount Amount:", totalDiscountAmount);
+
+    console.log(totalDiscountAmount, "todisamt");
+
+    this.total -= totalDiscountAmount;
     this.logic.cartTotal = this.total;
     console.log("Total price:", this.total);
   }

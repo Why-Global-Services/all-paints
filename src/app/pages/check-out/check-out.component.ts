@@ -11,8 +11,8 @@ type SourceProduct = {
   ASIAN_PAINTS?: string;
   BERGER_PAINTS?: string;
   JN_details?: Array<{ pack: string; price: string; quantity: number }>;
-  asian_details?: Array<{ pack: string; price: string; quantity: number }>;
-  berger_details?: Array<{ pack: string; price: string; quantity: number }>;
+  Asian_detils?: Array<{ pack: string; price: string; quantity: number }>;
+  BERGER_details?: Array<{ pack: string; price: string; quantity: number }>;
 };
 
 type SourceData = {
@@ -103,20 +103,22 @@ export class CheckOutComponent implements OnInit {
     for (const productGroup of products) {
       for (const productArray of productGroup) {
         for (const product of productArray) {
-          if (product.Asian_MaterialCode) {
-            return product.Asian_MaterialCode;
+          if (product.ASIAN_MaterialCode) {
+            return product.ASIAN_MaterialCode;
           }
-          if (product.Berger_MaterialCode) {
-            return product.Berger_MaterialCode;
+          if (product.BERGER_MaterialCode) {
+            return product.BERGER_MaterialCode;
           }
           if (product.JN_MaterialCode) {
             return product.JN_MaterialCode;
+          }
+          if (product.Sheenlac_MaterialCode) {
+            return product.Sheenlac_MaterialCode;
           }
         }
       }
     }
 
-    // If no non-empty material code found
     return undefined;
   }
 
@@ -126,19 +128,19 @@ export class CheckOutComponent implements OnInit {
     console.log(data, "checkout data  ");
 
     const transformedProducts = data.products.flat(3).map(product => {
-      // Detect the paint type and select corresponding details
+      console.log(product, "product");
       let paintS_Name = "";
       let asian_detils: Array<{ pack: string; price: string; quantity: number }> = [];
 
       if (product.JN_PAINTS && product.JN_details) {
-        paintS_Name = "JN_PAINTS";
+        paintS_Name = product.JN_PAINTS;
         asian_detils = product.JN_details;
-      } else if (product.ASIAN_PAINTS && product.asian_details) {
-        paintS_Name = "ASIAN_PAINTS";
-        asian_detils = product.asian_details;
-      } else if (product.BERGER_PAINTS && product.berger_details) {
-        paintS_Name = "BERGER_PAINTS";
-        asian_detils = product.berger_details;
+      } else if (product.ASIAN_PAINTS && product.Asian_detils) {
+        paintS_Name = product.ASIAN_PAINTS;
+        asian_detils = product.Asian_detils;
+      } else if (product.BERGER_PAINTS && product.BERGER_details) {
+        paintS_Name = product.BERGER_PAINTS;
+        asian_detils = product.BERGER_details;
       }
 
       // Map and calculate total price for each detail
@@ -168,6 +170,7 @@ export class CheckOutComponent implements OnInit {
     const materialCode = this.getMaterialCodeWithValue(data);
     this.customerData = {
       materialCode: materialCode,
+      distributorcode: localStorage.getItem("distributorcode") || "",
       customerId: localStorage.getItem("apCusId") || "",
       customerName: localStorage.getItem('apName') || "",
       mobileno: localStorage.getItem('apNumber') || "",
@@ -190,6 +193,8 @@ export class CheckOutComponent implements OnInit {
     console.log(this.form.value, "form data");
 
     this.logic.paymentDetails = this.form.value;
+    console.log(this.customerData);
+
     this.api.createCart(this.customerData).subscribe({
       next: (res: any) => {
         // Assuming res is a success response

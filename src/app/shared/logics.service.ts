@@ -11,7 +11,10 @@ export class LogicsService {
   productDetails = new BehaviorSubject<any[]>([])
   cart: any = []
   cartItems: any = []
+  cartProducts: any[] = []
   cartTotal: any
+  cartLength: any
+  distributorcode:any
   paymentDetails:any
   colorUrl: any = 'assets/categorized_sheenlac_colors.json'
 

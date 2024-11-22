@@ -7,7 +7,9 @@
         <div class="title">
           <h3>Selected Items</h3>
         </div>
-        <div *ngFor="let category of cartData.products; let cIndex = index">
+
+
+        <!-- <div *ngFor="let category of cartData.products; let cIndex = index">
           <div *ngFor="let brandCategory of category; let bIndex = index">
             <div *ngFor="let product of brandCategory; let pIndex = index" class="p-box">
               <div class="img-box">
@@ -16,29 +18,60 @@
                     <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
                     <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
                       alt="Asian Paints" />
-                    <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/images/jenson 1.png" alt="Jenson" />
+                    <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/products/{{product.JN_MaterialCode}}.png"
+                      alt="Jenson" />
+                    <img *ngSwitchCase="'Sheenlac'" src="../../../assets/images/sheenlac.png"
+                      alt="Jenson" />
                     <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
                   </ng-container>
                 </ng-container>
               </div>
               <div class="p-details">
-                <h4>{{ product.JN_PAINTS || product.BERGER_PAINTS || product.ASIAN_PAINTS }}</h4>
+                <h4>{{ product.JN_PAINTS || product.BERGER_PAINTS || product.ASIAN_PAINTS || product.Sheenlac_PAINTS }}</h4>
                 <div
-                  *ngFor="let detail of product.JN_details || product.BERGER_details || product.ASIAN_details; let dIndex = index">
+                  *ngFor="let detail of product.JN_details || product.BERGER_details || product.Asian_detils || product.Sheenlac_details; let dIndex = index">
                   <h4>{{ detail.pack }}</h4>
                   <p>₹{{ detail.price || 'N/A' }}</p>
-                  <label>Quantity:
-                    <!-- <input type="number" [(ngModel)]="detail.quantity" min="1" max="100" /> -->
+                  <label>Quantity: &nbsp;{{detail.quantity}}
+                    <input type="number" [(ngModel)]="detail.quantity" min="1" max="100" />
                   </label>
                 </div>
               </div>
             </div>
           </div>
+        </div> -->
+
+        <div *ngFor="let product of cartlogicData; let pIndex = index" class="p-box">
+          <!-- Product Image Section -->
+          <div class="img-box">
+            <ng-container *ngIf="getPaintBrandKey(product) as paintKey">
+              <ng-container [ngSwitch]="paintKey">
+                <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
+                <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
+                  alt="Asian Paints" />
+                <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/products/{{ product.materialCode }}.png"
+                  alt="Jenson" />
+                <img *ngSwitchCase="'Sheenlac'" src="../../../assets/images/sheenlac.png" alt="Sheenlac" />
+                <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
+              </ng-container>
+            </ng-container>
+          </div>
+
+          <!-- Product Details Section -->
+          <div class="p-details">
+            <h4>{{ product.productname }}</h4>
+            <p>Price: ₹{{ product.price || 'N/A' }}</p>
+            <p>Quantity: {{ product.qty }}</p>
+            <div *ngIf="product.totaldisamount >0">
+              <p>Total Discount: ₹{{ product.totaldisamount }}</p>
+            </div>
+          </div>
         </div>
+
+
       </div>
 
-      <!-- Second Column: Compare Brands -->
-      <div class="brand-item col-span-1">
+      <!-- <div class="brand-item col-span-1">
         <div class="content">
           <select [(ngModel)]="selectedBrand" (change)="onBrandChange()"
             class="block w-full p-2 border border-gray-300 rounded-md">
@@ -49,32 +82,69 @@
           </select>
           <div class="p-box" *ngIf="products && products.length > 0">
             <div class="hover-me">
-              <p>Switch</p>
+              <p (click)="ChangeProduct(products[0])">Switch</p>
             </div>
             <div class="img-box">
               <img src="../../../assets/products/{{products[0].materialCode}}.png" alt="Asian Paints" />
             </div>
-            <!-- <div class="p-details">
+            <div class="p-details">
               <h4>Apex Ultima</h4>
               <div class="flex items-center gap-[5px] font-[600] text-[20px]">
                 <p>₹5,999</p>
                 <span style="text-decoration: line-through" class="text-gray-400 text-[16px]">₹4,999</span>
               </div>
-            </div> -->
+            </div>
             <div class="p-details">
-              <h4>{{ products[0].brand }}</h4> <!-- Dynamically displays the product brand -->
+              <h4>{{ products[0].brand || 'N/A' }}</h4> 
 
               <div class="flex items-center gap-[5px] font-[600] text-[20px]">
-                <p>₹{{ products[0].details[0]?.price || 0 }}</p> <!-- Dynamically displays the price -->
+                <p>₹{{ products[0].details[0]?.price || 0 }}</p> 
                 <span style="text-decoration: line-through" class="text-gray-400 text-[16px]">
-                  ₹{{ products[0].details[0]?.originalPrice || 0 }} <!-- Dynamically displays the original price -->
+                  ₹{{ products[0].details[0]?.originalPrice || 0 }} 
                 </span>
               </div>
             </div>
 
           </div>
         </div>
+      </div> -->
+      <!-- Second column - Least price -->
+      <div class="sel-items col-span-1">
+        <div class="title">
+          <h3>Least Priced Items</h3>
+        </div>
+        <!-- Check if the array has items -->
+        <ng-container *ngIf="leastPricedProducts && leastPricedProducts.length > 0; else noProducts">
+          <div *ngFor="let product of leastPricedProducts; let index = index" class="p-box">
+            <div class="img-box">
+              <ng-container *ngIf="product.brand as paintKey">
+                <ng-container [ngSwitch]="paintKey">
+                  <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
+                  <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
+                    alt="Asian Paints" />
+                  <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/products/{{ product.name }}.png" alt="Jenson" />
+                  <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
+                </ng-container>
+              </ng-container>
+            </div>
+            <div class="p-details">
+              <h4>{{ product.brand }}</h4>
+              <h4>{{ product.pack }}</h4>
+              <p>₹{{ product.price }}</p>
+              <!-- If you want an input for quantity, uncomment the below line -->
+              <!-- <label>Quantity: {{ product.quantity || 'N/A' }} -->
+              <!-- <input type="number" [(ngModel)]="product.quantity" min="1" max="100" /> -->
+              <!-- </label> -->
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Template to show when no products are available -->
+        <ng-template #noProducts>
+          <p>No products available</p>
+        </ng-template>
       </div>
+
 
       <!-- Third Column: My Cart -->
       <div class="sel-items col-span-1">
@@ -90,7 +160,8 @@
                     <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
                     <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
                       alt="Asian Paints" />
-                    <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/images/jenson 1.png" alt="Jenson" />
+                    <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/products/{{product.JN_MaterialCode}}.png"
+                      alt="Jenson" />
                     <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
                   </ng-container>
                 </ng-container>
@@ -98,10 +169,10 @@
               <div class="p-details">
                 <h4>{{ product.JN_PAINTS || product.BERGER_PAINTS || product.ASIAN_PAINTS }}</h4>
                 <div
-                  *ngFor="let detail of product.JN_details || product.BERGER_details || product.ASIAN_details; let dIndex = index">
+                  *ngFor="let detail of product.JN_details || product.BERGER_details || product.Asian_detils; let dIndex = index">
                   <h4>{{ detail.pack }}</h4>
                   <p>₹{{ detail.price || 'N/A' }}</p>
-                  <label>Quantity:
+                  <label>Quantity:{{detail.quantity}}
                     <!-- <input type="number" [(ngModel)]="detail.quantity" min="1" max="100" /> -->
                   </label>
                 </div>

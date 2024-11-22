@@ -54,8 +54,8 @@
           <!-- <p>NA</p> -->
         </section>
         <section class="flex flex-col justify-center items-center" *ngIf="item.JN_PAINTS !== null">
-          <img class="" src="../../../assets/images/jenson 1.png" alt="" srcset="" />
-          <h5 class="text-center font-bold">{{ item.JN_PAINTS }}</h5>
+          <img style="width:110px" class="" src="../../../assets/products/{{item.JN_MaterialCode}}.png" alt="" srcset="" />
+          <h5 class="text-center font-semibold">{{ item.JN_PAINTS }}</h5>
           <!-- <div class="text-center pb-10"> -->
           <h5 class="text-center pt-5">₹{{ item.JN_details[0].price}}</h5>
           <!-- </div> -->
@@ -65,16 +65,16 @@
     </div>
     <div class="img-col">
       @for (item of final; track $index) {
-      <div (click)="sendDetail(item)" class="p-box" [class.na-box]="!item.sheenlac_PAINTS">
-        <section *ngIf="!item.sheenlac_PAINTS">
-          <p>NA</p>
+      <div (click)="sendDetail(item)" class="p-box" [class.na-box]="item.Sheenlac_PAINTS == null">
+        <section *ngIf="check(item.Sheenlac_PAINTS, null)">
+          <!-- <p>NA</p> -->
         </section>
-        <section style="display: contents" *ngIf="item.sheenlac_PAINTS">
-          <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
-          <h3>{{ item.ASIAN_PAINTS }}</h3>
-          <div class="flex products-center gap-[10px]">
-            <h3>₹{{ item.asian_detils[0].price }}</h3>
-          </div>
+        <section class="flex flex-col justify-center items-center" *ngIf="item.Sheenlac_PAINTS !== null">
+          <img style="width:110px" class="" src="../../../assets/images/sheenlac.png" alt="" srcset="" />
+          <h5 class="text-center font-semibold">{{ item.Sheenlac_PAINTS }}</h5>
+          <!-- <div class="text-center pb-10"> -->
+          <h5 class="text-center pt-5">₹{{ item.Sheenlac_details[0].price}}</h5>
+          <!-- </div> -->
         </section>
       </div>
       }

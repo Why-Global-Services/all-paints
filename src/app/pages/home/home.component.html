@@ -4,110 +4,85 @@
     <div class="tool-lft">
       <div class="relative">
         <input (keyup)="searchNow(search.value)" #search type="text" placeholder="Search..." />
-        <svg
-          class="absolute right-[10px] top-[12px] h-[20px]"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg class="absolute right-[10px] top-[12px] h-[20px]" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
           <g id="SVGRepo_iconCarrier">
             <path
               d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-              stroke="#858585"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
+              stroke="#858585" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
           </g>
         </svg>
       </div>
 
       <details class="dropdown dropdown-end w-[160px]">
         <summary #sort role="button" class="btn m-1 dd w-full">
-         {{sortValue }}
-          <svg
-            class=""
-            fill="#000000"
-            viewBox="0 0 24 24"
-            id="mobile-data"
-            data-name="Flat Color"
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon flat-color h-[20px]"
-          >
+          {{sortValue }}
+          <svg class="" fill="#000000" viewBox="0 0 24 24" id="mobile-data" data-name="Flat Color"
+            xmlns="http://www.w3.org/2000/svg" class="icon flat-color h-[20px]">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
-              <path
-                id="primary"
+              <path id="primary"
                 d="M10.71,17.29a1,1,0,0,1,0,1.42l-3,3a1,1,0,0,1-1.42,0l-3-3a1,1,0,0,1,1.42-1.42L6,18.59V3A1,1,0,0,1,8,3V18.59l1.29-1.3A1,1,0,0,1,10.71,17.29Zm10-12-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42L16,5.41V21a1,1,0,0,0,2,0V5.41l1.29,1.3a1,1,0,0,0,1.42,0A1,1,0,0,0,20.71,5.29Z"
-                style="fill: #000000"
-              ></path>
+                style="fill: #000000"></path>
             </g>
           </svg>
         </summary>
-        <ul
-          class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box"
-        >
+        <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box">
           <li><a (click)="closeSort(sort,'Low to High')">Low to High</a></li>
           <li><a (click)="closeSort(sort,'High to Low')">High to Low</a></li>
         </ul>
       </details>
-      <details  class="dropdown dropdown-end w-[170px]">
-        <summary #display
-          role="button"
-          class="btn m-1 dd w-full relative"
-          style="padding-left: 0"
-        >
-         {{showDisplay}}
-          <svg
-            viewBox="0 0 1024 1024"
-            class="icon absolute right-[10px] h-[20px]"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="#000000"
-          >
+      <details class="dropdown dropdown-end w-[170px]">
+        <summary #display role="button" class="btn m-1 dd w-full relative" style="padding-left: 0">
+          {{showDisplay}}
+          <svg viewBox="0 0 1024 1024" class="icon absolute right-[10px] h-[20px]" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
-              <path
-                d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
-                fill="#000000"
-              ></path>
+              <path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#000000"></path>
             </g>
           </svg>
         </summary>
-        <ul
-          class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box"
-        >
-          <li><a (click)="close(display,'Display By Image')"  routerLink="/home" fragment="image">Display By Image</a></li>
+        <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box">
+          <li><a (click)="close(display,'Display By Image')" routerLink="/home" fragment="image">Display By Image</a>
+          </li>
           <li><a (click)="close(display,'Display By Name')" routerLink="/home" fragment="name">Display By Name</a></li>
         </ul>
       </details>
     </div>
 
-    <div class="tool-rt">
-      <img class="cursor-pointer" routerLink="/customer-login" src="../../../assets/images/users.png" alt="" srcset="" />
+    <!-- <div class="tool-rt">
+      <img class="cursor-pointer" routerLink="/customer-login" src="../../../assets/images/users.png" alt="" srcset="" /><p class="font-bold" *ngIf="username">{{username}}</p>
       <img  routerLink="/home" fragment="cart"
         class="h-[40px] cursor-pointer"
         src="../../../assets/images/cart.png"
         alt=""
         srcset=""
-      />
+      /><p class="font-bold">Cart - {{cartCount}}</p>
+    </div> -->
+    <div class="tool-rt flex items-center space-x-4">
+      <div class="relative flex flex-col items-center">
+        <img class="cursor-pointer" routerLink="/customer-login" src="../../../assets/images/users.png" alt="" />
+        <span *ngIf="username" class="mt-1 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-1">
+          {{ username }}
+        </span>
+      </div>
+
+      <div class="relative">
+        <img routerLink="/home" fragment="cart" class="h-[40px] cursor-pointer" src="../../../assets/images/cart.png"
+          alt="" />
+        <span *ngIf="cartCount > 0"
+          class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          {{ cartCount }}
+        </span>
+      </div>
     </div>
+
+
   </div>
   <div>
     <div class="main-title">
@@ -118,178 +93,128 @@
       <!-- } -->
     </div>
     <!-- <div class="sub-title"> -->
-      <!-- @for (item of final; track $index) { -->
-      <!-- <div class="title-b" [style]="{display:this.selectedSubIndex == i ?'block':'none'}" [class.a-cat]="this.selectedCatSub == v.SUB_CATEGORY" (click)="selectSub(v.SUB_CATEGORY)" class="title-b" *ngFor="let v of final;let i = index"> -->
-        <!-- <p>{{ v.SUB_CATEGORY }}</p> -->
-        <!-- <p>{{ this.selectedSubIndex }}</p> -->
-      <!-- </div> -->
-      <!-- } -->
+    <!-- @for (item of final; track $index) { -->
+    <!-- <div class="title-b" [style]="{display:this.selectedSubIndex == i ?'block':'none'}" [class.a-cat]="this.selectedCatSub == v.SUB_CATEGORY" (click)="selectSub(v.SUB_CATEGORY)" class="title-b" *ngFor="let v of final;let i = index"> -->
+    <!-- <p>{{ v.SUB_CATEGORY }}</p> -->
+    <!-- <p>{{ this.selectedSubIndex }}</p> -->
+    <!-- </div> -->
+    <!-- } -->
     <!-- </div> -->
     @if(show=='cart'){
-      <cart></cart>
+    <cart></cart>
     }
     @else {
-      <div class="flex">
-        <div class="w-[75%] block">
-          <!-- <router-outlet></router-outlet> -->
-           @if(show=='image'){
-            <image-compare [data]="data$" ></image-compare>
-           }@if(show=='name'){
-            <list-compare [data]="data$" ></list-compare> 
-           }@if(show=='detail'){
-            <product-details></product-details>
-           }
-          <!-- <image-compare></image-compare> -->
-          <!-- <list-compare></list-compare> -->
-          <div class="suggest-box">
-            <div class="title-box"><p>Buy together</p></div>
-            <div
-              class="flex h-[calc(100%-140px)] w-full justify-evenly items-center"
-            >
-              <div class="s-box">
-                <img
-                  src="../../../assets/images/asian paints 1.png"
-                  alt=""
-                  srcset=""
-                />
-                <h3>Ace</h3>
-                <p>4.5 <span>(1278)</span></p>
-                <h3>6,999</h3>
-              </div>
-              <div class="s-box">
-                <img
-                  src="../../../assets/images/jenson 1.png"
-                  alt=""
-                  srcset=""
-                />
-                <h3>Ace</h3>
-                <p>4.5 <span>(1278)</span></p>
-                <h3>6,999</h3>
-              </div>
-              <div class="s-box">
-                <img
-                  src="../../../assets/images/asian paints 1.png"
-                  alt=""
-                  srcset=""
-                />
-                <h3>Ace</h3>
-                <p>4.5 <span>(1278)</span></p>
-                <h3>6,999</h3>
-              </div>
-            </div>
-            <div class="btn-holder">
-              <button class="bttn" routerLink="/home" fragment="cart">
-                <svg class="h-[25px]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="#ffffff"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
-                      stroke="#ffffff"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </g></svg>
-                ADD 3 ITEMS TO CART
-              </button>
-            </div>
+    <div class="flex">
+      <div class="w-[75%] block">
+        <!-- <router-outlet></router-outlet> -->
+        @if(show=='image'){
+        <image-compare [data]="data$"></image-compare>
+        }@if(show=='name'){
+        <list-compare [data]="data$"></list-compare>
+        }@if(show=='detail'){
+        <product-details></product-details>
+        }
+        <!-- <image-compare></image-compare> -->
+        <!-- <list-compare></list-compare> -->
+        <div class="suggest-box">
+          <div class="title-box">
+            <p>Buy together</p>
           </div>
-        </div>
-  
-        <div class="w-[25%]">
-          <div class="p-box">
-            <div class="offer">
-              <h2>Flat 70%</h2>
-              <div>
-                <img
-                  src="../../../assets/images/bookmark 1.png"
-                  alt=""
-                  srcset=""
-                />
-              </div>
-            </div>
-            <div class="h-[50%] w-full">
-              <img
-                class="mx-auto"
-                src="../../../assets/images/berger 5.png"
-                alt=""
-                srcset=""
-              />
-            </div>
-            <div class="content">
-              <div></div>
-              <h3>
-                Walmasta
-                <img
-                  class="h-[35px]"
-                  src="../../../assets/images/berger.png"
-                  alt=""
-                  srcset=""
-                />
-              </h3>
+          <div class="flex h-[calc(100%-140px)] w-full justify-evenly items-center">
+            <div class="s-box">
+              <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
+              <h3>Ace</h3>
               <p>4.5 <span>(1278)</span></p>
-              <h4>6,999</h4>
-              <button class="bttn" routerLink="/home" fragment="cart">
-                <svg
-                  fill="#ffffff"
-                  class="h-[25px]"
-                  version="1.1"
-                  id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 483.1 483.1"
-                  xml:space="preserve"
-                  stroke="#ffffff"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <g>
-                      <path
-                        d="M434.55,418.7l-27.8-313.3c-0.5-6.2-5.7-10.9-12-10.9h-58.6c-0.1-52.1-42.5-94.5-94.6-94.5s-94.5,42.4-94.6,94.5h-58.6 c-6.2,0-11.4,4.7-12,10.9l-27.8,313.3c0,0.4,0,0.7,0,1.1c0,34.9,32.1,63.3,71.5,63.3h243c39.4,0,71.5-28.4,71.5-63.3 C434.55,419.4,434.55,419.1,434.55,418.7z M241.55,24c38.9,0,70.5,31.6,70.6,70.5h-141.2C171.05,55.6,202.65,24,241.55,24z M363.05,459h-243c-26,0-47.2-17.3-47.5-38.8l26.8-301.7h47.6v42.1c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h141.2v42.1 c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h47.6l26.8,301.8C410.25,441.7,389.05,459,363.05,459z"
-                      ></path>
-                    </g>
-                  </g>
-                </svg>
-                Buy Now
-              </button>
+              <h3>6,999</h3>
             </div>
-          </div>
-  
-          <div class="offer-box">
-            <!-- <div class="content-box"> -->
-            <h4>Amazing <span class="text-[var(--prim)]">Combo</span></h4>
-            <h4>
-              UPTO <span class="text-[var(--prim)] text-[32px]">50%</span> SAVE
-            </h4>
-            <!-- </div> -->
-            <div class="img-box">
-              <img src="../../../assets/images/Group 44.png" alt="" srcset="" />
+            <div class="s-box">
+              <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
+              <h3>Ace</h3>
+              <p>4.5 <span>(1278)</span></p>
+              <h3>6,999</h3>
+            </div>
+            <div class="s-box">
+              <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
+              <h3>Ace</h3>
+              <p>4.5 <span>(1278)</span></p>
+              <h3>6,999</h3>
             </div>
           </div>
           <div class="btn-holder">
-            <button class="bttn w-[120px]">View More</button>
-          </div>
-          <div class="making-box">
-            <p>Asian paints Making tutorial</p>
+            <button class="bttn" routerLink="/home" fragment="cart">
+              <svg class="h-[25px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                    stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+              </svg>
+              ADD 3 ITEMS TO CART
+            </button>
           </div>
         </div>
       </div>
+
+      <div class="w-[25%]">
+        <div class="p-box">
+          <div class="offer">
+            <h2>Flat 70%</h2>
+            <div>
+              <img src="../../../assets/images/bookmark 1.png" alt="" srcset="" />
+            </div>
+          </div>
+          <div class="h-[50%] w-full">
+            <img class="mx-auto" src="../../../assets/images/berger 5.png" alt="" srcset="" />
+          </div>
+          <div class="content">
+            <div></div>
+            <h3>
+              Walmasta
+              <img class="h-[35px]" src="../../../assets/images/berger.png" alt="" srcset="" />
+            </h3>
+            <p>4.5 <span>(1278)</span></p>
+            <h4>6,999</h4>
+            <button class="bttn" routerLink="/home" fragment="cart">
+              <svg fill="#ffffff" class="h-[25px]" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 483.1 483.1" xml:space="preserve"
+                stroke="#ffffff">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g>
+                    <path
+                      d="M434.55,418.7l-27.8-313.3c-0.5-6.2-5.7-10.9-12-10.9h-58.6c-0.1-52.1-42.5-94.5-94.6-94.5s-94.5,42.4-94.6,94.5h-58.6 c-6.2,0-11.4,4.7-12,10.9l-27.8,313.3c0,0.4,0,0.7,0,1.1c0,34.9,32.1,63.3,71.5,63.3h243c39.4,0,71.5-28.4,71.5-63.3 C434.55,419.4,434.55,419.1,434.55,418.7z M241.55,24c38.9,0,70.5,31.6,70.6,70.5h-141.2C171.05,55.6,202.65,24,241.55,24z M363.05,459h-243c-26,0-47.2-17.3-47.5-38.8l26.8-301.7h47.6v42.1c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h141.2v42.1 c0,6.6,5.4,12,12,12s12-5.4,12-12v-42.1h47.6l26.8,301.8C410.25,441.7,389.05,459,363.05,459z">
+                    </path>
+                  </g>
+                </g>
+              </svg>
+              Buy Now
+            </button>
+          </div>
+        </div>
+
+        <div class="offer-box">
+          <!-- <div class="content-box"> -->
+          <h4>Amazing <span class="text-[var(--prim)]">Combo</span></h4>
+          <h4>
+            UPTO <span class="text-[var(--prim)] text-[32px]">50%</span> SAVE
+          </h4>
+          <!-- </div> -->
+          <div class="img-box">
+            <img src="../../../assets/images/Group 44.png" alt="" srcset="" />
+          </div>
+        </div>
+        <div class="btn-holder">
+          <button class="bttn w-[120px]">View More</button>
+        </div>
+        <div class="making-box">
+          <p>Asian paints Making tutorial</p>
+        </div>
+      </div>
+    </div>
     }
- 
+
   </div>
 </section>

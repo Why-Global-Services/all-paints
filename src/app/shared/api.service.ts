@@ -12,6 +12,9 @@ export class ApiService {
   loginStaff(body: any) {
     return this.http.post(this.api + 'security/createToken', body)
   }
+  profile(body: any) {
+    return this.http.post(this.api + 'api/Stock/GetAllpaintprofileprocess', body)
+  }
   createCustomer(body: any) {
     // const headers = new HttpHeaders({
     //   'Content-Type': 'application/json'
@@ -20,6 +23,9 @@ export class ApiService {
   }
   getAllProducts(body: any) {
     return this.http.post(this.api + 'api/stock/GetAllPaintsProducts', body)
+  }
+  getAllSchemes(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/AllPaintsOrderData', body)
   }
   reSendOtp(body: any) {
     return this.http.post(this.api + 'api/FranchiOrder/misexotelotp', body)
