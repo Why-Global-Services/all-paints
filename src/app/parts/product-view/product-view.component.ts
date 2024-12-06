@@ -79,6 +79,7 @@ export class ProductViewComponent implements OnInit {
   schemes: any[] = [];
   selectedProductName: string = ""
   productPriceDetails: any[] = [];
+  leastProduct: any[] = []
   selectedEcomcode: any = ""
   schemesForm = this.fb.group({
     "filtervalue1": "",
@@ -595,8 +596,11 @@ export class ProductViewComponent implements OnInit {
         product.quantity > 0
       ) {
         console.log(product, "product");
-        const least = this.checkPackAvailability(product.pack, product.category);
-        console.log(least, "least");
+        let least = []
+        least = this.checkPackAvailability(product.pack, product.category);
+        this.leastProduct.push(least)
+        console.log(this.leastProduct);
+
 
         const quantity = parseFloat(product.quantity) || 0;
         const price = parseFloat(product.price) || 0;
