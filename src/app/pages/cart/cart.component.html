@@ -1,6 +1,6 @@
 <div class="myCart-box">
   <div class="offer box">
-    <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-3 md:grid-cols-3 ">
 
       <!-- First Column: Selected Items -->
       <div class="sel-items col-span-1">
@@ -40,16 +40,17 @@
             </div>
           </div>
         </div> -->
-
-        <div *ngFor="let product of cartlogicData; let pIndex = index" class="p-box">
+<div class="p-2">
+        <div  *ngFor="let product of cartlogicData; let pIndex = index" class="p-box border shadow-lg rounded-md border-gray-400 relative">
           <!-- Product Image Section -->
-          <div class="img-box">
+          <svg (click)="deleteCartItem(pIndex)" class="absolute cursor-pointer top-1 right-2" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+          <div class="img-box ">
             <ng-container *ngIf="getPaintBrandKey(product) as paintKey">
               <ng-container [ngSwitch]="paintKey">
                 <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
                 <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
                   alt="Asian Paints" />
-                <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/products/{{ product.materialCode }}.png"
+                <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/images/jenson 1.png"
                   alt="Jenson" />
                 <img *ngSwitchCase="'Sheenlac'" src="../../../assets/images/sheenlac.png" alt="Sheenlac" />
                 <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
@@ -58,17 +59,32 @@
           </div>
 
           <!-- Product Details Section -->
-          <div class="p-details">
+          <div class="p-details ">
             <h4>{{ product.productname }}</h4>
             <p>Price: ₹{{ product.price | number: '1.2-2'}}</p>
-            <p>Quantity: {{ product.qty }}</p>
+            <p class="flex items-center gap-2">Quantity: 
+              <svg class="cursor-pointer" (click)="handlePlusMinus(-1,pIndex)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323"><path d="M200-440v-80h560v80H200Z"/></svg>
+              
+              {{ product.qty }} 
+            
+              <svg class="cursor-pointer" (click)="handlePlusMinus(1,pIndex)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+            </p>
             <div *ngIf="product.totaldisamount >0">
               <p>Total Discount: ₹{{ product.totaldisamount }}</p>
             </div>
+            <div *ngIf="this.duplogicData[pIndex].qty!=product.qty">
+            
+              <button (click)="updateCartData(pIndex)" class="bg-red-500 text-white rounded-md shadow-md active:translate-y-2 duration-100 ease-in-out p-2" >Update</button>
+            </div>
           </div>
+        </div></div>
+        <div class="p-2">
+        <div class="total">
+          <h2>Total: ₹ {{ total.toFixed(2) || 0 }}</h2>
+          <div class="text-green-600 flex flex-col animate-pulse items-center" *ngIf="alldiscountValue"><span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})</div>
+
         </div>
-
-
+      </div>
       </div>
 
       <!-- <div class="brand-item col-span-1">
@@ -149,44 +165,52 @@
       <!-- Third Column: My Cart -->
       <div class="sel-items col-span-1">
         <div class="title">
-          <h3>My Cart ({{cartLength}})</h3>
+          <h3>My Cart ({{cartlogicData.length}})</h3>
         </div>
-        <div *ngFor="let category of cartData.products; let cIndex = index">
-          <div *ngFor="let brandCategory of category; let bIndex = index">
-            <div *ngFor="let product of brandCategory; let pIndex = index" class="p-box">
-              <div class="img-box">
-                <ng-container *ngIf="getPaintBrandKey(product) as paintKey">
-                  <ng-container [ngSwitch]="paintKey">
-                    <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
-                    <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
-                      alt="Asian Paints" />
-                    <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/products/{{product.JN_MaterialCode}}.png"
-                      alt="Jenson" />
-                    <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
-                  </ng-container>
-                </ng-container>
-              </div>
-              <div class="p-details">
-                <h4>{{ product.JN_PAINTS || product.BERGER_PAINTS || product.ASIAN_PAINTS }}</h4>
-                <div
-                  *ngFor="let detail of product.JN_details || product.BERGER_details || product.Asian_detils; let dIndex = index">
-                  <h4>{{ detail.pack }}</h4>
-                  <p>₹{{ detail.price || 'N/A' }}</p>
-                  <label>Quantity:{{detail.quantity}}
-                    <!-- <input type="number" [(ngModel)]="detail.quantity" min="1" max="100" /> -->
-                  </label>
-                </div>
-              </div>
+        <div class="p-2">
+        <div *ngFor="let product of cartlogicData; let pIndex = index" class="p-box  border shadow-lg rounded-md border-gray-400 relative">
+          <!-- Product Image Section -->
+          <div class="img-box ">
+            <ng-container *ngIf="getPaintBrandKey(product) as paintKey">
+              <ng-container [ngSwitch]="paintKey">
+                <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
+                <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
+                  alt="Asian Paints" />
+                <img *ngSwitchCase="'JN_PAINTS'" src="../../../assets/images/jenson 1.png"
+                  alt="Jenson" />
+                <img *ngSwitchCase="'Sheenlac'" src="../../../assets/images/sheenlac.png" alt="Sheenlac" />
+                <img *ngSwitchDefault src="../../../assets/images/default.png" alt="Default Image" />
+              </ng-container>
+            </ng-container>
+          </div>
+
+          <!-- Product Details Section -->
+          <div class="p-details ">
+            <h4>{{ product.productname }}</h4>
+            <p>Price: ₹{{ product.price | number: '1.2-2'}}</p>
+            <p class="flex items-center gap-2">Quantity: 
+              
+              {{ product.qty }} 
+            
+            </p>
+            <div *ngIf="product.totaldisamount >0">
+              <p>Total Discount: ₹{{ product.totaldisamount }}</p>
             </div>
+            
+          </div>
+        </div></div>
+        <div class="p-2">
+          <div class="total">
+            <h2>Total: ₹ {{ total.toFixed(2) || 0 }}</h2>
+            <div class="text-green-600 flex flex-col animate-pulse  items-center" *ngIf="alldiscountValue"><span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})</div>
+
           </div>
         </div>
       </div>
 
     </div> <!-- End of sep-2 -->
 
-    <div class="total">
-      <h2>Total: ₹{{ total.toFixed(2) || 0 }}</h2>
-    </div>
+   
   </div> <!-- End of offer -->
 </div> <!-- End of myCart-box -->
 

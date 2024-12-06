@@ -7,6 +7,7 @@ import { LogicsService } from '../../shared/logics.service';
 import { ApiService } from '../../shared/api.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface SelectDetails {
   price: number; // Price of the selected product
@@ -89,25 +90,14 @@ export class CartComponent implements OnInit {
   })
   data: any[] = [];
   cartlogicData: any[] = [];
+  duplogicData: any[] = [];
   getCartDetails: any[] = [];
+  alldiscountValue:any=0
 
   ngOnInit(): void {
     console.log("cart page");
-
-    this.api.getCart(this.getCart.value).subscribe((res: any) => {
-      const parsedData = JSON.parse(res);
-      this.cartlogicData = parsedData;
-      this.logic.cartItems = parsedData;
-      this.cartlogicData.map((item: any) => {
-        this.total += item.price
-        this.logic.cartTotal = this.total;
-        console.log(this.logic.cartTotal);
-        console.log(this.logic.cartItems);
-        
-      })
-
-
-    })
+this.getAllCartdata()
+   
 
     //this.cartData = this.logic.cart;
     // // this.findLeastPricedProducts()
@@ -182,6 +172,34 @@ export class CartComponent implements OnInit {
 
     // Calculate initial total price
   }
+
+  getAllCartdata(){
+    this.api.getCart(this.getCart.value).subscribe((res: any) => {
+      const parsedData = JSON.parse(res);
+      this.cartlogicData = parsedData;
+      this.logic.cartItems = parsedData;
+      this.cartlogicData.map((item: any) => {
+        this.total += item.price
+        this.logic.cartTotal = this.total;
+        console.log(this.logic.cartTotal);
+        console.log(this.logic.cartItems);
+        
+      })
+      this.alldiscountValue=this.cartlogicData.reduce((acc,current)=>{
+     
+        return acc=acc+(current.discountamount*current.qty)
+
+      },0)
+      console.log(this.alldiscountValue,"disount")
+      this.duplogicData=parsedData.map((item:any,index:any)=>{
+        return {
+         ...item
+        }
+      })
+
+
+    })
+  }
   findLeastPricedProducts(): void {
     this.leastPricedProducts = this.logic.cart.products[0].map((productGroup: any[]) => {
       const prices = productGroup.map(product => {
@@ -214,15 +232,17 @@ export class CartComponent implements OnInit {
     console.log("Least Priced Products:", this.leastPricedProducts);
   }
 
-  getPaintBrandKey(product: Product): string | null {
-    if (product.JN_PAINTS) {
+  getPaintBrandKey(product: any): string | null {
+
+    const value=product.company_name&&product.company_name.split("_")[0]
+    if (value.toLowerCase()=='jn') {
       return 'JN_PAINTS';
-    } else if (product.BERGER_PAINTS) {
+    } else if (value.toLowerCase()=='berger') {
       return 'BERGER_PAINTS';
-    } else if (product.ASIAN_PAINTS) {
+    } else if (value.toLowerCase()=='asian') {
       return 'ASIAN_PAINTS';
-    } else if (product.Sheenlac_PAINTS) {
-      return 'ASIAN_PAINTS';
+    } else if (value.toLowerCase()=='sheenlac') {
+      return 'Sheenlac_PAINTS';
     }
     return null; // Return null if none found
   }
@@ -406,4 +426,83 @@ export class CartComponent implements OnInit {
   ];
 
   subTitle: string[] = ['Interiors Wall Paints', 'Exterior Wall Paints'];
+
+handlePlusMinus(val:any,index:any){
+
+  if(val>0){
+    console.log(val,'plus')
+    this.cartlogicData[index].qty=this.cartlogicData[index].qty+val
+  }
+  else{
+         
+    if(this.cartlogicData[index].qty>0){
+      this.cartlogicData[index].qty=this.cartlogicData[index].qty+val
+
+    }
+  }
+  this.duplogicData[index].change=true
+}
+
+updateCartData(index:any){
+  console.log(index)
+  if(index>-1){
+try{
+  let individualPrice=(this.cartlogicData[index].price)*this.cartlogicData[index].qty
+  let data=this.fb.group({
+  id: this.cartlogicData[index].id.toString(),
+   customerId: this.cartlogicData[index].customerId,
+   pack: this.cartlogicData[index].pack,
+   price: individualPrice.toString(),
+   qty:this.cartlogicData[index].qty.toString(),
+   MaterialCode:this.cartlogicData[index].MaterialCode,
+   
+ })
+ console.log(data)
+  
+  this.api.updateCart(data.value).subscribe({
+    next: (response) => {
+      console.log(response, "ji");
+      this.getAllCartdata()
+      window.location.reload();
+    },
+    error: (err:HttpErrorResponse) => {
+      if(err.status==200){
+        this.getAllCartdata()
+      }
+    },
+  })
+  // 
+ 
+}catch(err){
+  console.log(err)
+}
+
+  }
+
+}
+
+
+deleteCartItem(index: any) {
+  if (index > -1) {
+    const data = this.fb.group({
+      id: this.cartlogicData[index].id.toString(),
+      customerId: this.cartlogicData[index].customerId,
+    });
+
+    console.log(data.value); // Debugging log to ensure data is correct
+
+    this.api.DeleteCartItem(data.value).subscribe({
+      next: (res: any) => {
+        console.log(res); // Check if the response is successful
+      },
+      error: (err: HttpErrorResponse) => {
+        if(err.status==200){
+          this.getAllCartdata()
+        }
+      },
+    });
+  }
+}
+
+
 }

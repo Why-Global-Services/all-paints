@@ -45,6 +45,12 @@ export class ApiService {
   getCart(body: any) {
     return this.http.post(this.api + 'api/FranchiOrder/Getcartdetails', body)
   }
+  updateCart(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/CartUpdate', body)
+  }
+  DeleteCartItem(body: any) {
+    return this.http.post(this.api + 'api/FranchiOrder/RemoveCartOrder', body)
+  }
   payment(body: any) {
     return this.http.post(this.api + 'api/FranchiStock/CustomerPayment', body)
   }
