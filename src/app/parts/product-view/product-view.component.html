@@ -10,7 +10,7 @@
       <div class="view-box" *ngIf="data.ASIAN_PAINTS !== null">
         <div class="p-box">
           <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
-          <p class="text-lg text-center font-semibold">{{ data.ASIAN_PAINTS }}</p>
+          <p class="text-lg text-center font-semibold h-16">{{ data.ASIAN_PAINTS }}</p>
 
           <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.Asian_detils[0].price }}</h3>
@@ -20,7 +20,7 @@
         <button #pack style="display: none;" onclick="my_modal_2.showModal()">summa</button>
         <div class="a-box cursor-pointer" (click)="pack2(data, data.ASIAN_PAINTS,data.Asian_detils[0],1)">
           <p>Pack & Color</p>
-          <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
+          <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[15px]" version="1.1"
             xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -102,7 +102,7 @@
       <div class="view-box" *ngIf="data.BERGER_PAINTS !== null">
         <div class="p-box">
           <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
-          <h3>{{ data.BERGER_PAINTS }}</h3>
+          <p class="text-lg text-center font-semibold h-16">{{ data.BERGER_PAINTS }}</p>
 
           <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.BERGER_details[0].price }}</h3>
@@ -112,7 +112,7 @@
         <button #packTwo style="display: none;" onclick="my_modal_2.showModal()">summa</button>
         <div class="a-box cursor-pointer" (click)="pack2(data,data.BERGER_PAINTS,data.BERGER_details[0],2)">
           <p>Pack & Color</p>
-          <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
+          <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[15px]" version="1.1"
             xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -192,8 +192,8 @@
       </div>
       <div class="view-box" *ngIf="data.JN_PAINTS !== null">
         <div class="p-box">
-          <img src="../../../assets/products/{{data.JN_MaterialCode}}.png" alt="" srcset="" />
-          <h3>{{ data.JN_PAINTS }}</h3>
+          <img (error)="onImageError($event,'JN')" src="../../../assets/products/{{data.JN_MaterialCode}}.png" alt="" srcset="" />
+          <p class="text-lg text-center font-semibold h-16">{{ data.JN_PAINTS }}</p>
 
           <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.JN_details[0].price }}</h3>
@@ -278,13 +278,13 @@
       <div class="img-box">
         <img src="../../../assets/images/sheenlac.png" alt="" />
       </div>
-      <div class="view-box view-na">
+      <div *ngIf="data.Sheenlac_PAINTS == null" class="view-box view-na">
         <p>NA</p>
       </div>
       <div class="view-box" *ngIf="data.Sheenlac_PAINTS !== null">
         <div class="p-box">
           <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
-          <h3>{{ data.Sheenlac_PAINTS }}</h3>
+          <p class="text-lg text-center font-semibold h-16">{{ data.Sheenlac_PAINTS }}</p>
 
           <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.Sheenlac_details[0].price }}</h3>

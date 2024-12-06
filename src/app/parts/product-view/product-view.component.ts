@@ -817,4 +817,12 @@ export class ProductViewComponent implements OnInit {
   //     ]
   //   }
   // ]
+
+
+  onImageError(event: Event, v: any){
+    const target = event.target as HTMLImageElement;
+
+    v=="JN"?target.src = '../../../assets/images/jenson 1.png': target.src = '../../../assets/images/jenson 1.png'
+    
+  }
 }
