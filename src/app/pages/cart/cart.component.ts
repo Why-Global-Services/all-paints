@@ -83,74 +83,95 @@ export class CartComponent implements OnInit {
     "filtervalue7": "",
     "filtervalue8": ""
   })
+  getCart = this.fb.group({
+    "customerId": localStorage.getItem("apCusId")
+
+  })
   data: any[] = [];
   cartlogicData: any[] = [];
+  getCartDetails: any[] = [];
 
   ngOnInit(): void {
-    this.cartData = this.logic.cart;
-    this.findLeastPricedProducts()
-    console.log(this.logic.cart, "cart data");
+    console.log("cart page");
+
+    this.api.getCart(this.getCart.value).subscribe((res: any) => {
+      const parsedData = JSON.parse(res);
+      this.cartlogicData = parsedData;
+      this.logic.cartItems = parsedData;
+      this.cartlogicData.map((item: any) => {
+        this.total += item.price
+        this.logic.cartTotal = this.total;
+        console.log(this.logic.cartTotal);
+        
+      })
+
+
+    })
+
+    //this.cartData = this.logic.cart;
+    // // this.findLeastPricedProducts()
+    // console.log(this.logic.cart, "cart data");
     let totalProductCount = 0;
-    this.logic.cart.products.forEach((firstLevel: any[]) =>
+    this.logic.cart.forEach((firstLevel: any[]) =>
       firstLevel.forEach(secondLevel =>
         totalProductCount += secondLevel.length
 
       )
     );
-    this.api.getAllSchemes(this.schemesForm.value).subscribe((res: any) => {
-      const parsedData = JSON.parse(res);
-      console.log(parsedData);
+    // this.api.getAllSchemes(this.schemesForm.value).subscribe((res: any) => {
+    //   const parsedData = JSON.parse(res);
+    //   console.log(parsedData);
 
-      if (Array.isArray(parsedData) && parsedData.length > 0) {
-        this.schemes = parsedData;
+    //   if (Array.isArray(parsedData) && parsedData.length > 0) {
+    //     this.schemes = parsedData;
 
-        let result: any[] = [];
-        let discountAmount: number = 0;
-        parsedData.forEach((schems: any) => {
-          this.logic.cartProducts.forEach((product: any) => {
-            console.log(product.materialCode);
-            console.log(schems.cproductgroup);
+    //     let result: any[] = [];
+    //     let discountAmount: number = 0;
+    //     parsedData.forEach((schems: any) => {
+    //       this.logic.cartProducts.forEach((product: any) => {
+    //         console.log(product.materialCode);
+    //         console.log(schems.cproductgroup);
 
-            // Ensure we match the product and scheme by both material code and scheme type
-            if (schems.cproductgroup === product.materialCode && schems.cschemetype === "Seasoning") {
-              // Append scheme values to product
-              product.discounttype = schems.cdistype;
-              product.cdisdesc = schems.cdisdesc;
-              product.schno = schems.schno;
-              product.nmaxqty = schems.nmaxqty;
-              product.nminqty = schems.nminqty;
-              product.cdisvalue = schems.cdisvalue;
-              product.cschemetype = schems.cschemetype;
-              if (product.qty >= schems.nminqty && product.qty <= schems.nmaxqty) {
-                console.log("inside condition", schems.cdistype);
-                if (schems.cdistype === "Rupees") {
-                  console.log(product.qty, schems.cdisvalue, "data");
+    //         // Ensure we match the product and scheme by both material code and scheme type
+    //         if (schems.cproductgroup === product.materialCode && schems.cschemetype === "Seasoning") {
+    //           // Append scheme values to product
+    //           product.discounttype = schems.cdistype;
+    //           product.cdisdesc = schems.cdisdesc;
+    //           product.schno = schems.schno;
+    //           product.nmaxqty = schems.nmaxqty;
+    //           product.nminqty = schems.nminqty;
+    //           product.cdisvalue = schems.cdisvalue;
+    //           product.cschemetype = schems.cschemetype;
+    //           if (product.qty >= schems.nminqty && product.qty <= schems.nmaxqty) {
+    //             console.log("inside condition", schems.cdistype);
+    //             if (schems.cdistype === "Rupees") {
+    //               console.log(product.qty, schems.cdisvalue, "data");
 
-                  discountAmount = product.qty * schems.cdisvalue
-                  console.log(discountAmount, 'amt');
+    //               discountAmount = product.qty * schems.cdisvalue
+    //               console.log(discountAmount, 'amt');
 
 
-                } else if (schems.cdistype == "Percentage") {
-                  const discountvalue = (product.price * schems.cdisvalue) / 100;
-                  discountAmount = product.qty * discountvalue
-                  console.log(discountAmount, "else amt");
+    //             } else if (schems.cdistype == "Percentage") {
+    //               const discountvalue = (product.price * schems.cdisvalue) / 100;
+    //               discountAmount = product.qty * discountvalue
+    //               console.log(discountAmount, "else amt");
 
-                }
-              }
-              product.totaldisamount = discountAmount
-              // Check if the product has already been added to result to avoid duplicates
-              const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
-              if (!isDuplicate) {
-                result.push(product);  // Add the updated product to result
-              }
-            }
-          });
-        });
-        this.cartlogicData = result
-        console.log(result, "matched schemes");
-        this.calculateTotalPrice();
-      }
-    });
+    //             }
+    //           }
+    //           product.totaldisamount = discountAmount
+    //           // Check if the product has already been added to result to avoid duplicates
+    //           const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
+    //           if (!isDuplicate) {
+    //             result.push(product);  // Add the updated product to result
+    //           }
+    //         }
+    //       });
+    //     });
+    //     this.cartlogicData = result
+    //     console.log(result, "matched schemes");
+    //     this.calculateTotalPrice();
+    //   }
+    // });
 
 
 
@@ -204,162 +225,162 @@ export class CartComponent implements OnInit {
     }
     return null; // Return null if none found
   }
-  onBrandChange() {
-    this.selectedProducts = this.getProductsByBrand(this.selectedBrand);
-  }
-  // Filter products based on the selected brand
-  getProductsByBrand(brand: string): any[] {
+  // onBrandChange() {
+  //   this.selectedProducts = this.getProductsByBrand(this.selectedBrand);
+  // }
+  // // Filter products based on the selected brand
+  // getProductsByBrand(brand: string): any[] {
 
-    console.log(brand, "brand");
-    this.products = [];
-    // Loop through the product set
-    this.logic.cart.products.forEach((productSet: any[]) => {
-      console.log(productSet, "productset");
+  //   console.log(brand, "brand");
+  //   this.products = [];
+  //   // Loop through the product set
+  //   this.logic.cart.products.forEach((productSet: any[]) => {
+  //     console.log(productSet, "productset");
 
-      // Loop through each product in the set
-      productSet.forEach((product) => {
-        console.log(product[0].JN_MaterialCode, "product");
-        product.forEach((p: any) => {
-          console.log(p, "product loop");
+  //     // Loop through each product in the set
+  //     productSet.forEach((product) => {
+  //       console.log(product[0].JN_MaterialCode, "product");
+  //       product.forEach((p: any) => {
+  //         console.log(p, "product loop");
 
-          // Check the selected brand and add the respective product details
-          if (brand === 'Asian' && p.ASIAN_PAINTS) {
-            console.log(p.ASIAN_PAINTS, "asian");
+  //         // Check the selected brand and add the respective product details
+  //         if (brand === 'Asian' && p.ASIAN_PAINTS) {
+  //           console.log(p.ASIAN_PAINTS, "asian");
 
-            this.products.push({
-              brand: p.ASIAN_PAINTS,
-              materialCode: p.Asian_MaterialCode,
-              details: p.Asian_detils
-            });
-          } else if (brand === 'Berger' && p.BERGER_PAINTS) {
-            console.log(product.BERGER_PAINTS, "berger");
+  //           this.products.push({
+  //             brand: p.ASIAN_PAINTS,
+  //             materialCode: p.Asian_MaterialCode,
+  //             details: p.Asian_detils
+  //           });
+  //         } else if (brand === 'Berger' && p.BERGER_PAINTS) {
+  //           console.log(product.BERGER_PAINTS, "berger");
 
-            this.products.push({
-              brand: p.BERGER_PAINTS,
-              materialCode: p.Berger_MaterialCode,
-              details: p.BERGER_details
-            });
-          } else if (brand === 'JN' && p.JN_PAINTS) {
-            console.log("Jenson & Nicholson brand found");
+  //           this.products.push({
+  //             brand: p.BERGER_PAINTS,
+  //             materialCode: p.Berger_MaterialCode,
+  //             details: p.BERGER_details
+  //           });
+  //         } else if (brand === 'JN' && p.JN_PAINTS) {
+  //           console.log("Jenson & Nicholson brand found");
 
-            // Assuming the JN brand has some specific properties (if not, you can modify the condition accordingly)
-            this.products.push({
-              brand: p.JN_PAINTS, // Example name for JN brand
-              materialCode: product.JN_MaterialCode,
-              details: p.JN_details // Add the appropriate details if any
-            });
-          } else if (brand === 'Sheenlac') {
-            // Since you don't have Sheenlac in the data yet, you can either add it here or leave it for future data updates
-            console.log("Sheenlac brand is not available in this product set");
-          }
-        })
+  //           // Assuming the JN brand has some specific properties (if not, you can modify the condition accordingly)
+  //           this.products.push({
+  //             brand: p.JN_PAINTS, // Example name for JN brand
+  //             materialCode: product.JN_MaterialCode,
+  //             details: p.JN_details // Add the appropriate details if any
+  //           });
+  //         } else if (brand === 'Sheenlac') {
+  //           // Since you don't have Sheenlac in the data yet, you can either add it here or leave it for future data updates
+  //           console.log("Sheenlac brand is not available in this product set");
+  //         }
+  //       })
 
-      });
-    });
+  //     });
+  //   });
 
-    console.log(this.products, "selected product");
+  //   console.log(this.products, "selected product");
 
-    return this.products;
-  }
+  //   return this.products;
+  // }
   ChangeProduct(product: any) {
     console.log(product, "changed product");
 
   }
 
-  getQuantitiesAndPrices(data: CartData): Detail[] {
-    const result: Detail[] = [];
+  // getQuantitiesAndPrices(data: CartData): Detail[] {
+  //   const result: Detail[] = [];
 
-    if (!Array.isArray(data.products)) {
-      console.error("data.products is not an array", data.products);
-      return result;
-    }
+  //   if (!Array.isArray(data.products)) {
+  //     console.error("data.products is not an array", data.products);
+  //     return result;
+  //   }
 
-    data.products.forEach((productCategory) => {
-      if (Array.isArray(productCategory)) {
-        productCategory.forEach((brandCategory) => {
-          if (Array.isArray(brandCategory)) {
-            brandCategory.forEach((product) => {
-              console.log(product.JN_MaterialCode, "product");
+  //   data.products.forEach((productCategory) => {
+  //     if (Array.isArray(productCategory)) {
+  //       productCategory.forEach((brandCategory) => {
+  //         if (Array.isArray(brandCategory)) {
+  //           brandCategory.forEach((product) => {
+  //             console.log(product.JN_MaterialCode, "product");
 
-              const details = product.JN_details || product.BERGER_details || product.Asian_detils || []; // Adjust based on your structure
+  //             const details = product.JN_details || product.BERGER_details || product.Asian_detils || []; // Adjust based on your structure
 
-              details.forEach((detail) => {
-                const price = parseFloat(detail.price);
-                const quantity = detail.quantity;
+  //             details.forEach((detail) => {
+  //               const price = parseFloat(detail.price);
+  //               const quantity = detail.quantity;
 
-                if (detail && !isNaN(price)) {
-                  result.push({
-                    price: price,
-                    quantity: quantity,
-                  });
-                } else {
-                  console.warn("Invalid detail structure", detail);
-                }
-              });
-            });
-          } else {
-            console.warn("Expected brandCategory to be an array", brandCategory);
-          }
-        });
-      } else {
-        console.warn("Expected productCategory to be an array", productCategory);
-      }
-    });
-    console.log(result, "result");
+  //               if (detail && !isNaN(price)) {
+  //                 result.push({
+  //                   price: price,
+  //                   quantity: quantity,
+  //                 });
+  //               } else {
+  //                 console.warn("Invalid detail structure", detail);
+  //               }
+  //             });
+  //           });
+  //         } else {
+  //           console.warn("Expected brandCategory to be an array", brandCategory);
+  //         }
+  //       });
+  //     } else {
+  //       console.warn("Expected productCategory to be an array", productCategory);
+  //     }
+  //   });
+  //   console.log(result, "result");
 
-    return result;
-  }
+  //   return result;
+  // }
 
 
 
-  calculateTotalPrice() {
-    const quantitiesAndPrices = this.getQuantitiesAndPrices(this.cartData);
-    this.total = quantitiesAndPrices.reduce(
-      (sum, detail) => sum + detail.price * detail.quantity,
-      0
-    );
+  // calculateTotalPrice() {
+  //   const quantitiesAndPrices = this.getQuantitiesAndPrices(this.cartData);
+  //   this.total = quantitiesAndPrices.reduce(
+  //     (sum, detail) => sum + detail.price * detail.quantity,
+  //     0
+  //   );
 
-    const totalDiscountAmount = this.cartlogicData.reduce((discountSum, product: any) => {
-      if (product.totaldisamount) {
-        discountSum += product.totaldisamount;
-      }
-      return discountSum;
-    }, 0);
+  //   const totalDiscountAmount = this.cartlogicData.reduce((discountSum, product: any) => {
+  //     if (product.totaldisamount) {
+  //       discountSum += product.totaldisamount;
+  //     }
+  //     return discountSum;
+  //   }, 0);
 
-    console.log("Total Discount Amount:", totalDiscountAmount);
+  //   console.log("Total Discount Amount:", totalDiscountAmount);
 
-    console.log(totalDiscountAmount, "todisamt");
+  //   console.log(totalDiscountAmount, "todisamt");
 
-    this.total -= totalDiscountAmount;
-    this.logic.cartTotal = this.total;
-    console.log("Total price:", this.total);
-  }
+  //   this.total -= totalDiscountAmount;
+  //   this.logic.cartTotal = this.total;
+  //   console.log("Total price:", this.total);
+  // }
 
-  getSelectedTotal(): void {
-    // Calculate total price for selected paints
-    this.selectedTotal = this.selectedPaints.reduce((sum: number, category: Product[][]) => {
-      return sum + category.reduce((catSum: number, brand: Product[]) => {
-        return catSum + brand.reduce((prodSum: number, product: Product) => {
-          return prodSum + (product.selectDetails?.price || 0) * (product.count || 0); // Safe access
-        }, 0);
-      }, 0);
-    }, 0);
-  }
+  // getSelectedTotal(): void {
+  //   // Calculate total price for selected paints
+  //   this.selectedTotal = this.selectedPaints.reduce((sum: number, category: Product[][]) => {
+  //     return sum + category.reduce((catSum: number, brand: Product[]) => {
+  //       return catSum + brand.reduce((prodSum: number, product: Product) => {
+  //         return prodSum + (product.selectDetails?.price || 0) * (product.count || 0); // Safe access
+  //       }, 0);
+  //     }, 0);
+  //   }, 0);
+  // }
 
-  sum(categoryIndex: number, brandIndex: number, productIndex: number, operation: number): void {
-    const selectedProduct = this.selectedPaints[categoryIndex]?.[brandIndex]?.[productIndex]; // Safe access
+  // sum(categoryIndex: number, brandIndex: number, productIndex: number, operation: number): void {
+  //   const selectedProduct = this.selectedPaints[categoryIndex]?.[brandIndex]?.[productIndex]; // Safe access
 
-    if (selectedProduct) {
-      if (operation === -1 && selectedProduct.count > 0) {
-        selectedProduct.count -= 1; // Prevent negative count
-      } else if (operation === 1) {
-        selectedProduct.count += 1; // Increment count
-      }
-      this.getSelectedTotal(); // Update selected total after change
-    } else {
-      console.warn("Selected product not found:", categoryIndex, brandIndex, productIndex);
-    }
-  }
+  //   if (selectedProduct) {
+  //     if (operation === -1 && selectedProduct.count > 0) {
+  //       selectedProduct.count -= 1; // Prevent negative count
+  //     } else if (operation === 1) {
+  //       selectedProduct.count += 1; // Increment count
+  //     }
+  //     this.getSelectedTotal(); // Update selected total after change
+  //   } else {
+  //     console.warn("Selected product not found:", categoryIndex, brandIndex, productIndex);
+  //   }
+  // }
   cartCreation() {
     // this.api.createCart(this.logic.cart).subscribe((res) => {
     //   if (res) {

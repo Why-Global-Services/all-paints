@@ -39,22 +39,8 @@ export class ProductViewComponent implements OnInit {
   @ViewChild('packTwo') packTwo!: ElementRef<HTMLButtonElement>;
   @ViewChild('packThree') packThree!: ElementRef<HTMLButtonElement>;
   @ViewChild('packFour') packFour!: ElementRef<HTMLButtonElement>;
-  ngOnInit(): void {
-    this.logic.getcolor().subscribe((res: any) => {
-      console.log(res, 'colors');
-      this.colors = res;
-      this.selectColor('red');
-    });
-    this.logic.productDetails.subscribe((res: any) => {
-      console.log('prodcut', res);
-      this.data = res;
-    });
 
-    // this.colors.map((item:any)=>{
-    //   console.log(item.title);
 
-    // })
-  }
   logic = inject(LogicsService);
   fb = inject(FormBuilder);
   api = inject(ApiService);
@@ -66,6 +52,7 @@ export class ProductViewComponent implements OnInit {
   packDetails: any[] = [];
   selectedColors: any = [];
   defaultColors: any = [];
+  allPacks: any = [];
   details: any = []
   cartValues: any
   customerId: any
@@ -74,6 +61,45 @@ export class ProductViewComponent implements OnInit {
   filteredData: PaintData = {};
   productDetails: any = []
   paint_index: any
+  schemes: any[] = [];
+  productPriceDetails: any[] = [];
+  selectedEcomcode: any = ""
+  schemesForm = this.fb.group({
+    "filtervalue1": "",
+    "filtervalue2": "",
+    "filtervalue3": "scheme_v11",
+    "filtervalue4": "",
+    "filtervalue5": "",
+    "filtervalue6": "",
+    "filtervalue7": "",
+    "filtervalue8": ""
+  })
+
+  ngOnInit(): void {
+    this.logic.getcolor().subscribe((res: any) => {
+      console.log(res, 'colors');
+      this.colors = res;
+      this.selectColor('red');
+    });
+    this.logic.productDetails.subscribe((res: any) => {
+      console.log('prodcut', res);
+      this.data = res;
+    });
+    this.api.getAllSchemes(this.schemesForm.value).subscribe((res: any) => {
+      const parsedData = JSON.parse(res);
+      console.log(parsedData);
+
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        this.schemes = parsedData;
+      }
+    });
+
+
+    // this.colors.map((item:any)=>{
+    //   console.log(item.title);
+
+    // })
+  }
   selectColor(v: any) {
     this.selectedColor = v;
     let index = this.colors.findIndex((item: any) => {
@@ -89,24 +115,89 @@ export class ProductViewComponent implements OnInit {
     this.ctnClr = v;
   }
 
-  pack2(v: any, details: any, num: number) {
+  pack2(data: any, v: any, details: any, num: number) {
+    // console.log(num);
+    let paintDetails = ""
+    let paint_name = ""
+    if (num === 1) {
+      paintDetails = 'Asian_detils'
+      paint_name = 'ASIAN_PAINTS'
+    } else if (num === 2) {
+      paintDetails = "BERGER_details"
+      paint_name = "BERGER_PAINTS"
+    } else if (num === 3) {
+      paintDetails = "JN_details"
+      paint_name = "JN_PAINTS"
+
+    } else if (num === 4) {
+      paintDetails = "Sheenlac_details"
+      paint_name = "Sheenlac_PAINTS"
+
+    }
+
+    this.selectedEcomcode = data.ecomcode;
+    console.log(this.selectedEcomcode);
+    let packdetail =
+    {
+      "filtervalue1": "Packs",
+      "filtervalue2": "",
+      "filtervalue3": this.selectedEcomcode,
+      "filtervalue4": "",
+      "filtervalue5": "",
+      "filtervalue6": "",
+      "filtervalue7": ""
+    }
+    this.packDetails = [];
+    this.api.getAllPacks(packdetail).subscribe({
+      next: (responseSessionData: any) => {
+        //console.log(responseSessionData, "pack details");
+        this.allPacks = responseSessionData;
+        this.allPacks.forEach((packD: any) => {
+          const product = packD.products[0];
+
+
+          if (product && product[paintDetails] && product[paintDetails].length > 0) {
+            const productname = product[paint_name]
+            const { pack, price } = product[paintDetails][0]; // Dynamically access the key
+            console.log(`Pack: ${pack}, Price: ${price}`);
+            // Push the object directly into this.packDetails
+            this.packDetails.push({
+              materialCode: packD.MaterialCode,
+              pack: pack,
+              price: price,
+              productname: productname,
+              paintName:paint_name
+            });
+            console.log(this.packDetails, "pack details data");
+
+          } else {
+            console.log('No pack or price details available.');
+          }
+        });
+
+      },
+      error: (error) => {
+        console.error("Error fetching profile data:", error);
+      }
+    });
+
+    console.log(this.packDetails, "pack details data");
+
     this.selectedPack = v;
     this.details = details;
     this.paint_index = num;
-    if (typeof details === 'object' && !Array.isArray(details)) {
-      this.packDetails = [details]; // Wrap the object in an array
-    } else if (Array.isArray(details)) {
-      this.packDetails = details; // Assign directly if it's an array
-    } else {
-      console.error('Expected details to be an object or an array, but received:', details);
-      this.packDetails = []; // Reset if unexpected type
-    }
+    // if (typeof details === 'object' && !Array.isArray(details)) {
+    //   this.packDetails = [details]; // Wrap the object in an array
+    // } else if (Array.isArray(details)) {
+    //   this.packDetails = details; // Assign directly if it's an array
+    // } else {
+    //   console.error('Expected details to be an object or an array, but received:', details);
+    //   this.packDetails = []; // Reset if unexpected type
+    // }
+    // if (this.packDetails !== null) {
+    //   console.log(this.packDetails, 'packdetails');
 
-    // console.log(this.packDetails, 'packdetails');
-    // console.log(v, 'selected');
-    // console.log(this.selectedPack, 'selected');
-
-    console.log(this.packDetails, 'packdetails');
+    // }
     if (num == 1) {
       this.packP.nativeElement.click();
     } else if (num == 2) {
@@ -117,23 +208,153 @@ export class ProductViewComponent implements OnInit {
       this.packFour.nativeElement.click();
     }
   }
-  updateQuantity(index: number, event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const value = parseInt(inputElement.value, 10) || 0;
+  getDicountedPrice() {
+    console.log("get dis price");
 
-    // Ensure `this.quantities` is properly initialized
-    if (!Array.isArray(this.quantities)) {
-      this.quantities = [];
-    }
+    let result: any[] = [];
+    let discountAmount: any = 0;
+    this.schemes.forEach((schems: any) => {
+      this.packDetails.forEach((product: any) => {
+        // console.log(this.packDetails);
 
-    // Expand the array if the index exceeds the current length
-    while (this.quantities.length <= index) {
-      this.quantities.push(0); // Fill with default values
-    }
+        // console.log(product.materialCode);
+        // console.log(schems.cproductgroup);
+        // console.log(this.quantities, "matched quantities");
 
-    // Set the quantity at the specified index
-    this.quantities[index] = value;
+        // Ensure we match the product and scheme by both material code and scheme type
+        // if (schems.cproductgroup === product.MaterialCode && schems.cschemetype === "Seasoning") {
+        //   // Append scheme values to product
+        //   product.discounttype = schems.cdistype;
+        //   product.cdisdesc = schems.cdisdesc;
+        //   product.schno = schems.schno;
+        //   product.nmaxqty = schems.nmaxqty;
+        //   product.nminqty = schems.nminqty;
+        //   product.cdisvalue = schems.cdisvalue;
+        //   product.cschemetype = schems.cschemetype;
+        //   if (product.qty >= schems.nminqty && product.qty <= schems.nmaxqty) {
+        //     console.log("inside condition", schems.cdistype);
+        //     if (schems.cdistype === "Rupees") {
+        //       console.log(product.qty, schems.cdisvalue, "data");
+
+        //       discountAmount = product.qty * schems.cdisvalue
+        //       console.log(discountAmount, 'amt');
+
+
+        //     } else if (schems.cdistype == "Percentage") {
+        //       const discountvalue = (product.price * schems.cdisvalue) / 100;
+        //       discountAmount = product.qty * discountvalue
+        //       console.log(discountAmount, "else amt");
+
+        //     }
+        //   }
+        //   product.totaldisamount = discountAmount
+        //   // Check if the product has already been added to result to avoid duplicates
+        //   const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
+        //   if (!isDuplicate) {
+        //     result.push(product);  // Add the updated product to result
+        //   }
+        // }
+        // First, match the material code
+        if (schems.cproductgroup === product.materialCode) {
+          // Append scheme values to product (common to all cases)
+          console.log("matched");
+
+          product.discounttype = schems.cdistype;
+          product.cdisdesc = schems.cdisdesc;
+          product.schno = schems.schno;
+          product.nmaxqty = schems.nmaxqty;
+          product.nminqty = schems.nminqty;
+          product.cdisvalue = schems.cdisvalue;
+          product.cschemetype = schems.cschemetype;
+
+          // Now handle scheme types
+          switch (schems.cschemetype) {
+            case "Seasoning":
+              // For "Seasoning", no quantity check is required
+              // console.log("Inside Seasoning condition", schems.cdistype);
+
+              if (schems.cdistype === "Rupees") {
+                discountAmount = schems.cdisvalue;
+                // console.log(discountAmount, "amt");
+              } else if (schems.cdistype === "Percentage") {
+                const discountValue = (product.price * schems.cdisvalue) / 100;
+                discountAmount = discountValue;
+                // console.log(discountAmount, "else amt");
+              }
+              break;
+
+            case "Normal":
+              if (product.quantity >= schems.nminqty && product.quantity <= schems.nmaxqty) {
+                // console.log(`Inside ${schems.cschemetype} condition`, schems.cdistype);
+
+                if (schems.cdistype === "Rupees") {
+                  discountAmount = product.quantity * schems.cdisvalue;
+                  // console.log(discountAmount, "amt");
+                } else if (schems.cdistype === "Percentage") {
+                  const discountValue = (product.price * schems.cdisvalue) / 100;
+                  discountAmount = product.quantity * discountValue;
+                  // console.log(discountAmount, "else amt");
+                }
+              }
+              break;
+            case "Monthly":
+              // For "Normal" and "Monthly", check the quantity range
+              if (product.quantity >= schems.nminqty && product.quantity <= schems.nmaxqty) {
+                console.log(`Inside ${schems.cschemetype} condition`, schems.cdistype);
+
+                if (schems.cdistype === "Rupees") {
+                  discountAmount = product.quantity * schems.cdisvalue;
+                  console.log(discountAmount, "amt");
+                } else if (schems.cdistype === "Percentage") {
+                  const discountValue = (product.price * schems.cdisvalue) / 100;
+                  discountAmount = product.quantity * discountValue;
+                  console.log(discountAmount, "else amt");
+                }
+              }
+              break;
+
+            default:
+              console.log("Unknown scheme type", schems.cschemetype);
+              break;
+          }
+
+          // Assign the calculated discount amount to the product
+          product.totaldisamount = discountAmount;
+
+          // Check if the product has already been added to result to avoid duplicates
+          const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
+          if (!isDuplicate) {
+            result.push(product); // Add the updated product to result
+            this.productPriceDetails = result;
+            console.log(this.productDetails, "product");
+            
+          }
+        }
+
+      });
+    });
+    console.log(this.productPriceDetails, "product price");
+
   }
+  // updateQuantity(index: number, event: Event) {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   const value = parseInt(inputElement.value, 10) || 0;
+
+  //   // Ensure `this.quantities` is properly initialized
+  //   if (!Array.isArray(this.quantities)) {
+  //     this.quantities = [];
+  //   }
+
+  //   // Expand the array if the index exceeds the current length
+  //   while (this.quantities.length <= index) {
+  //     this.quantities.push(0); // Fill with default values
+  //   }
+
+  //   // Set the quantity at the specified index
+  //   this.quantities[index] = value;
+  //   console.log(this.quantities, "qtys");
+
+  // }
 
   // updateQuantity(index: number, event: Event) {
   //   const inputElement = event.target as HTMLInputElement;
@@ -145,6 +366,40 @@ export class ProductViewComponent implements OnInit {
   // }
 
   //change data as per out format
+  updateQuantity(index: number, event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = parseInt(inputElement.value, 10) || 0;
+
+    // Ensure `this.quantities` is properly initialized
+    if (!Array.isArray(this.quantities)) {
+      this.quantities = [];
+    }
+
+    // Expand the `quantities` array if the index exceeds the current length
+    while (this.quantities.length <= index) {
+      this.quantities.push(0); // Fill with default values
+    }
+
+    // Update `quantities` array
+    this.quantities[index] = value;
+
+    // Ensure `packDetails` is properly initialized
+    if (!Array.isArray(this.packDetails)) {
+      this.packDetails = [];
+    }
+
+    // Validate the index and update `packDetails` with the quantity
+    if (index >= 0 && index < this.packDetails.length) {
+      this.packDetails[index].quantity = value; // Add or update the quantity field
+    } else {
+      console.warn(`Invalid index: ${index}`);
+    }
+
+    console.log(this.quantities, "Quantities array");
+    console.log(this.packDetails, "Updated pack details");
+  }
+
+
   filterNonEmpty(obj: PaintData): PaintData {
     return Object.entries(obj)
       .filter(([_, value]) => value !== null && !(Array.isArray(value) && value.length === 0))
@@ -266,40 +521,93 @@ export class ProductViewComponent implements OnInit {
       .filter((item): item is TargetData => item !== undefined); // Filter out undefined items
   };
 
+  // addtocart() {
+  //   // Calculate the total price
+  //   this.totalPrice = this.calculateTotalPrice();
+
+  //   this.filteredData = this.filterNonEmpty(this.data);
+  //   console.log(this.filteredData, "filter");
+
+  //   const cartItem = [
+  //     this.filteredData
+  //   ]
+  //   this.productDetails = this.convertData(cartItem, this.paint_index);
+  //   console.log(this.productDetails[0], "productDetails");
+
+  //   this.logic.cartItems = [...this.logic.cartItems, cartItem]
+
+  //   this.logic.cart = {
+  //     "customerId": localStorage.getItem("apCusId"),
+  //     "products": [
+  //       this.logic.cartItems
+  //     ]
+  //   }
+  //   console.log(this.logic.cart, "cart");
+
+  //   this.logic.cartLength = this.logic.cart.products.length;
+  //   console.log(this.logic.cartLength);
+
+
+  //   console.log(this.logic.cart, "cart details");
+
+  //   this.logic.cus('success', '', 'Added to the cart!');
+
+  //   // Optionally navigate to the cart page
+  //   // this.router.navigate(['/cart']);
+  // }
+
   addtocart() {
-    // Calculate the total price
-    this.totalPrice = this.calculateTotalPrice();
+    let cartProducts: any[] = [];
+    this.packDetails.forEach((product: any) => {
 
-    this.filteredData = this.filterNonEmpty(this.data);
-    console.log(this.filteredData, "filter");
+      if (
+        product.quantity > 0
+      ) {
+        console.log(product, "product");
+        const quantity = parseFloat(product.quantity) || 0;
+        const price = parseFloat(product.price) || 0;
+        const totalDiscount = parseFloat(product.totaldisamount) || 0;
+        let productprice = quantity * price;
 
-    const cartItem = [
-      this.filteredData
-    ]
-    this.productDetails = this.convertData(cartItem, this.paint_index);
-    console.log(this.productDetails[0], "productDetails");
+        // Apply discount if `totaldisamount` is valid
+        if (totalDiscount > 0) {
+          productprice -= totalDiscount;
+        }
 
-    this.logic.cartItems = [...this.logic.cartItems, cartItem]
+        const productAdded = {
+          customerId: localStorage.getItem("apCusId"),
+          pack: product.pack,
+          price: productprice.toString(),
+          qty: (product.quantity).toString(), // Default to 0 if quantity is not set
+          cdate: "", // Populate this with the current date if needed
+          productname: product.productname as string,
+          materialCode: product.materialCode as string, // Fixed case-sensitive issue
+          distributorcode: localStorage.getItem("distributorcode") || "",
+          companyname: product.paint_name,
+          schemetype: product.cschemetype,
+          discountamount:product.cdisvalue,
+          ecomcode:this.selectedEcomcode
+        };
+        console.log(productAdded, "product added");
 
-    this.logic.cart = {
-      "customerId": localStorage.getItem("apCusId"),
-      "products": [
-        this.logic.cartItems
-      ]
-    }
-    console.log(this.logic.cart, "cart");
+        cartProducts = [...cartProducts, productAdded];
+        console.log(cartProducts, "cart products");
+        this.logic.cartProducts = cartProducts;
+      }
+    });
+    console.log(cartProducts);
+    this.logic.cus("success", "", "Added to the cart!");
+    // Assign to cartItems and show a success message
+    // if (cartProducts.length > 0) {
 
-    this.logic.cartLength = this.logic.cart.products.length;
-    console.log(this.logic.cartLength);
+    //   console.log(this.logic.cartItems, "cart item");
 
-
-    console.log(this.logic.cart, "cart details");
-
-    this.logic.cus('success', '', 'Added to the cart!');
-
-    // Optionally navigate to the cart page
-    // this.router.navigate(['/cart']);
+    // } else {
+    //   this.logic.cus("info", "", "No valid items to add to the cart!");
+    // }
   }
+
+
 
 
   calculateTotalPrice(): number {
@@ -316,28 +624,33 @@ export class ProductViewComponent implements OnInit {
   }
 
   addCart() {
-    this.logic.cartProducts = [...this.logic.cartProducts, this.productDetails[0]];
-    console.log(this.logic.cartProducts, "product details");
+    console.log("cart creation");
 
-    this.api.cartCreate(this.productDetails[0]).subscribe({
-      next: (res: any) => {
-        // Assuming res is a success response
-        console.log('Response received:', res);
-        this.logic.cus('success', '', 'Cart Updated!');
-      },
-      error: (err: HttpErrorResponse) => {
-        console.log('Error occurred:', err);
-
-        // Check if the status is available in the error
-        if (err.status === 200) {
-          console.log("test");
+    // this.logic.cartProducts = [...this.logic.cartProducts, this.productDetails[0]];
+    // console.log(this.logic.cartProducts, "product details");
+    this.logic.cartProducts.map((product: any) => {
+      this.api.cartCreate(product).subscribe({
+        next: (res: any) => {
+          // Assuming res is a success response
+          console.log('Response received:', res);
           this.logic.cus('success', '', 'Cart Updated!');
-        } else {
-          // Handle other error statuses
-          console.error(`Error Status: ${err.status} - ${err.message}`);
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log('Error occurred:', err);
+
+          // Check if the status is available in the error
+          if (err.status === 200) {
+            console.log("test");
+            this.logic.cus('success', '', 'Cart Updated!');
+          } else {
+            // Handle other error statuses
+            console.error(`Error Status: ${err.status} - ${err.message}`);
+          }
         }
-      }
-    });
+      });
+    })
+
+
   }
 
   // addCart(paints: any, paint_details: any, brand: any) {

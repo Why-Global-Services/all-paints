@@ -12,13 +12,13 @@
           <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
           <h3>{{ data.ASIAN_PAINTS }}</h3>
 
-          <div class="flex items-center gap-[10px]">
+          <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.Asian_detils[0].price }}</h3>
             <span class="stk">8,999</span>
-          </div>
+          </div> -->
         </div>
         <button #pack style="display: none;" onclick="my_modal_2.showModal()">summa</button>
-        <div class="a-box cursor-pointer" (click)="pack2(data.ASIAN_PAINTS,data.Asian_detils[0],1)">
+        <div class="a-box cursor-pointer" (click)="pack2(data, data.ASIAN_PAINTS,data.Asian_detils[0],1)">
           <p>Pack & Color</p>
           <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
             xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -104,13 +104,13 @@
           <img src="../../../assets/images/berger 1.png" alt="" srcset="" />
           <h3>{{ data.BERGER_PAINTS }}</h3>
 
-          <div class="flex items-center gap-[10px]">
+          <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.BERGER_details[0].price }}</h3>
             <span class="stk">8,999</span>
-          </div>
+          </div> -->
         </div>
         <button #packTwo style="display: none;" onclick="my_modal_2.showModal()">summa</button>
-        <div class="a-box cursor-pointer" (click)="pack2(data.BERGER_PAINTS,data.BERGER_details[0],2)">
+        <div class="a-box cursor-pointer" (click)="pack2(data,data.BERGER_PAINTS,data.BERGER_details[0],2)">
           <p>Pack & Color</p>
           <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
             xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -195,13 +195,13 @@
           <img src="../../../assets/products/{{data.JN_MaterialCode}}.png" alt="" srcset="" />
           <h3>{{ data.JN_PAINTS }}</h3>
 
-          <div class="flex items-center gap-[10px]">
+          <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.JN_details[0].price }}</h3>
             <span class="stk">8,999</span>
-          </div>
+          </div> -->
         </div>
         <button #packThree style="display: none;" onclick="my_modal_2.showModal()">summa</button>
-        <div class="a-box cursor-pointer" (click)="pack2(data.JN_PAINTS,data.JN_details,3)">
+        <div class="a-box cursor-pointer" (click)="pack2(data,data.JN_PAINTS,data.JN_details,3)">
           <p>Pack & Color</p>
           <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
             xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -286,13 +286,13 @@
           <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
           <h3>{{ data.Sheenlac_PAINTS }}</h3>
 
-          <div class="flex items-center gap-[10px]">
+          <!-- <div class="flex items-center gap-[10px]">
             <h3>{{ data.Sheenlac_details[0].price }}</h3>
             <span class="stk">8,999</span>
-          </div>
+          </div> -->
         </div>
         <button #packFour style="display: none;" onclick="my_modal_2.showModal()">summa</button>
-        <div class="a-box cursor-pointer" (click)="pack2(data.Sheenlac_PAINTS,data.Sheenlac_details,4)">
+        <div class="a-box cursor-pointer" (click)="pack2(data,data.Sheenlac_PAINTS,data.Sheenlac_details,4)">
           <p>Pack & Color</p>
           <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
             xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -521,8 +521,29 @@
         </tr> -->
         <tr>
           <td *ngFor="let detail of packDetails; let i = index">
-            <input min="0" type="number" (input)="updateQuantity(i, $event)" placeholder="Qty" />
+            <!-- Quantity Input -->
+            <input class="pl-2" min="0" type="number" (input)="updateQuantity(i, $event); getDicountedPrice()"
+              placeholder="Qty" />
+            <br />
+
+            <!-- Price Calculation -->
+            <p *ngIf="quantities[i] && quantities[i] > 0">
+              <!-- Strike-through Original Price if Discount Applies -->
+              <span *ngIf="detail.totaldisamount && detail.totaldisamount !== null">
+                Rs. {{
+                (quantities[i] * (detail.price - detail.totaldisamount)) | number: '1.2-2'
+                }}
+                <s>Rs. {{ (quantities[i] * detail.price) | number: '1.2-2' }}</s>
+                <!-- Discounted Price -->
+
+              </span>
+              <!-- Show Original Price if No Discount -->
+              <span *ngIf="!detail.totaldisamount">
+                Rs. {{ (quantities[i] * detail.price) | number: '1.2-2' }}
+              </span>
+            </p>
           </td>
+
         </tr>
       </table>
 

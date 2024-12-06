@@ -57,6 +57,7 @@ export class CheckOutComponent implements OnInit {
   router = inject(Router)
   totalPay: any = '0'
   customerData: any;
+  formattedDetails: any
   form = this.fb.group({
     filtervalue1: [''],
     filtervalue2: [''],
@@ -79,10 +80,11 @@ export class CheckOutComponent implements OnInit {
     let name = localStorage.getItem('apName')
     let number = localStorage.getItem('apNumber')
     let email = localStorage.getItem('apEmail')
-    console.log(this.logic.cart, "cart options");
+    console.log(this.logic.cartItems, "cart options");
+    console.log(this.logic.cartTotal, "cart options");
     this.totalPay = this.logic.cartTotal;
     console.log(this.totalPay);
-    this.transformData(this.logic.cart)
+    this.transformData(this.logic.cartItems)
     this.form.patchValue({
       filtervalue7: name,
       filtervalue10: number,
@@ -127,34 +129,33 @@ export class CheckOutComponent implements OnInit {
   transformData(data: SourceData): TargetData {
     console.log(data, "checkout data  ");
 
-    const transformedProducts = data.products.flat(3).map(product => {
-      console.log(product, "product");
-      let paintS_Name = "";
-      let asian_detils: Array<{ pack: string; price: string; quantity: number }> = [];
+    // const transformedProducts = data.products.flat(3).map(product => {
+    // console.log(product, "product");
+    // let paintS_Name = "";
+    // let asian_detils: Array<{ pack: string; price: string; quantity: number }> = [];
 
-      if (product.JN_PAINTS && product.JN_details) {
-        paintS_Name = product.JN_PAINTS;
-        asian_detils = product.JN_details;
-      } else if (product.ASIAN_PAINTS && product.Asian_detils) {
-        paintS_Name = product.ASIAN_PAINTS;
-        asian_detils = product.Asian_detils;
-      } else if (product.BERGER_PAINTS && product.BERGER_details) {
-        paintS_Name = product.BERGER_PAINTS;
-        asian_detils = product.BERGER_details;
-      }
+    // if (product.JN_PAINTS && product.JN_details) {
+    //   paintS_Name = product.JN_PAINTS;
+    //   asian_detils = product.JN_details;
+    // } else if (product.ASIAN_PAINTS && product.Asian_detils) {
+    //   paintS_Name = product.ASIAN_PAINTS;
+    //   asian_detils = product.Asian_detils;
+    // } else if (product.BERGER_PAINTS && product.BERGER_details) {
+    //   paintS_Name = product.BERGER_PAINTS;
+    //   asian_detils = product.BERGER_details;
+    // }
 
-      // Map and calculate total price for each detail
-      const formattedDetails = asian_detils.map(detail => ({
-        pack: detail.pack,
-        totalprice: parseFloat(detail.price) * detail.quantity,
-        quantity: detail.quantity
-      }));
+    // Map and calculate total price for each detail
+    this.formattedDetails = this.logic.cartItems.map((item: any) => ({
+      "paintS_Name": item.productname,
+      asian_detils: [{
+        pack: item.pack,
+        totalprice: item.price,
+        quantity: item.qty
+      }]
+    }));
+    // });
 
-      return {
-        paintS_Name,
-        asian_detils: formattedDetails
-      };
-    });
     // console.log(
     //   {
     //     customerId: localStorage.getItem("apCusId") || "",
@@ -167,9 +168,9 @@ export class CheckOutComponent implements OnInit {
     //     totalPrice: JSON.stringify(this.logic.cartTotal),
     //     products: transformedProducts
     //   });
-    const materialCode = this.getMaterialCodeWithValue(data);
+    //const materialCode = this.getMaterialCodeWithValue(data);
     this.customerData = {
-      materialCode: materialCode,
+      materialCode: this.logic.cartItems[0].MaterialCode,
       distributorcode: localStorage.getItem("distributorcode") || "",
       customerId: localStorage.getItem("apCusId") || "",
       customerName: localStorage.getItem('apName') || "",
@@ -178,8 +179,8 @@ export class CheckOutComponent implements OnInit {
       gst: "",
       address: "Chennai",
       billingAddress: "Ambattur",
-      totalPrice: JSON.stringify(this.logic.cartTotal),
-      products: transformedProducts
+      totalPrice: this.totalPay.toString(),
+      products: this.formattedDetails
     };
     console.log(this.customerData, "customer");
 

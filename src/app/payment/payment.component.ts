@@ -60,6 +60,7 @@ export class PaymentComponent {
           console.log("test");
           this.logic.cus('success', '', 'Order Created Successfully!');
           this.router.navigate(['/paid']);
+          this.logic.cartItems = [];
         } else {
           // Handle other error statuses
           console.error(`Error Status: ${err.status} - ${err.message}`);
