@@ -25,6 +25,21 @@ interface TargetData {
   productname: string;
   distributorcode: string;
 }
+interface ProductDetails {
+  pack: string;
+  price: string;
+}
+
+interface Product {
+  ASIAN_PAINTS: string | null;
+  Asian_detils: ProductDetails[];
+  BERGER_PAINTS: string | null;
+  BERGER_details: ProductDetails[];
+  JN_PAINTS: string | null;
+  JN_details: ProductDetails[];
+  Sheenlac_PAINTS: string | null;
+  Sheenlac_details: ProductDetails[];
+}
 
 @Component({
   selector: 'product-details',
@@ -62,6 +77,7 @@ export class ProductViewComponent implements OnInit {
   productDetails: any = []
   paint_index: any
   schemes: any[] = [];
+  selectedProductName: string = ""
   productPriceDetails: any[] = [];
   selectedEcomcode: any = ""
   schemesForm = this.fb.group({
@@ -81,6 +97,8 @@ export class ProductViewComponent implements OnInit {
       this.colors = res;
       this.selectColor('red');
     });
+
+
     this.logic.productDetails.subscribe((res: any) => {
       console.log('prodcut', res);
       this.data = res;
@@ -115,8 +133,8 @@ export class ProductViewComponent implements OnInit {
     this.ctnClr = v;
   }
 
-  async pack2(data: any, v: any, details: any, num: number) {
-    // console.log(num);
+  pack2(data: any, v: any, details: any, num: number) {
+    this.selectedProductName = v
     let paintDetails = ""
     let paint_name = ""
     if (num === 1) {
@@ -148,25 +166,29 @@ export class ProductViewComponent implements OnInit {
       "filtervalue7": ""
     }
     this.packDetails = [];
-    await this.api.getAllPacks(packdetail).subscribe({
+    this.api.getAllPacks(packdetail).subscribe({
       next: (responseSessionData: any) => {
-        //console.log(responseSessionData, "pack details");
+        console.log(responseSessionData, "pack details");
         this.allPacks = responseSessionData;
         this.allPacks.forEach((packD: any) => {
+          console.log(packD, "d");
+
           const product = packD.products[0];
 
+          console.log(product);
 
           if (product && product[paintDetails] && product[paintDetails].length > 0) {
             const productname = product[paint_name]
             const { pack, price } = product[paintDetails][0]; // Dynamically access the key
-            console.log(`Pack: ${pack}, Price: ${price}`);
+            //console.log(`Pack: ${pack}, Price: ${price}`);
             // Push the object directly into this.packDetails
             this.packDetails.push({
               materialCode: packD.MaterialCode,
               pack: pack,
               price: price,
               productname: productname,
-              paintName: paint_name
+              paintName: paint_name,
+              category: packD.CATEGORY
             });
             console.log(this.packDetails, "pack details data");
 
@@ -199,28 +221,26 @@ export class ProductViewComponent implements OnInit {
 
     // }
 
-    
-      if (num == 1) {
-        this.packP.nativeElement.click();
-      } else if (num == 2) {
-        this.packTwo.nativeElement.click();
-      } else if (num == 3) {
-        this.packThree.nativeElement.click();
-      } else if (num == 4) {
-        this.packFour.nativeElement.click();
-      }
-    
-    
+
+    if (num == 1) {
+      this.packP.nativeElement.click();
+    } else if (num == 2) {
+      this.packTwo.nativeElement.click();
+    } else if (num == 3) {
+      this.packThree.nativeElement.click();
+    } else if (num == 4) {
+      this.packFour.nativeElement.click();
+    }
+
+
   }
   getDicountedPrice() {
-    console.log("get dis price");
-
+    console.log("get dis price")
     let result: any[] = [];
     let discountAmount: any = 0;
     this.schemes.forEach((schems: any) => {
       this.packDetails.forEach((product: any) => {
         // console.log(this.packDetails);
-
         // console.log(product.materialCode);
         // console.log(schems.cproductgroup);
         // console.log(this.quantities, "matched quantities");
@@ -262,6 +282,7 @@ export class ProductViewComponent implements OnInit {
         if (schems.cproductgroup === product.materialCode) {
           // Append scheme values to product (common to all cases)
           console.log("matched");
+          console.log(product, "pack");
 
           product.discounttype = schems.cdistype;
           product.cdisdesc = schems.cdisdesc;
@@ -372,12 +393,12 @@ export class ProductViewComponent implements OnInit {
   //change data as per out format
   updateQuantity(index: number, event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    if(!inputElement.value){
-      inputElement.value=''
+    if (!inputElement.value) {
+      inputElement.value = ''
       // return;
     }
-    const value = Math.round(parseInt(inputElement.value, 10) ) || 0;
-     inputElement.value=value.toString()
+    const value = Math.round(parseInt(inputElement.value, 10)) || 0;
+    inputElement.value = value.toString()
     // Ensure `this.quantities` is properly initialized
     if (!Array.isArray(this.quantities)) {
       this.quantities = [];
@@ -568,16 +589,21 @@ export class ProductViewComponent implements OnInit {
     let cartProducts: any[] = [];
     this.packDetails.forEach((product: any) => {
 
+
+
       if (
         product.quantity > 0
       ) {
         console.log(product, "product");
+        const least = this.checkPackAvailability(product.pack, product.category);
+        console.log(least, "least");
+
         const quantity = parseFloat(product.quantity) || 0;
         const price = parseFloat(product.price) || 0;
         const totalDiscount = parseFloat(product.totaldisamount) || 0;
         let productprice = quantity * price;
-        let productdisvalue =0
-        if(product.cdisvalue){
+        let productdisvalue = 0
+        if (product.cdisvalue) {
           productdisvalue = product.cdisvalue
         }
 
@@ -837,6 +863,53 @@ export class ProductViewComponent implements OnInit {
     const target = event.target as HTMLImageElement;
 
     v == "JN" ? target.src = '../../../assets/images/jenson 1.png' : target.src = '../../../assets/images/jenson 1.png'
+
+  }
+
+  checkPackAvailability(
+    selectedPack: string,
+    selectedBrand: string
+  ) {
+
+    const brand = selectedBrand.split("_");
+    console.log(selectedBrand);
+
+
+    for (const product of this.allPacks) {
+      for (const item of product.products) {
+        console.log(product); // For debugging, you can log the item
+
+        const brandDetails = {
+          ASIAN: item.Asian_detils,
+          BERGER: item.BERGER_details,
+          JN: item.JN_details,
+          Sheenlac: item.Sheenlac_details,
+        };
+
+        // Iterate over the brands excluding the selected brand
+        for (const [brand, details] of Object.entries(brandDetails)) {
+          if (brand !== selectedBrand.toUpperCase() && details.length > 0) {
+            // Filter the details array based on the selected pack
+            console.log(brand, details);
+
+            const matchingDetails = details.filter(
+              (detail: { pack: string }) => detail.pack === selectedPack
+            );
+
+            if (matchingDetails.length > 0) {
+              // Sort by price (assuming 'price' is a numeric value)
+              matchingDetails.sort((a: any, b: any) => parseFloat(a.price) - parseFloat(b.price));
+              matchingDetails[0].company_name = brand + "_PAINTS"
+              matchingDetails[0].materialCode = product.MaterialCode
+              matchingDetails[0].productname = item[brand + "_PAINTS"]
+              matchingDetails[0].category = product.CATEGORY
+              // Return the least value (the first one after sorting)
+              return matchingDetails;  // This returns the lowest priced matching detail
+            }
+          }
+        }
+      }
+    }
 
   }
 }
