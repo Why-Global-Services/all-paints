@@ -72,13 +72,14 @@ export class HomeComponent implements OnInit {
   cartCount: any
   // sortDisplay: Observable<string>=of('Low to High')
   filterForm = this.fb.group({
-    filtervalue1: [''],
-    filtervalue2: [''],
-    filtervalue3: [''],
-    filtervalue4: [''],
-    filtervalue5: [''],
-    filtervalue6: [''],
-    filtervalue7: [''],
+    "filtervalue1": "Summary",
+    "filtervalue2": "",
+    "filtervalue3": "",
+    "filtervalue4": "",
+    "filtervalue5": "",
+    "filtervalue6": "",
+    "filtervalue7": ""
+
   });
   schemesForm = this.fb.group({
     "filtervalue1": "",
@@ -379,11 +380,12 @@ export class HomeComponent implements OnInit {
           console.log(this.selectedCat.Division, item.Division, "on load seleced division");
 
           const ecomcode = item.ECOMCODE;
-// console.log(ecomcode, item, "ecomcodee");
+          // console.log(ecomcode, item, "ecomcodee");
 
           // Initialize common data for the ECOMCODE if it doesn't exist
           if (!commonDataByEcomcode[ecomcode]) {
             commonDataByEcomcode[ecomcode] = {
+              ecomcode: item.ECOMCODE,
               ASIAN_PAINTS: null,
               ASIAN_MaterialCode: "",
               Asian_detils: [],

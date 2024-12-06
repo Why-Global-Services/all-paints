@@ -15,6 +15,9 @@ export class ApiService {
   profile(body: any) {
     return this.http.post(this.api + 'api/Stock/GetAllpaintprofileprocess', body)
   }
+  getAllPacks(body: any) {
+    return this.http.post(this.api + 'api/stock/GetAllPaintsProducts', body)
+  }
   createCustomer(body: any) {
     // const headers = new HttpHeaders({
     //   'Content-Type': 'application/json'
@@ -40,7 +43,7 @@ export class ApiService {
     return this.http.post(this.api + 'api/FranchiOrder/Cartcreation', body)
   }
   getCart(body: any) {
-    return this.http.get(this.api + '')
+    return this.http.post(this.api + 'api/FranchiOrder/Getcartdetails', body)
   }
   payment(body: any) {
     return this.http.post(this.api + 'api/FranchiStock/CustomerPayment', body)
