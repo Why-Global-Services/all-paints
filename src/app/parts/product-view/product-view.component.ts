@@ -568,11 +568,16 @@ export class ProductViewComponent implements OnInit {
         const price = parseFloat(product.price) || 0;
         const totalDiscount = parseFloat(product.totaldisamount) || 0;
         let productprice = quantity * price;
+        let productdisvalue =0
+        if(product.cdisvalue){
+          productdisvalue = product.cdisvalue
+        }
 
         // Apply discount if `totaldisamount` is valid
         if (totalDiscount > 0) {
           productprice -= totalDiscount;
         }
+        console.log(product, "test product");
 
         const productAdded = {
           customerId: localStorage.getItem("apCusId"),
@@ -583,11 +588,11 @@ export class ProductViewComponent implements OnInit {
           productname: product.productname as string,
           materialCode: product.materialCode as string, // Fixed case-sensitive issue
           distributorcode: localStorage.getItem("distributorcode") || "",
-          companyname: product.paint_name,
-          schemetype: product.cschemetype,
-          discountamount: product.cdisvalue,
-          ecomcode: this.selectedEcomcode,
-          sessionid: this.api.getSessionId()
+          company_name: product.paintName,
+          schemetype: product.cschemetype || "",
+          discountamount: productdisvalue || 0,
+          ecomcode: this.selectedEcomcode
+          // sessionid: this.api.getSessionId()
         };
         console.log(productAdded, "product added");
 
