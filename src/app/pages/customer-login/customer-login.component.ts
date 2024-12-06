@@ -168,6 +168,9 @@ export class CustomerLoginComponent {
   storeCustomerCode(customercode: any, name: string) {
     localStorage.setItem("apCusId", customercode)
     localStorage.setItem("apName", name)
+    const randomSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
+    this.service.setSessionId(randomSessionId);
+    console.log('Session ID saved!');
     window.history.back()
   }
 
