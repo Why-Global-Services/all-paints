@@ -368,6 +368,10 @@ export class ProductViewComponent implements OnInit {
   //change data as per out format
   updateQuantity(index: number, event: Event) {
     const inputElement = event.target as HTMLInputElement;
+    if(!inputElement.value){
+      inputElement.value=''
+      return;
+    }
     const value = parseInt(inputElement.value, 10) || 0;
 
     // Ensure `this.quantities` is properly initialized
