@@ -2,48 +2,58 @@
   <app-header></app-header>
   <div class="pay-box">
     <div class="detail-box">
-      <h2>Billing Address</h2>
-      <div class="p-[40px] h-[100%] flex flex-col justify-evenly">
-        <div class="inputs">
-          <label for="">Customer Name</label>
-          <input formControlName="filtervalue7" type="text" />
-        </div>
-        <div class="inp2">
-          <div class="inputs">
+      
+      <div class="px-10 py-5 h-[100%] flex flex-col gap-6 justify-start">
+        <p class="text-3xl pb-4 font-bold">Billing Address</p>
+        <div class="w-full grid grid-cols-3 gap-4 justify-items-center items-center">
+          <div class="w-full">
+            <label for="">Customer Name</label>
+            <input class="h-10 w-full border-2 rounded-md px-2" formControlName="filtervalue7" type="text" />
+          </div>
+          <div class="w-full">
             <label for="">Email Id</label>
-            <input type="email" formControlName="filtervalue14" />
+            <input  class="h-10 w-full border-2 rounded-md px-2" type="email" formControlName="filtervalue14" />
           </div>
-          <div class="inputs">
+          <div class="w-full">
             <label for="">Number</label>
-            <input type="text" formControlName="filtervalue10" />
-            <div class="checkboxes">
-              <input type="checkbox" name="" id="phn" />
-              <label for="phn">Phone</label>
-              <input type="checkbox" name="" id="wp" />
-              <label for="wp">Whatsapp</label>
-            </div>
+            <input class="h-10 w-full border-2 rounded-md px-2" type="text" formControlName="filtervalue10" />
+           
           </div>
         </div>
-        <div class="inputs add">
-          <label for="">Address</label>
-          <textarea  (keyup)="change(add.value)"  #add name="" id=""></textarea>
+        <!-- <div class="checkboxes">
+          <input type="checkbox" name="" id="phn" />
+          <label for="phn">Phone</label>
+          <input type="checkbox" name="" id="wp" />
+          <label for="wp">Whatsapp</label>
+        </div> -->
+         
+
+        <div class="grid grid-cols-2 gap-4 justify-items-center">
+          <div class="w-full">
+            <label for="">Address</label>
+            <textarea class=" w-full border-2 rounded-md px-2 " rows="4"  (keyup)="change(add.value)"  #add name="" id=""></textarea>
+          </div>
+       
+          <div class="w-full">
+            <label for="">Billing Address</label>
+            <textarea class=" w-full border-2 rounded-md px-2" rows="4" formControlName="filtervalue5"  name="" id=""></textarea>
+          </div>
         </div>
-     
-        <div class="inputs add">
-          <label for="">Billing Address</label>
-          <textarea formControlName="filtervalue5"  name="" id=""></textarea>
-        </div>
-        <div>
-          <input type="checkbox" id="same" (change)="check($event)">
+       
+        
+        <div class="flex gap-2 items-center ">
+          <input type="checkbox" class="h-3" id="same" (change)="check($event)">
           <label for="same">Same as address</label> 
         </div>
-        <div class="inp2">
-          <div class="inputs">
-            <label for="">GST Number</label>
-            <input type="text" />
-          </div>
-          <div class="inputs"> </div>
+
+        <div class="">
+          <label for="">GST Number</label>
+          <input class="h-10 w-full border-2 rounded-md px-2" type="text" />
         </div>
+        <!-- <div class="inp2">
+          
+          <div class="inputs"> </div>
+        </div> -->
         <!-- <div class="inp2">
           <div class="inputs"></div>
           <div class="btn-holder">
@@ -53,6 +63,7 @@
         </div> -->
       </div>
     </div>
+    <div class="flex flex-col items-end  w-fit gap-3">
     <div class="bill-box">
       <div class="content">
         <h2>Order details</h2>
@@ -60,13 +71,13 @@
           <h3>Order#</h3>
           <h3 class="text-right">5657213</h3>
         </div>
-        <div class="det-2">
-          <div class="flex gap-[10px]">
-            <p>Coupon code</p>
-            <input type="text" />
-          </div>
+        <div class="w-full">
+          <div class="flex w-full justify-between items-center">
+            <p class="text-xl font-semibold">Coupon code</p>
+            <div class="flex gap-3"><input type="text" class="h-10 w-32 border-2 rounded-md px-2" /> <p class="text-white font-semibold p-2 active:translate-y-1 duration-200 active:shadow-xl rounded-md shadow-md text-right cursor-pointer bg-red-500">Apply</p></div>
 
-          <p class="text-[var(--prim)] text-right">Apply</p>
+          </div>
+         
         </div>
         <div class="det">
           <p>Order amount</p>
@@ -77,12 +88,17 @@
           <h3 class="text-right">{{totalPay}}</h3>
         </div>
       </div>
+      
     </div>
-  </div>
- 
-  <div class="h-[80px] flex w-full items-center justify-end pr-[20px]">
-    <button (click)="submit()" style="margin: 0; width: auto" class="bttn">
+    <button (click)="submit()"  class="w-fit px-10 py-2  bg-red-500 rounded-md text-white shadow-md">
       Submit
     </button>
   </div>
+    
+
+  </div>
+  <div class=" flex w-full items-center justify-start pr-[20px]">
+    
+  </div>
+ 
 </section>

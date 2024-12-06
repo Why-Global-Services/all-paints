@@ -1,13 +1,15 @@
 .pay-box {
-  height: 975px;
+  min-height: 80vh;
   width: 100%;
   display: flex;
+  gap: 30px;
+  justify-content: space-between;
   // background-color: red;
   // margin: 20px;
   padding: 20px;
   .detail-box {
     background-color: white;
-    height: 100%;
+    height: fit-content;
     border-radius: 10px;
     width: 60%;
     border: 1px solid rgba(0, 0, 0, 0.356);
@@ -43,7 +45,7 @@
       }
       input[type="text"], input[type="email"] {
         padding-left: 10px;
-        height: 60px;
+        height: 40px;
         border-radius: 10px;
         border: 1px solid rgba(0, 0, 0, 0.356);
         box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
@@ -83,9 +85,9 @@
   }
   .bill-box {
     display: flex;
-    width: 40%;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    align-items: start;
+    justify-content: start;
     .content {
       background-color: white;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

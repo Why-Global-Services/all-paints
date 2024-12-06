@@ -551,7 +551,7 @@ export class HomeComponent implements OnInit {
     this.final = Array.from(groupedProducts.values());  // Convert the Map to an array
     this.data$ = from(this.final) as Observable<ProductGroup[]>; // Create an observable from the array of ProductGroup
     console.log(this.final, "final grouped output");
-    this.selectCat({ "Division": 35 });
+    this.selectCat({ "Division": this.selectedCategory });
 
   }
 
