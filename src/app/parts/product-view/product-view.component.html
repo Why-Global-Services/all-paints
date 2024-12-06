@@ -291,7 +291,7 @@
             <span class="stk">8,999</span>
           </div> -->
         </div>
-        <button #packFour style="display: none;" onclick="my_modal_2.showModal()">summa</button>
+        <!-- <button #packFour style="display: none;" onclick="my_modal_2.showModal()">summa</button> -->
         <div class="a-box cursor-pointer" (click)="pack2(data,data.Sheenlac_PAINTS,data.Sheenlac_details,4)">
           <p>Pack & Color</p>
           <svg viewBox="0 0 1024 1024" class="icon right-[10px] h-[20px]" version="1.1"
@@ -508,7 +508,7 @@
           <td>20L</td>
         </tr> -->
         <tr>
-          <th *ngFor="let detail of packDetails">{{ detail.pack }}</th>
+          <th  *ngFor="let detail of packDetails">{{ detail.pack }}</th>
         </tr>
         <!-- <tr>
           <td><input min="0" type="number" [disabled]="!isPackEnabled('100ml')" /></td>
@@ -519,29 +519,39 @@
           <td><input min="0" type="number" [disabled]="!isPackEnabled('10 L')" /></td>
           <td><input min="0" type="number" [disabled]="!isPackEnabled('20 L')" /></td>
         </tr> -->
-        <tr>
-          <td *ngFor="let detail of packDetails; let i = index">
+        <tr *ngIf="packDetails.length>0">
+ 
+          <td  class="py-2" *ngFor="let detail of packDetails; let i = index">
             <!-- Quantity Input -->
+          
             <input class="pl-2" min="0" type="number" (input)="updateQuantity(i, $event); getDicountedPrice()"
               placeholder="Qty" />
             <br />
 
             <!-- Price Calculation -->
-            <p *ngIf="quantities[i] && quantities[i] > 0">
+            <div *ngIf="packDetails.length>0&&quantities&& quantities[i] > 0">
               <!-- Strike-through Original Price if Discount Applies -->
-              <span *ngIf="detail.totaldisamount && detail.totaldisamount !== null">
+             <div class="flex flex-col gap-2 justify-center items-center py-1">
+              <span class="bg-green-200 text-green-600 animate-pulse p-1 w-fit rounded-md shadow-md  font-semibold" *ngIf="detail.cschemetype">{{detail.cschemetype}}</span>
+              <span class="flex gap-2" *ngIf="detail.totaldisamount && detail.totaldisamount !== null">
                 Rs. {{
                 (quantities[i] * (detail.price - detail.totaldisamount)) | number: '1.2-2'
                 }}
-                <s>Rs. {{ (quantities[i] * detail.price) | number: '1.2-2' }}</s>
+                <s class="text-red-400">Rs. {{ (quantities[i] * detail.price) | number: '1.2-2' }}</s>
                 <!-- Discounted Price -->
 
               </span>
+             </div>
+             
+              
               <!-- Show Original Price if No Discount -->
               <span *ngIf="!detail.totaldisamount">
                 Rs. {{ (quantities[i] * detail.price) | number: '1.2-2' }}
               </span>
-            </p>
+            </div>
+            
+            <p *ngIf="!quantities||quantities[i]==0" class="mt-1 font-semibold">{{detail.price}}</p>
+          
           </td>
 
         </tr>

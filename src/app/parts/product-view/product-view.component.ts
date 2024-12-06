@@ -115,7 +115,7 @@ export class ProductViewComponent implements OnInit {
     this.ctnClr = v;
   }
 
-  pack2(data: any, v: any, details: any, num: number) {
+  async pack2(data: any, v: any, details: any, num: number) {
     // console.log(num);
     let paintDetails = ""
     let paint_name = ""
@@ -148,7 +148,7 @@ export class ProductViewComponent implements OnInit {
       "filtervalue7": ""
     }
     this.packDetails = [];
-    this.api.getAllPacks(packdetail).subscribe({
+    await this.api.getAllPacks(packdetail).subscribe({
       next: (responseSessionData: any) => {
         //console.log(responseSessionData, "pack details");
         this.allPacks = responseSessionData;
@@ -198,15 +198,19 @@ export class ProductViewComponent implements OnInit {
     //   console.log(this.packDetails, 'packdetails');
 
     // }
-    if (num == 1) {
-      this.packP.nativeElement.click();
-    } else if (num == 2) {
-      this.packTwo.nativeElement.click();
-    } else if (num == 3) {
-      this.packThree.nativeElement.click();
-    } else if (num == 4) {
-      this.packFour.nativeElement.click();
-    }
+
+    
+      if (num == 1) {
+        this.packP.nativeElement.click();
+      } else if (num == 2) {
+        this.packTwo.nativeElement.click();
+      } else if (num == 3) {
+        this.packThree.nativeElement.click();
+      } else if (num == 4) {
+        this.packFour.nativeElement.click();
+      }
+    
+    
   }
   getDicountedPrice() {
     console.log("get dis price");
@@ -370,10 +374,10 @@ export class ProductViewComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     if(!inputElement.value){
       inputElement.value=''
-      return;
+      // return;
     }
-    const value = parseInt(inputElement.value, 10) || 0;
-
+    const value = Math.round(parseInt(inputElement.value, 10) ) || 0;
+     inputElement.value=value.toString()
     // Ensure `this.quantities` is properly initialized
     if (!Array.isArray(this.quantities)) {
       this.quantities = [];
