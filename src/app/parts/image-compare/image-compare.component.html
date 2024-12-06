@@ -22,11 +22,11 @@
             <section *ngIf="check(item.ASIAN_PAINTS, null)">
               <!-- <p>NA</p> -->
             </section>
-            <section class="flex flex-col justify-center items-center h-full" *ngIf="item.ASIAN_PAINTS !== null">
-              <div class="h-[45%]"><img src="../../../assets/images/asian paints 1.png" alt="" srcset="" class="h-full" /></div>
+            <section class="flex flex-col justify-center items-center h-full py-2" *ngIf="item.ASIAN_PAINTS !== null">
+              <div class="h-[50%]"><img src="../../../assets/images/asian paints 1.png" alt="" srcset="" class="h-full" /></div>
               <h5 class="text-center text-sm font-bold h-[30%]">{{ item.ASIAN_PAINTS }}</h5>
               <!-- <div class="flex products-center gap-[10px]"> -->
-              <h5 class="text-center  h-[20%]  pt-5">₹{{ item.Asian_detils[0].price }}</h5>
+              <!-- <h5 class="text-center  h-[20%]  pt-5">₹{{ item.Asian_detils[0].price }}</h5> -->
               <!-- </div> -->
             </section>
           </div>
@@ -41,11 +41,11 @@
           <div (click)="sendDetail(item)" class="p-box " [class.na-box]="item.BERGER_PAINTS == null">
           
             <!-- <section style="display: contents" *ngIf="item.BERGER_PAINTS !== null"> -->
-            <section class="flex flex-col justify-between items-center h-full py-2" *ngIf="item.BERGER_PAINTS !== null">
-              <div class="h-[45%]"><img src="../../../assets/images/berger 1.png" class="h-full object-contain" alt="" srcset="" /></div>
-              <h5 class="text-center font-bold text-sm  h-[25%]">{{ item.BERGER_PAINTS }}</h5>
+            <section class="flex flex-col justify-center items-center h-full py-2" *ngIf="item.BERGER_PAINTS !== null">
+              <div class="h-[50%]"><img  src="../../../assets/images/berger 1.png" class="h-full object-contain" alt="" srcset="" /></div>
+              <h5 class="text-center  font-bold text-sm  h-[30%]">{{ item.BERGER_PAINTS }}</h5>
               <!-- <div class="flex products-center gap-[10px]"> -->
-              <h5 class="text-center pt-5 h-[20%]">₹{{ item.BERGER_details[0].price }}</h5>
+              <!-- <h5 class="text-center pt-5 h-[20%]">₹{{ item.BERGER_details[0].price }}</h5> -->
               <!-- </div -->
             </section>
           </div>
@@ -58,14 +58,14 @@
         @if(item.JN_PAINTS){
           <div (click)="sendDetail(item)" class="p-box" [class.na-box]="item.JN_PAINTS == null">
        
-            <section class="flex flex-col justify-between items-center h-full" *ngIf="item.JN_PAINTS !== null">
+            <section class="flex flex-col justify-center items-center h-full py-2" *ngIf="item.JN_PAINTS !== null">
              
-                <div class="h-[45%]"><img  (error)="onImageError($event,'JN')" style="width:110px;" class="h-full"  src="../../../assets/products/{{item.JN_MaterialCode}}.png" alt="JN" srcset="" />
+                <div class="h-[50%]"><img  (error)="onImageError($event,'JN')" style="width:110px;" class="h-full"  src="../../../assets/products/{{item.JN_MaterialCode}}.png" alt="JN" srcset="" />
                 </div>
     
-              <h5 class="text-center font-semibold   h-[30%] ">{{ item.JN_PAINTS }}</h5>
+              <h5 class="text-center text-sm font-bold  h-[30%] ">{{ item.JN_PAINTS }}</h5>
               <!-- <div class="text-center pb-10"> -->
-              <h5 class="text-center pt-5 h-[20%]">₹{{ item.JN_details[0].price}}</h5>
+              <!-- <h5 class="text-center pt-5 h-[20%]">₹{{ item.JN_details[0].price}}</h5> -->
               <!-- </div> -->
             </section>
           </div>
@@ -78,14 +78,14 @@
         @if(item.Sheenlac_PAINTS){
           <div (click)="sendDetail(item)" class="p-box" [class.na-box]="item.Sheenlac_PAINTS == null">
             
-            <section class="flex flex-col justify-between items-center h-full" *ngIf="item.Sheenlac_PAINTS !== null">
-              <div class="h-[45%]">
+            <section class="flex flex-col justify-center items-center h-full py-2" *ngIf="item.Sheenlac_PAINTS !== null">
+              <div class="h-[50%]">
                 <img style="width:110px" class="h-full" src="../../../assets/images/sheenlac.png" alt="" srcset="" />
 
               </div>
               <h5 class="text-center font-semibold h-[30%]">{{ item.Sheenlac_PAINTS }}</h5>
               <!-- <div class="text-center pb-10"> -->
-              <h5 class="text-center pt-5 h-[20%]">₹{{ item.Sheenlac_details[0].price}}</h5>
+              <!-- <h5 class="text-center pt-5 h-[20%]">₹{{ item.Sheenlac_details[0].price}}</h5> -->
               <!-- </div> -->
             </section>
           </div>
