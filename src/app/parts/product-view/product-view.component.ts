@@ -166,7 +166,7 @@ export class ProductViewComponent implements OnInit {
               pack: pack,
               price: price,
               productname: productname,
-              paintName:paint_name
+              paintName: paint_name
             });
             console.log(this.packDetails, "pack details data");
 
@@ -327,7 +327,7 @@ export class ProductViewComponent implements OnInit {
             result.push(product); // Add the updated product to result
             this.productPriceDetails = result;
             console.log(this.productDetails, "product");
-            
+
           }
         }
 
@@ -585,8 +585,9 @@ export class ProductViewComponent implements OnInit {
           distributorcode: localStorage.getItem("distributorcode") || "",
           companyname: product.paint_name,
           schemetype: product.cschemetype,
-          discountamount:product.cdisvalue,
-          ecomcode:this.selectedEcomcode
+          discountamount: product.cdisvalue,
+          ecomcode: this.selectedEcomcode,
+          sessionid: this.api.getSessionId()
         };
         console.log(productAdded, "product added");
 
@@ -819,10 +820,10 @@ export class ProductViewComponent implements OnInit {
   // ]
 
 
-  onImageError(event: Event, v: any){
+  onImageError(event: Event, v: any) {
     const target = event.target as HTMLImageElement;
 
-    v=="JN"?target.src = '../../../assets/images/jenson 1.png': target.src = '../../../assets/images/jenson 1.png'
-    
+    v == "JN" ? target.src = '../../../assets/images/jenson 1.png' : target.src = '../../../assets/images/jenson 1.png'
+
   }
 }
