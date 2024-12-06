@@ -87,7 +87,7 @@
   <div>
     <div class="main-title">
       <!-- @for (item of final ; track $index) { -->
-      <div [class.a-cat]="this.selectedCat == v.Name" (click)="selectCat(v)" class="title-b" *ngFor="let v of newCats">
+      <div [ngClass]="this.selectedCategory == v.Division?'bg-red-300 ':'bg-slate-300 '" [class.a-cat]="this.selectedCat == v.Name" (click)="selectCat(v)" class="text-black font-semibold p-3 rounded-md shadow-md cursor-pointer" *ngFor="let v of newCats">
         <p>{{ v.Name }}</p>
       </div>
       <!-- } -->
@@ -118,26 +118,31 @@
         <!-- <list-compare></list-compare> -->
         <div class="suggest-box">
           <div class="title-box">
-            <p>Buy together</p>
+            <p class="underline underline-offset-4">Buy together</p>
           </div>
-          <div class="flex h-[calc(100%-140px)] w-full justify-evenly items-center">
-            <div class="s-box">
+          <div class="flex py-5 w-full justify-evenly items-center">
+            <div class="flex flex-row gap-1 font-bold justify-between items-center ">
               <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
+              <div>
               <h3>Ace</h3>
-              <p>4.5 <span>(1278)</span></p>
+              <p class="font-normal">4.5 <span>(1278)</span></p>
               <h3>6,999</h3>
             </div>
-            <div class="s-box">
-              <img src="../../../assets/images/jenson 1.png" alt="" srcset="" />
-              <h3>Ace</h3>
-              <p>4.5 <span>(1278)</span></p>
-              <h3>6,999</h3>
             </div>
-            <div class="s-box">
+            <div class="flex flex-row gap-1 font-bold justify-between items-center ">
+              
               <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
-              <h3>Ace</h3>
-              <p>4.5 <span>(1278)</span></p>
-              <h3>6,999</h3>
+              <div><h3>Ace</h3>
+                <p class="font-normal">4.5 <span>(1278)</span></p>
+                <h3>6,999</h3></div>
+              
+            </div>
+            <div class="flex flex-row gap-1 font-bold justify-between items-center ">
+              <img src="../../../assets/images/asian paints 1.png" alt="" srcset="" />
+              <div> <h3>Ace</h3>
+                <p class="font-normal">4.5 <span>(1278)</span></p>
+                <h3>6,999</h3></div>
+             
             </div>
           </div>
           <div class="btn-holder">
@@ -168,15 +173,15 @@
           <div class="h-[50%] w-full">
             <img class="mx-auto" src="../../../assets/images/berger 5.png" alt="" srcset="" />
           </div>
-          <div class="content">
+          <div class="flex flex-col justify-center items-center w-full">
             <div></div>
-            <h3>
+            <h3 class="flex items-center gap-2">
               Walmasta
               <img class="h-[35px]" src="../../../assets/images/berger.png" alt="" srcset="" />
             </h3>
-            <p>4.5 <span>(1278)</span></p>
-            <h4>6,999</h4>
-            <button class="bttn" routerLink="/home" fragment="cart">
+            <p >4.5 <span>(1278)</span></p>
+            <h4 class="font-bold">6,999</h4>
+            <button class="bg-red-500 flex justify-center items-center font-semibold p-2 rounded-md w-fit text-white" routerLink="/home" fragment="cart">
               <svg fill="#ffffff" class="h-[25px]" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 483.1 483.1" xml:space="preserve"
                 stroke="#ffffff">
@@ -197,10 +202,10 @@
 
         <div class="offer-box">
           <!-- <div class="content-box"> -->
-          <h4>Amazing <span class="text-[var(--prim)]">Combo</span></h4>
-          <h4>
+          <p class="text-2xl  font-bold">Amazing <span class="text-red-500">Combo</span></p>
+          <p class="flex items-center text-2xl gap-2 font-bold">
             UPTO <span class="text-[var(--prim)] text-[32px]">50%</span> SAVE
-          </h4>
+          </p>
           <!-- </div> -->
           <div class="img-box">
             <img src="../../../assets/images/Group 44.png" alt="" srcset="" />
@@ -209,7 +214,7 @@
         <div class="btn-holder">
           <button class="bttn w-[120px]">View More</button>
         </div>
-        <div class="making-box">
+        <div class="making-box text-center">
           <p>Asian paints Making tutorial</p>
         </div>
       </div>

@@ -63,6 +63,7 @@ export class HomeComponent implements OnInit {
   cats: any = [];
   newCats: any = [];
   selectedCat: any = { "Division": 35 };
+  selectedCategory: any =  35 ;
   selectedCatSub: any;
   selectedSubIndex: number = 0
   final: any = [];
@@ -365,6 +366,7 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
     this.selectedCatSub = '';
     this.selectedCat = v;
+    this.selectedCategory=v.Division
     this.selectedSubIndex = 0;
 
     // Object to store common data for each unique ECOMCODE
