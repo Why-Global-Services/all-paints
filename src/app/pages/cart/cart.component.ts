@@ -102,6 +102,7 @@ export class CartComponent implements OnInit {
         this.total += item.price
         this.logic.cartTotal = this.total;
         console.log(this.logic.cartTotal);
+        console.log(this.logic.cartItems);
         
       })
 

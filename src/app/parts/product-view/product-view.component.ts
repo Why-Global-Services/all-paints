@@ -166,7 +166,7 @@ export class ProductViewComponent implements OnInit {
               pack: pack,
               price: price,
               productname: productname,
-              paintName:paint_name
+              paintName: paint_name
             });
             console.log(this.packDetails, "pack details data");
 
@@ -327,7 +327,7 @@ export class ProductViewComponent implements OnInit {
             result.push(product); // Add the updated product to result
             this.productPriceDetails = result;
             console.log(this.productDetails, "product");
-            
+
           }
         }
 
@@ -568,11 +568,16 @@ export class ProductViewComponent implements OnInit {
         const price = parseFloat(product.price) || 0;
         const totalDiscount = parseFloat(product.totaldisamount) || 0;
         let productprice = quantity * price;
+        let productdisvalue =0
+        if(product.cdisvalue){
+          productdisvalue = product.cdisvalue
+        }
 
         // Apply discount if `totaldisamount` is valid
         if (totalDiscount > 0) {
           productprice -= totalDiscount;
         }
+        console.log(product, "test product");
 
         const productAdded = {
           customerId: localStorage.getItem("apCusId"),
@@ -583,10 +588,11 @@ export class ProductViewComponent implements OnInit {
           productname: product.productname as string,
           materialCode: product.materialCode as string, // Fixed case-sensitive issue
           distributorcode: localStorage.getItem("distributorcode") || "",
-          companyname: product.paint_name,
-          schemetype: product.cschemetype,
-          discountamount:product.cdisvalue,
-          ecomcode:this.selectedEcomcode
+          company_name: product.paintName,
+          schemetype: product.cschemetype || "",
+          discountamount: productdisvalue || 0,
+          ecomcode: this.selectedEcomcode
+          // sessionid: this.api.getSessionId()
         };
         console.log(productAdded, "product added");
 
@@ -819,10 +825,10 @@ export class ProductViewComponent implements OnInit {
   // ]
 
 
-  onImageError(event: Event, v: any){
+  onImageError(event: Event, v: any) {
     const target = event.target as HTMLImageElement;
 
-    v=="JN"?target.src = '../../../assets/images/jenson 1.png': target.src = '../../../assets/images/jenson 1.png'
-    
+    v == "JN" ? target.src = '../../../assets/images/jenson 1.png' : target.src = '../../../assets/images/jenson 1.png'
+
   }
 }
