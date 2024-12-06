@@ -52,4 +52,16 @@ export class ApiService {
     return this.http.post(this.api + 'api/FranchiOrder/AllPaintsOrderData', body);
   }
 
+  setSessionId(sessionId: string): void {
+    sessionStorage.setItem('sessionId', sessionId);
+  }
+
+  getSessionId(): string | null {
+    return sessionStorage.getItem('sessionId');
+  }
+
+  clearSessionId(): void {
+    sessionStorage.removeItem('sessionId');
+  }
+
 }
