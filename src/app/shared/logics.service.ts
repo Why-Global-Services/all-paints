@@ -17,6 +17,7 @@ export class LogicsService {
   distributorcode:any
   paymentDetails:any
   colorUrl: any = 'assets/categorized_sheenlac_colors.json'
+  leastProductArray:any[]=[]
 
   constructor() { }
   getcolor(): Observable<any> {
