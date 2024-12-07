@@ -43,7 +43,7 @@
             </div>
           </div>
         </div> -->
-        <div class="p-2">
+        <div class="p-2" *ngIf="cartlogicData.length > 0">
           <div *ngFor="let product of cartlogicData; let pIndex = index"
             class="p-box border shadow-lg rounded-md border-gray-400 relative">
             <!-- Product Image Section -->
@@ -97,7 +97,8 @@
           <div class="total">
             <h2>Total: ₹ {{ total.toFixed(2) || 0 }}</h2>
             <div class="text-green-600 flex flex-col animate-pulse items-center" *ngIf="alldiscountValue">
-              <span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})</div>
+              <span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})
+            </div>
 
           </div>
         </div>
@@ -151,7 +152,8 @@
           <div *ngFor="let product of productLeastArray; let pIndex = index"
             class="p-box border shadow-lg rounded-md border-gray-400 relative">
             <div class="img-box ">
-              <ng-container *ngIf="getPaintBrandKey(product) as paintKey">
+              {{pIndex}}
+              <ng-container *ngIf="getPaintBrandKey(product[0]) as paintKey">
                 <ng-container [ngSwitch]="paintKey">
                   <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />
                   <img *ngSwitchCase="'ASIAN_PAINTS'" src="../../../assets/images/asian paints 1.png"
@@ -163,10 +165,10 @@
               </ng-container>
             </div>
             <div class="p-details ">
-              <h4>{{ product.productname }}</h4>
-              <p>Price: ₹{{ product.price | number: '1.2-2'}}</p>
-              <p class="flex items-center gap-2">Quantity:
-                <svg class="cursor-pointer" (click)="handlePlusMinus(-1,pIndex)" xmlns="http://www.w3.org/2000/svg"
+              <h4>{{ product[0].productname }}</h4>
+              <p>Price: ₹{{ product[0].price | number: '1.2-2'}}</p>
+              <!-- <p class="flex items-center gap-2">Quantity: -->
+              <!-- <svg class="cursor-pointer" (click)="handlePlusMinus(-1,pIndex)" xmlns="http://www.w3.org/2000/svg"
                   height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323">
                   <path d="M200-440v-80h560v80H200Z" />
                 </svg>
@@ -176,17 +178,19 @@
                 <svg class="cursor-pointer" (click)="handlePlusMinus(1,pIndex)" xmlns="http://www.w3.org/2000/svg"
                   height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323">
                   <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                </svg>
-              </p>
-              <div *ngIf="product.totaldisamount >0">
-                <p>Total Discount: ₹{{ product.totaldisamount }}</p>
+                </svg> -->
+              <!-- </p> -->
+              <div *ngIf="product[0].totaldisamount >0">
+                <p>Total Discount: ₹{{ product[0].totaldisamount }}</p>
               </div>
               <!-- <div *ngIf="this.duplogicData[pIndex].qty!=product.qty">
               
                 <button (click)="updateCartData(pIndex)" class="bg-red-500 text-white rounded-md shadow-md active:translate-y-2 duration-100 ease-in-out p-2" >Update</button>
               </div> -->
             </div>
+            <button *ngIf="isSwitched[pIndex] !== false" (click)="swapProduct(pIndex)">Switch</button>
           </div>
+
         </div>
 
         <!-- Template to show when no products are available -->
@@ -194,7 +198,8 @@
           <div class="total">
             <h2>Total: ₹ {{ total.toFixed(2) || 0 }}</h2>
             <div class="text-green-600 flex flex-col animate-pulse  items-center" *ngIf="alldiscountValue">
-              <span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})</div>
+              <span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})
+            </div>
 
           </div>
         </div>
@@ -206,7 +211,7 @@
         <div class="title">
           <h3>My Cart ({{cartlogicData.length}})</h3>
         </div>
-        <div class="p-2">
+        <div class="p-2" *ngIf="cartlogicData.length > 0">
           <div *ngFor="let product of cartlogicData; let pIndex = index"
             class="p-box  border shadow-lg rounded-md border-gray-400 relative">
             <!-- Product Image Section -->
@@ -243,7 +248,8 @@
           <div class="total">
             <h2>Total: ₹ {{ total.toFixed(2) || 0 }}</h2>
             <div class="text-green-600 flex flex-col animate-pulse  items-center" *ngIf="alldiscountValue">
-              <span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})</div>
+              <span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})
+            </div>
 
           </div>
         </div>

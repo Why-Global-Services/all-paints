@@ -96,8 +96,7 @@ export class CartComponent implements OnInit {
   getCartDetails: any[] = [];
   productLeastArray: any[] = [];
   alldiscountValue: any = 0
-
-
+  isSwitched: boolean[] = new Array(this.productLeastArray.length).fill(false);
   // category: "A210040012210"
   // company_name: "ASIAN_PAINTS"
   // materialCode: "A210040012210"
@@ -107,7 +106,7 @@ export class CartComponent implements OnInit {
   currentDateTime: string = "";
   ngOnInit(): void {
     console.log("cart page");
-    this.getAllCartdata()
+    this.getAllCartdata();
 
     this.productLeastArray = this.logic.leastProductArray
     console.log(this.productLeastArray, "hise")
@@ -187,6 +186,8 @@ export class CartComponent implements OnInit {
   }
 
   getAllCartdata() {
+    console.log("test");
+
     this.api.getCart(this.getCart.value).subscribe((res: any) => {
       const parsedData = JSON.parse(res);
       this.cartlogicData = parsedData;
@@ -540,10 +541,110 @@ export class CartComponent implements OnInit {
     // let finalX = (doc as any).lastAutoTable.finalX;
 
     doc.text(`Total Price: ${totalPrice}`, 135, finalY + 10);
-    doc.text("*This is a computer generated file*", 50, finalY+50)
+    doc.text("*This is a computer generated file*", 50, finalY + 50)
     const now = new Date();
     this.currentDateTime = now.toLocaleString();
     doc.save('Product_Details-' + this.currentDateTime + '.pdf');
   }
+
+  // swapProduct(index: number) {
+  //   this.logic.cartItems.forEach((product: any, ind: number) => {
+  //     console.log(product, "Cart Item:");
+
+  //     this.logic.leastProductArray.forEach((least: any, i: number) => {
+  //       console.log(i, "Least Product Index:");
+
+  //       if (index === i) {
+  //         // Ensure least[i] exists and has the expected structure
+  //         if (least) {
+  //           least[index].id = product.id; // Update properties
+  //           least[index].qty = product.qty.toString();
+  //           least[index].distributorcode = product.distributorcode;
+  //           least[index].MaterialCode = least.materialCode;
+  //           least[index].customerId = product.customerId;
+
+  //           console.log(this.logic.leastProductArray[index], "Updated Array:");
+
+  //           // Update cart using FormGroup
+  //           const updateCart = this.fb.group({
+  //             ...this.logic.leastProductArray
+  //           });
+
+  //           // Call API to update the cart
+  //           this.api.updateCart(updateCart.value).subscribe(
+  //             (response: any) => {
+  //               console.log("Cart updated successfully:", response);
+  //             },
+  //             (error: any) => {
+  //               console.error("Error updating cart:", error);
+  //             }
+  //           );
+  //         } else {
+  //           console.warn("Invalid least product at index", i);
+  //         }
+  //       }
+  //     });
+  //   });
+  // }
+  swapProduct(index: number) {
+    this.isSwitched[index] = true;
+    console.log(index);
+  
+    // Ensure cartItems and leastProductArray exist
+    if (!this.logic.cartItems || !this.logic.leastProductArray) {
+      console.warn("cartItems or leastProductArray is not defined");
+      return;
+    }
+  
+    // Find the corresponding cart item (deep clone to avoid reference sharing)
+    const product = { ...this.logic.cartItems[index] };
+    if (!product) {
+      console.warn(`No cart item found at index ${index}`);
+      return;
+    }
+  
+    // Find the least product at the given index (deep clone to avoid reference sharing)
+    const least =this.logic.leastProductArray[index];
+    if (!least) {
+      console.warn(`No least product found at index ${index}`);
+      return;
+    }
+  
+    // Update the least product with the cart item details
+    least[0].id = product.id.toString();
+    least[0].qty = product.qty.toString();
+    least[0].MaterialCode = least[0].materialCode; // Access least.materialCode
+    least[0].customerId = product.customerId;
+  
+    // Exclude unwanted properties like materialCode
+    const { materialCode, productname, distributorcode,company_name, category, ...updatedLeast } = least[0];
+    console.log(`Updated least product at index ${index}:`, updatedLeast);
+  
+    // Create a FormGroup for the updated product only
+    const updatedData = this.fb.group({
+      ...updatedLeast,
+    });
+    console.log(updatedData.value, "value");
+  
+    // Call API to update only the specific index
+    this.api.updateCart(updatedData.value).subscribe({
+      next: (response) => {
+        console.log(response, "Cart updated successfully");
+        this.getAllCartdata();
+        // Avoid reloading the page unnecessarily. You can update the data in the UI directly.
+        // this.getAllCartdata();  // Make sure this method updates the UI with fresh data
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error("Error updating cart", err);
+        if (err.status === 200) {
+          this.getAllCartdata();  // Re-fetch data if necessary
+        }
+      },
+    });
+  }
+  
+
+
+
 
 }

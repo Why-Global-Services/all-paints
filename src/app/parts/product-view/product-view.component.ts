@@ -409,7 +409,7 @@ export class ProductViewComponent implements OnInit {
         //   }
         // }
         // First, match the material code
-        product.qty=this.quantities
+        //product.qty=this.quantities
         if (schems.cproductgroup === product.materialCode) {
           // Append scheme values to product (common to all cases)
           console.log("matched","-------------------------------");
@@ -738,12 +738,12 @@ return array
       if (
         product> -1
       ) {
-        console.log(this.packDetails[product], "product",this.quantities[product],product,"procuse");
+        //console.log(this.packDetails[product], "product",this.quantities[product],product,"procuse");
         let least = []
         least = this.checkPackAvailability(this.packDetails[product].pack, this.packDetails[product].category);
         let indexSort=this.quantities[product]
-        this.leastProduct.push({...least,qty:indexSort})
-        console.log(this.leastProduct,"leaset product",indexSort)
+        this.leastProduct.push(least)
+        //console.log(this.leastProduct,"leaset product",indexSort)
         
         this.logic.leastProductArray=this.getDicountedPriceForIndex(this.leastProduct)
 
