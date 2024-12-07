@@ -130,9 +130,9 @@
           <h3>Least Priced Items</h3>
         </div>
         <!-- Check if the array has items -->
-         {{productLeastArray.length}}_s
-        <ng-container *ngIf="productLeastArray && productLeastArray.length > 0">
-          <div *ngFor="let product of productLeastArray; let pIndex = index" class="p-box">
+      
+        <div class="p-2" *ngIf="productLeastArray && productLeastArray.length > 0">
+          <div *ngFor="let product of productLeastArray; let pIndex = index" class="p-box border shadow-lg rounded-md border-gray-400 relative">
             <div class="img-box ">
               <ng-container *ngIf="getPaintBrandKey(product) as paintKey">
                 <ng-container [ngSwitch]="paintKey">
@@ -149,13 +149,13 @@
             <div class="p-details ">
               <h4>{{ product.productname }}</h4>
               <p>Price: ₹{{ product.price | number: '1.2-2'}}</p>
-              <!-- <p class="flex items-center gap-2">Quantity: 
+              <p class="flex items-center gap-2">Quantity: 
                 <svg class="cursor-pointer" (click)="handlePlusMinus(-1,pIndex)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323"><path d="M200-440v-80h560v80H200Z"/></svg>
                 
-                {{ product.qty }} 
+                {{ product.quantity }} 
               
                 <svg class="cursor-pointer" (click)="handlePlusMinus(1,pIndex)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
-              </p> -->
+              </p>
               <div *ngIf="product.totaldisamount >0">
                 <p>Total Discount: ₹{{ product.totaldisamount }}</p>
               </div>
@@ -165,12 +165,16 @@
               </div> -->
             </div>
           </div>
-        </ng-container>
+        </div>
 
         <!-- Template to show when no products are available -->
-        <ng-template #noProducts>
-          <p>No products available</p>
-        </ng-template>
+        <div class="p-2">
+          <div class="total">
+            <h2>Total: ₹ {{ total.toFixed(2) || 0 }}</h2>
+            <div class="text-green-600 flex flex-col animate-pulse  items-center" *ngIf="alldiscountValue"><span>Saved</span>({{ alldiscountValue.toFixed(2) || 0 }})</div>
+
+          </div>
+        </div>
       </div>
 
 

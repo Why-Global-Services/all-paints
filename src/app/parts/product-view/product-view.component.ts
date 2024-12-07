@@ -409,9 +409,10 @@ export class ProductViewComponent implements OnInit {
         //   }
         // }
         // First, match the material code
+        product.qty=this.quantities
         if (schems.cproductgroup === product.materialCode) {
           // Append scheme values to product (common to all cases)
-          console.log("matched");
+          console.log("matched","-------------------------------");
           console.log(product, "pack");
 
           product.discounttype = schems.cdistype;
@@ -489,7 +490,7 @@ export class ProductViewComponent implements OnInit {
       });
     });
     console.log(this.productPriceDetails, "product price");
-
+return array
   }
   // updateQuantity(index: number, event: Event) {
   //   const inputElement = event.target as HTMLInputElement;
@@ -737,15 +738,16 @@ export class ProductViewComponent implements OnInit {
       if (
         product> -1
       ) {
-        console.log(this.packDetails[product], "product");
+        console.log(this.packDetails[product], "product",this.quantities[product],product,"procuse");
         let least = []
         least = this.checkPackAvailability(this.packDetails[product].pack, this.packDetails[product].category);
-        this.leastProduct.push(...least)
-        console.log(least,"leaset product")
-        this.getDicountedPriceForIndex(this.leastProduct)
-        this.logic.leastProductArray=this.leastProduct
+        let indexSort=this.quantities[product]
+        this.leastProduct.push({...least,qty:indexSort})
+        console.log(this.leastProduct,"leaset product",indexSort)
+        
+        this.logic.leastProductArray=this.getDicountedPriceForIndex(this.leastProduct)
 
-        console.log(this.leastProduct);
+        console.log(this.logic.leastProductArray,"-----");
 
 
         const quantity = parseFloat(this.packDetails[product].quantity) || 0;
