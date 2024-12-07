@@ -91,6 +91,8 @@ export class ProductViewComponent implements OnInit {
     "filtervalue7": "",
     "filtervalue8": ""
   })
+  InputIndexUpdate:any[]=[]
+
 
   ngOnInit(): void {
     this.logic.getcolor().subscribe((res: any) => {
@@ -362,6 +364,133 @@ export class ProductViewComponent implements OnInit {
     console.log(this.productPriceDetails, "product price");
 
   }
+  getDicountedPriceForIndex(array:any) {
+    console.log("get dis price")
+    let result: any[] = [];
+    let discountAmount: any = 0;
+    this.schemes.forEach((schems: any) => {
+      array.forEach((product: any) => {
+        // console.log(this.packDetails);
+        // console.log(product.materialCode);
+        // console.log(schems.cproductgroup);
+        // console.log(this.quantities, "matched quantities");
+
+        // Ensure we match the product and scheme by both material code and scheme type
+        // if (schems.cproductgroup === product.MaterialCode && schems.cschemetype === "Seasoning") {
+        //   // Append scheme values to product
+        //   product.discounttype = schems.cdistype;
+        //   product.cdisdesc = schems.cdisdesc;
+        //   product.schno = schems.schno;
+        //   product.nmaxqty = schems.nmaxqty;
+        //   product.nminqty = schems.nminqty;
+        //   product.cdisvalue = schems.cdisvalue;
+        //   product.cschemetype = schems.cschemetype;
+        //   if (product.qty >= schems.nminqty && product.qty <= schems.nmaxqty) {
+        //     console.log("inside condition", schems.cdistype);
+        //     if (schems.cdistype === "Rupees") {
+        //       console.log(product.qty, schems.cdisvalue, "data");
+
+        //       discountAmount = product.qty * schems.cdisvalue
+        //       console.log(discountAmount, 'amt');
+
+
+        //     } else if (schems.cdistype == "Percentage") {
+        //       const discountvalue = (product.price * schems.cdisvalue) / 100;
+        //       discountAmount = product.qty * discountvalue
+        //       console.log(discountAmount, "else amt");
+
+        //     }
+        //   }
+        //   product.totaldisamount = discountAmount
+        //   // Check if the product has already been added to result to avoid duplicates
+        //   const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
+        //   if (!isDuplicate) {
+        //     result.push(product);  // Add the updated product to result
+        //   }
+        // }
+        // First, match the material code
+        if (schems.cproductgroup === product.materialCode) {
+          // Append scheme values to product (common to all cases)
+          console.log("matched");
+          console.log(product, "pack");
+
+          product.discounttype = schems.cdistype;
+          product.cdisdesc = schems.cdisdesc;
+          product.schno = schems.schno;
+          product.nmaxqty = schems.nmaxqty;
+          product.nminqty = schems.nminqty;
+          product.cdisvalue = schems.cdisvalue;
+          product.cschemetype = schems.cschemetype;
+
+          // Now handle scheme types
+          switch (schems.cschemetype) {
+            case "Seasoning":
+              // For "Seasoning", no quantity check is required
+              // console.log("Inside Seasoning condition", schems.cdistype);
+
+              if (schems.cdistype === "Rupees") {
+                discountAmount = schems.cdisvalue;
+                // console.log(discountAmount, "amt");
+              } else if (schems.cdistype === "Percentage") {
+                const discountValue = (product.price * schems.cdisvalue) / 100;
+                discountAmount = discountValue;
+                // console.log(discountAmount, "else amt");
+              }
+              break;
+
+            case "Normal":
+              if (product.quantity >= schems.nminqty && product.quantity <= schems.nmaxqty) {
+                // console.log(`Inside ${schems.cschemetype} condition`, schems.cdistype);
+
+                if (schems.cdistype === "Rupees") {
+                  discountAmount = product.quantity * schems.cdisvalue;
+                  // console.log(discountAmount, "amt");
+                } else if (schems.cdistype === "Percentage") {
+                  const discountValue = (product.price * schems.cdisvalue) / 100;
+                  discountAmount = product.quantity * discountValue;
+                  // console.log(discountAmount, "else amt");
+                }
+              }
+              break;
+            case "Monthly":
+              // For "Normal" and "Monthly", check the quantity range
+              if (product.quantity >= schems.nminqty && product.quantity <= schems.nmaxqty) {
+                console.log(`Inside ${schems.cschemetype} condition`, schems.cdistype);
+
+                if (schems.cdistype === "Rupees") {
+                  discountAmount = product.quantity * schems.cdisvalue;
+                  console.log(discountAmount, "amt");
+                } else if (schems.cdistype === "Percentage") {
+                  const discountValue = (product.price * schems.cdisvalue) / 100;
+                  discountAmount = product.quantity * discountValue;
+                  console.log(discountAmount, "else amt");
+                }
+              }
+              break;
+
+            default:
+              console.log("Unknown scheme type", schems.cschemetype);
+              break;
+          }
+
+          // Assign the calculated discount amount to the product
+          product.totaldisamount = discountAmount;
+
+          // Check if the product has already been added to result to avoid duplicates
+          const isDuplicate = result.some((item: any) => item.materialCode === product.materialCode);
+          if (!isDuplicate) {
+            result.push(product); // Add the updated product to result
+            this.productPriceDetails = result;
+            console.log(this.productDetails, "product");
+
+          }
+        }
+
+      });
+    });
+    console.log(this.productPriceDetails, "product price");
+
+  }
   // updateQuantity(index: number, event: Event) {
   //   const inputElement = event.target as HTMLInputElement;
   //   const value = parseInt(inputElement.value, 10) || 0;
@@ -392,12 +521,24 @@ export class ProductViewComponent implements OnInit {
   // }
 
   //change data as per out format
+
+
   updateQuantity(index: number, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (!inputElement.value) {
       inputElement.value = ''
       // return;
     }
+
+    if(!this.InputIndexUpdate.some((item:any)=>item==index)){
+
+      this.InputIndexUpdate.push(index);
+    
+    }
+   
+
+    console.log(this.InputIndexUpdate,"indexUpdate")
+
     const value = Math.round(parseInt(inputElement.value, 10)) || 0;
     inputElement.value = value.toString()
     // Ensure `this.quantities` is properly initialized
@@ -588,27 +729,32 @@ export class ProductViewComponent implements OnInit {
 
   addtocart() {
     let cartProducts: any[] = [];
-    this.packDetails.forEach((product: any) => {
+ 
+    this.InputIndexUpdate.forEach((product: any) => {
 
 
 
       if (
-        product.quantity > 0
+        product> -1
       ) {
-        console.log(product, "product");
+        console.log(this.packDetails[product], "product");
         let least = []
-        least = this.checkPackAvailability(product.pack, product.category);
-        this.leastProduct.push(least)
+        least = this.checkPackAvailability(this.packDetails[product].pack, this.packDetails[product].category);
+        this.leastProduct.push(...least)
+        console.log(least,"leaset product")
+        this.getDicountedPriceForIndex(this.leastProduct)
+        this.logic.leastProductArray=this.leastProduct
+
         console.log(this.leastProduct);
 
 
-        const quantity = parseFloat(product.quantity) || 0;
-        const price = parseFloat(product.price) || 0;
-        const totalDiscount = parseFloat(product.totaldisamount) || 0;
+        const quantity = parseFloat(this.packDetails[product].quantity) || 0;
+        const price = parseFloat(this.packDetails[product].price) || 0;
+        const totalDiscount = parseFloat(this.packDetails[product].totaldisamount) || 0;
         let productprice = quantity * price;
         let productdisvalue = 0
-        if (product.cdisvalue) {
-          productdisvalue = product.cdisvalue
+        if (this.packDetails[product].cdisvalue) {
+          productdisvalue = this.packDetails[product].cdisvalue
         }
 
         // Apply discount if `totaldisamount` is valid
@@ -619,15 +765,15 @@ export class ProductViewComponent implements OnInit {
 
         const productAdded = {
           customerId: localStorage.getItem("apCusId"),
-          pack: product.pack,
+          pack: this.packDetails[product].pack,
           price: productprice.toString(),
-          qty: (product.quantity).toString(), // Default to 0 if quantity is not set
+          qty: (this.packDetails[product].quantity).toString(), // Default to 0 if quantity is not set
           cdate: "", // Populate this with the current date if needed
-          productname: product.productname as string,
-          materialCode: product.materialCode as string, // Fixed case-sensitive issue
+          productname: this.packDetails[product].productname as string,
+          materialCode: this.packDetails[product].materialCode as string, // Fixed case-sensitive issue
           distributorcode: localStorage.getItem("distributorcode") || "",
-          company_name: product.paintName,
-          schemetype: product.cschemetype || "",
+          company_name: this.packDetails[product].paintName,
+          schemetype:this.packDetails[product].cschemetype || "",
           discountamount: productdisvalue || 0,
           ecomcode: this.selectedEcomcode
           // sessionid: this.api.getSessionId()
@@ -639,7 +785,7 @@ export class ProductViewComponent implements OnInit {
         this.logic.cartProducts = cartProducts;
       }
     });
-    console.log(cartProducts);
+  
     this.logic.cus("success", "", "Added to the cart!");
     // Assign to cartItems and show a success message
     // if (cartProducts.length > 0) {

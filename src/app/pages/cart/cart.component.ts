@@ -92,13 +92,23 @@ export class CartComponent implements OnInit {
   cartlogicData: any[] = [];
   duplogicData: any[] = [];
   getCartDetails: any[] = [];
+  productLeastArray: any[] = [];
   alldiscountValue:any=0
+
+
+  // category: "A210040012210"
+  // company_name: "ASIAN_PAINTS"
+  // materialCode: "A210040012210"
+  // pack: "0.9 L"
+  // price: "0.00"
+  // productname: "AP ACE EXT EMULSION BASE AC12G"
 
   ngOnInit(): void {
     console.log("cart page");
 this.getAllCartdata()
    
-
+this.productLeastArray=this.logic.leastProductArray
+console.log(this.productLeastArray,"hise")
     //this.cartData = this.logic.cart;
     // // this.findLeastPricedProducts()
     // console.log(this.logic.cart, "cart data");
@@ -109,6 +119,7 @@ this.getAllCartdata()
 
       )
     );
+
     // this.api.getAllSchemes(this.schemesForm.value).subscribe((res: any) => {
     //   const parsedData = JSON.parse(res);
     //   console.log(parsedData);
