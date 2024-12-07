@@ -521,23 +521,26 @@ export class CartComponent implements OnInit {
 
     doc.setFontSize(16);
     doc.text("ALL PAINTS QUOTATION", 10, 10);
-    doc.text("Product Details", 10, 10);
+    doc.text("Product Details", 10, 20);
+    doc.text("User Id:" + this.logic.cartItems[0].customerId, 150, 10);
 
     const columns = [
-      { header: 'ID', dataKey: 'id' },
       { header: 'Product Name', dataKey: 'productname' },
       { header: 'Pack', dataKey: 'pack' },
       { header: 'Price', dataKey: 'price' },
       { header: 'Qty', dataKey: 'qty' },
-      { header: 'Amount', dataKey: 'discountamount' },
-      { header: 'Customer ID', dataKey: 'customerId' },
     ];
-
+    const totalPrice = this.logic.cartItems.reduce((sum: any, item: any) => sum + item.price, 0);
     autoTable(doc, {
       head: [columns.map(col => col.header)],
-      body: this.data.map(item => columns.map(col => item[col.dataKey])),
-      startY: 20,
+      body: this.logic.cartItems.map((item: any) => columns.map(col => item[col.dataKey])),
+      startY: 30,
     });
+    let finalY = (doc as any).lastAutoTable.finalY;
+    // let finalX = (doc as any).lastAutoTable.finalX;
+
+    doc.text(`Total Price: ${totalPrice}`, 135, finalY + 10);
+    doc.text("*This is a computer generated file*", 50, finalY+50)
     const now = new Date();
     this.currentDateTime = now.toLocaleString();
     doc.save('Product_Details-' + this.currentDateTime + '.pdf');
