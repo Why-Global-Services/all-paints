@@ -8,6 +8,8 @@ import { ApiService } from '../../shared/api.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface SelectDetails {
   price: number; // Price of the selected product
@@ -93,7 +95,7 @@ export class CartComponent implements OnInit {
   duplogicData: any[] = [];
   getCartDetails: any[] = [];
   productLeastArray: any[] = [];
-  alldiscountValue:any=0
+  alldiscountValue: any = 0
 
 
   // category: "A210040012210"
@@ -102,13 +104,13 @@ export class CartComponent implements OnInit {
   // pack: "0.9 L"
   // price: "0.00"
   // productname: "AP ACE EXT EMULSION BASE AC12G"
-
+  currentDateTime: string = "";
   ngOnInit(): void {
     console.log("cart page");
-this.getAllCartdata()
-   
-this.productLeastArray=this.logic.leastProductArray
-console.log(this.productLeastArray,"hise")
+    this.getAllCartdata()
+
+    this.productLeastArray = this.logic.leastProductArray
+    console.log(this.productLeastArray, "hise")
     //this.cartData = this.logic.cart;
     // // this.findLeastPricedProducts()
     // console.log(this.logic.cart, "cart data");
@@ -184,7 +186,7 @@ console.log(this.productLeastArray,"hise")
     // Calculate initial total price
   }
 
-  getAllCartdata(){
+  getAllCartdata() {
     this.api.getCart(this.getCart.value).subscribe((res: any) => {
       const parsedData = JSON.parse(res);
       this.cartlogicData = parsedData;
@@ -194,17 +196,17 @@ console.log(this.productLeastArray,"hise")
         this.logic.cartTotal = this.total;
         console.log(this.logic.cartTotal);
         console.log(this.logic.cartItems);
-        
-      })
-      this.alldiscountValue=this.cartlogicData.reduce((acc,current)=>{
-     
-        return acc=acc+(current.discountamount*current.qty)
 
-      },0)
-      console.log(this.alldiscountValue,"disount")
-      this.duplogicData=parsedData.map((item:any,index:any)=>{
+      })
+      this.alldiscountValue = this.cartlogicData.reduce((acc, current) => {
+
+        return acc = acc + (current.discountamount * current.qty)
+
+      }, 0)
+      console.log(this.alldiscountValue, "disount")
+      this.duplogicData = parsedData.map((item: any, index: any) => {
         return {
-         ...item
+          ...item
         }
       })
 
@@ -245,14 +247,14 @@ console.log(this.productLeastArray,"hise")
 
   getPaintBrandKey(product: any): string | null {
 
-    const value=product.company_name&&product.company_name.split("_")[0]
-    if (value.toLowerCase()=='jn') {
+    const value = product.company_name && product.company_name.split("_")[0]
+    if (value.toLowerCase() == 'jn') {
       return 'JN_PAINTS';
-    } else if (value.toLowerCase()=='berger') {
+    } else if (value.toLowerCase() == 'berger') {
       return 'BERGER_PAINTS';
-    } else if (value.toLowerCase()=='asian') {
+    } else if (value.toLowerCase() == 'asian') {
       return 'ASIAN_PAINTS';
-    } else if (value.toLowerCase()=='sheenlac') {
+    } else if (value.toLowerCase() == 'sheenlac') {
       return 'Sheenlac_PAINTS';
     }
     return null; // Return null if none found
@@ -438,82 +440,107 @@ console.log(this.productLeastArray,"hise")
 
   subTitle: string[] = ['Interiors Wall Paints', 'Exterior Wall Paints'];
 
-handlePlusMinus(val:any,index:any){
+  handlePlusMinus(val: any, index: any) {
 
-  if(val>0){
-    console.log(val,'plus')
-    this.cartlogicData[index].qty=this.cartlogicData[index].qty+val
+    if (val > 0) {
+      console.log(val, 'plus')
+      this.cartlogicData[index].qty = this.cartlogicData[index].qty + val
+    }
+    else {
+
+      if (this.cartlogicData[index].qty > 0) {
+        this.cartlogicData[index].qty = this.cartlogicData[index].qty + val
+
+      }
+    }
+    this.duplogicData[index].change = true
   }
-  else{
-         
-    if(this.cartlogicData[index].qty>0){
-      this.cartlogicData[index].qty=this.cartlogicData[index].qty+val
+
+  updateCartData(index: any) {
+    console.log(index)
+    if (index > -1) {
+      try {
+        let individualPrice = (this.cartlogicData[index].price) * this.cartlogicData[index].qty
+        let data = this.fb.group({
+          id: this.cartlogicData[index].id.toString(),
+          customerId: this.cartlogicData[index].customerId,
+          pack: this.cartlogicData[index].pack,
+          price: individualPrice.toString(),
+          qty: this.cartlogicData[index].qty.toString(),
+          MaterialCode: this.cartlogicData[index].MaterialCode,
+
+        })
+        console.log(data)
+
+        this.api.updateCart(data.value).subscribe({
+          next: (response) => {
+            console.log(response, "ji");
+            this.getAllCartdata()
+            window.location.reload();
+          },
+          error: (err: HttpErrorResponse) => {
+            if (err.status == 200) {
+              this.getAllCartdata()
+            }
+          },
+        })
+        // 
+
+      } catch (err) {
+        console.log(err)
+      }
 
     }
-  }
-  this.duplogicData[index].change=true
-}
-
-updateCartData(index:any){
-  console.log(index)
-  if(index>-1){
-try{
-  let individualPrice=(this.cartlogicData[index].price)*this.cartlogicData[index].qty
-  let data=this.fb.group({
-  id: this.cartlogicData[index].id.toString(),
-   customerId: this.cartlogicData[index].customerId,
-   pack: this.cartlogicData[index].pack,
-   price: individualPrice.toString(),
-   qty:this.cartlogicData[index].qty.toString(),
-   MaterialCode:this.cartlogicData[index].MaterialCode,
-   
- })
- console.log(data)
-  
-  this.api.updateCart(data.value).subscribe({
-    next: (response) => {
-      console.log(response, "ji");
-      this.getAllCartdata()
-      window.location.reload();
-    },
-    error: (err:HttpErrorResponse) => {
-      if(err.status==200){
-        this.getAllCartdata()
-      }
-    },
-  })
-  // 
- 
-}catch(err){
-  console.log(err)
-}
 
   }
 
-}
 
+  deleteCartItem(index: any) {
+    if (index > -1) {
+      const data = this.fb.group({
+        id: this.cartlogicData[index].id.toString(),
+        customerId: this.cartlogicData[index].customerId,
+      });
 
-deleteCartItem(index: any) {
-  if (index > -1) {
-    const data = this.fb.group({
-      id: this.cartlogicData[index].id.toString(),
-      customerId: this.cartlogicData[index].customerId,
+      console.log(data.value); // Debugging log to ensure data is correct
+
+      this.api.DeleteCartItem(data.value).subscribe({
+        next: (res: any) => {
+          console.log(res); // Check if the response is successful
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status == 200) {
+            this.getAllCartdata()
+          }
+        },
+      });
+    }
+  }
+  generateQuotation() {
+    const doc = new jsPDF()
+
+    doc.setFontSize(16);
+    doc.text("ALL PAINTS QUOTATION", 10, 10);
+    doc.text("Product Details", 10, 10);
+
+    const columns = [
+      { header: 'ID', dataKey: 'id' },
+      { header: 'Product Name', dataKey: 'productname' },
+      { header: 'Pack', dataKey: 'pack' },
+      { header: 'Price', dataKey: 'price' },
+      { header: 'Qty', dataKey: 'qty' },
+      { header: 'Amount', dataKey: 'discountamount' },
+      { header: 'Customer ID', dataKey: 'customerId' },
+    ];
+
+    autoTable(doc, {
+      head: [columns.map(col => col.header)],
+      body: this.data.map(item => columns.map(col => item[col.dataKey])),
+      startY: 20,
     });
-
-    console.log(data.value); // Debugging log to ensure data is correct
-
-    this.api.DeleteCartItem(data.value).subscribe({
-      next: (res: any) => {
-        console.log(res); // Check if the response is successful
-      },
-      error: (err: HttpErrorResponse) => {
-        if(err.status==200){
-          this.getAllCartdata()
-        }
-      },
-    });
+    const now = new Date();
+    this.currentDateTime = now.toLocaleString();
+    doc.save('Product_Details-' + this.currentDateTime + '.pdf');
   }
-}
-
 
 }
