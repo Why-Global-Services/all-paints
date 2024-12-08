@@ -152,7 +152,6 @@
           <div *ngFor="let product of productLeastArray; let pIndex = index"
             class="p-box border shadow-lg rounded-md border-gray-400 relative">
             <div class="img-box ">
-              {{pIndex}}
               <ng-container *ngIf="getPaintBrandKey(product[0]) as paintKey">
                 <ng-container [ngSwitch]="paintKey">
                   <img *ngSwitchCase="'BERGER_PAINTS'" src="../../../assets/images/berger 5.png" alt="Berger" />

@@ -777,8 +777,8 @@ return array
           company_name: this.packDetails[product].paintName,
           schemetype:this.packDetails[product].cschemetype || "",
           discountamount: productdisvalue || 0,
-          ecomcode: this.selectedEcomcode
-          // sessionid: this.api.getSessionId()
+          ecomcode: this.selectedEcomcode,
+          sessionid: this.api.getSessionId()
         };
         console.log(productAdded, "product added");
 
