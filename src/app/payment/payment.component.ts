@@ -78,4 +78,8 @@ export class PaymentComponent {
 
     )
   }
+
+  handleBack(){
+    this.router.navigate(['/checkOut']);
+  }
 }

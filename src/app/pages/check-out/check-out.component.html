@@ -90,9 +90,16 @@
       </div>
       
     </div>
-    <button (click)="submit()"  class="w-fit px-10 py-2  bg-red-500 rounded-md text-white shadow-md">
-      Submit
-    </button>
+    <div class="flex gap-2 items-center">
+      <button (click)="handleBack()"  class="w-fit px-10 py-2  bg-transparent border border-red-500 rounded-md text-black shadow-md">
+        Back
+      </button>
+
+      <button (click)="submit()"  class="w-fit px-10 py-2  bg-red-500 rounded-md text-white shadow-md">
+        Submit
+      </button>
+    </div>
+    
   </div>
     
 

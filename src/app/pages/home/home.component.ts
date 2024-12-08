@@ -363,7 +363,7 @@ export class HomeComponent implements OnInit {
       window.history.back();
     }
 
-    this.router.navigateByUrl(`/home?cat=${v.Division}#${this.show}`);
+    this.router.navigateByUrl(`/home?cat=${v.Division}#image`);
     this.selectedCatSub = '';
     this.selectedCat = v;
     this.selectedCategory=v.Division

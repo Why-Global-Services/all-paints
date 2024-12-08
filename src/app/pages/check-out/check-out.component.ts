@@ -235,4 +235,9 @@ export class CheckOutComponent implements OnInit {
     this.adval = v
 
   }
+
+handleBack(){
+  this.router.navigate(['/cart']);
+}
+
 }
