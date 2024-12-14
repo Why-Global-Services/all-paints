@@ -180,6 +180,7 @@ export class CheckOutComponent implements OnInit {
       address: "Chennai",
       billingAddress: "Ambattur",
       totalPrice: this.totalPay.toString(),
+      sessionid:this.api.getSessionId(),
       products: this.formattedDetails
     };
     console.log(this.customerData, "customer");

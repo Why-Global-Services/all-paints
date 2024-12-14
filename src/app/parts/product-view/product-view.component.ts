@@ -91,7 +91,7 @@ export class ProductViewComponent implements OnInit {
     "filtervalue7": "",
     "filtervalue8": ""
   })
-  InputIndexUpdate:any[]=[]
+  InputIndexUpdate: any[] = []
 
 
   ngOnInit(): void {
@@ -364,7 +364,7 @@ export class ProductViewComponent implements OnInit {
     console.log(this.productPriceDetails, "product price");
 
   }
-  getDicountedPriceForIndex(array:any) {
+  getDicountedPriceForIndex(array: any) {
     console.log("get dis price")
     let result: any[] = [];
     let discountAmount: any = 0;
@@ -412,7 +412,7 @@ export class ProductViewComponent implements OnInit {
         //product.qty=this.quantities
         if (schems.cproductgroup === product.materialCode) {
           // Append scheme values to product (common to all cases)
-          console.log("matched","-------------------------------");
+          console.log("matched", "-------------------------------");
           console.log(product, "pack");
 
           product.discounttype = schems.cdistype;
@@ -490,7 +490,7 @@ export class ProductViewComponent implements OnInit {
       });
     });
     console.log(this.productPriceDetails, "product price");
-return array
+    return array
   }
   // updateQuantity(index: number, event: Event) {
   //   const inputElement = event.target as HTMLInputElement;
@@ -531,14 +531,14 @@ return array
       // return;
     }
 
-    if(!this.InputIndexUpdate.some((item:any)=>item==index)){
+    if (!this.InputIndexUpdate.some((item: any) => item == index)) {
 
       this.InputIndexUpdate.push(index);
-    
-    }
-   
 
-    console.log(this.InputIndexUpdate,"indexUpdate")
+    }
+
+
+    console.log(this.InputIndexUpdate, "indexUpdate")
 
     const value = Math.round(parseInt(inputElement.value, 10)) || 0;
     inputElement.value = value.toString()
@@ -730,24 +730,24 @@ return array
 
   addtocart() {
     let cartProducts: any[] = [];
- 
+
     this.InputIndexUpdate.forEach((product: any) => {
 
 
 
       if (
-        product> -1
+        product > -1
       ) {
         //console.log(this.packDetails[product], "product",this.quantities[product],product,"procuse");
         let least = []
         least = this.checkPackAvailability(this.packDetails[product].pack, this.packDetails[product].category);
-        let indexSort=this.quantities[product]
+        let indexSort = this.quantities[product]
         this.leastProduct.push(least)
         //console.log(this.leastProduct,"leaset product",indexSort)
-        
-        this.logic.leastProductArray=this.getDicountedPriceForIndex(this.leastProduct)
 
-        console.log(this.logic.leastProductArray,"-----");
+        this.logic.leastProductArray = this.getDicountedPriceForIndex(this.leastProduct)
+
+        console.log(this.logic.leastProductArray, "-----");
 
 
         const quantity = parseFloat(this.packDetails[product].quantity) || 0;
@@ -764,7 +764,7 @@ return array
           productprice -= totalDiscount;
         }
         console.log(product, "test product");
-
+        console.log(this.api.getSessionId());
         const productAdded = {
           customerId: localStorage.getItem("apCusId"),
           pack: this.packDetails[product].pack,
@@ -775,9 +775,10 @@ return array
           materialCode: this.packDetails[product].materialCode as string, // Fixed case-sensitive issue
           distributorcode: localStorage.getItem("distributorcode") || "",
           company_name: this.packDetails[product].paintName,
-          schemetype:this.packDetails[product].cschemetype || "",
+          schemetype: this.packDetails[product].cschemetype || "",
           discountamount: productdisvalue || 0,
           ecomcode: this.selectedEcomcode,
+          originalprice: parseInt(this.packDetails[product].price),
           sessionid: this.api.getSessionId()
         };
         console.log(productAdded, "product added");
@@ -787,7 +788,7 @@ return array
         this.logic.cartProducts = cartProducts;
       }
     });
-  
+
     this.logic.cus("success", "", "Added to the cart!");
     // Assign to cartItems and show a success message
     // if (cartProducts.length > 0) {
@@ -821,7 +822,10 @@ return array
     // this.logic.cartProducts = [...this.logic.cartProducts, this.productDetails[0]];
     // console.log(this.logic.cartProducts, "product details");
     this.logic.cartProducts.map((product: any) => {
+      console.log(product);
+
       this.api.cartCreate(product).subscribe({
+
         next: (res: any) => {
           // Assuming res is a success response
           console.log('Response received:', res);
@@ -1040,7 +1044,7 @@ return array
 
         // Iterate over the brands excluding the selected brand
         for (const [brand, details] of Object.entries(brandDetails)) {
-          if (brand !== selectedBrand.toUpperCase() && details.length > 0) {
+          if (details && brand !== selectedBrand.toUpperCase() && details.length > 0) {
             // Filter the details array based on the selected pack
             console.log(brand, details);
 
@@ -1055,6 +1059,8 @@ return array
               matchingDetails[0].materialCode = product.MaterialCode
               matchingDetails[0].productname = item[brand + "_PAINTS"]
               matchingDetails[0].category = product.CATEGORY
+              matchingDetails[0].ecomcode = product.ECOMCODE
+              matchingDetails[0].originalprice = matchingDetails[0].price
               // Return the least value (the first one after sorting)
               return matchingDetails;  // This returns the lowest priced matching detail
             }

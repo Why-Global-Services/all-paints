@@ -249,13 +249,13 @@ export class CartComponent implements OnInit {
   getPaintBrandKey(product: any): string | null {
 
     const value = product.company_name && product.company_name.split("_")[0]
-    if (value.toLowerCase() == 'jn') {
+    if (value && value.toLowerCase() == 'jn') {
       return 'JN_PAINTS';
-    } else if (value.toLowerCase() == 'berger') {
+    } else if (value && value.toLowerCase() == 'berger') {
       return 'BERGER_PAINTS';
-    } else if (value.toLowerCase() == 'asian') {
+    } else if (value && value.toLowerCase() == 'asian') {
       return 'ASIAN_PAINTS';
-    } else if (value.toLowerCase() == 'sheenlac') {
+    } else if (value && value.toLowerCase() == 'sheenlac') {
       return 'Sheenlac_PAINTS';
     }
     return null; // Return null if none found
@@ -461,6 +461,8 @@ export class CartComponent implements OnInit {
     console.log(index)
     if (index > -1) {
       try {
+        console.log((this.cartlogicData[index]));
+
         let individualPrice = (this.cartlogicData[index].price) * this.cartlogicData[index].qty
         let data = this.fb.group({
           id: this.cartlogicData[index].id.toString(),
@@ -473,10 +475,10 @@ export class CartComponent implements OnInit {
           distributorcode: this.cartlogicData[index].distributorcode,
           company_name: this.cartlogicData[index].distributorcode,
           schemetype: this.cartlogicData[index].schemetype || "",
-          discountamount: this.cartlogicData[index].discountamount.toString() || "",
-          ecomcode: this.cartlogicData[index].ecomcode,
+          discountamount: this.cartlogicData[index]?.discountamount || 0,
+          ecomcode: this.cartlogicData[index].ecomcode || '',
           cdate: "",
-          sessionid:this.api.getSessionId()
+          sessionid: this.api.getSessionId()
 
         })
         console.log(data)
@@ -485,7 +487,7 @@ export class CartComponent implements OnInit {
           next: (response) => {
             console.log(response, "ji");
             this.getAllCartdata()
-            window.location.reload();
+            // window.location.reload();
           },
           error: (err: HttpErrorResponse) => {
             if (err.status == 200) {
@@ -597,6 +599,7 @@ export class CartComponent implements OnInit {
   swapProduct(index: number) {
     this.isSwitched[index] = true;
     console.log(index);
+    console.log(this.logic.cartItems, "cart items");
 
     // Ensure cartItems and leastProductArray exist
     if (!this.logic.cartItems || !this.logic.leastProductArray) {
@@ -617,14 +620,17 @@ export class CartComponent implements OnInit {
       console.warn(`No least product found at index ${index}`);
       return;
     }
+    console.log(least[0]);
 
     // Update the least product with the cart item details
     least[0].id = product.id.toString();
     least[0].qty = product.qty.toString();
-    //least[0].MaterialCode = least[0].materialCode; // Access least.materialCode
+    least[0].ecomcode = least[0].ecomcode; // Access least.materialCode
+    least[0].originalprice = parseFloat(least[0].originalprice); // Access least.materialCode
     least[0].customerId = product.customerId;
+    least[0].distributorcode = localStorage.getItem("distributorcode");
     least[0].cdate = "";
-    least[0].sessionid=this.api.getSessionId()
+    least[0].sessionid = this.api.getSessionId()
 
 
     // Exclude unwanted properties like materialCode

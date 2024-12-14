@@ -428,14 +428,14 @@ export class HomeComponent implements OnInit {
               commonDataByEcomcode[ecomcode].JN_PAINTS = brandItem.JN_PAINTS;
               commonDataByEcomcode[ecomcode].JN_MaterialCode = item.MaterialCode;
             }
-            if (brandItem.JN_details.length) {
+            if (brandItem.JN_details && brandItem.JN_details.length) {
               commonDataByEcomcode[ecomcode].JN_details = brandItem.JN_details;
             }
             if (brandItem.Sheenlac_PAINTS) {
               commonDataByEcomcode[ecomcode].Sheenlac_PAINTS = brandItem.Sheenlac_PAINTS;
               commonDataByEcomcode[ecomcode].Sheenlac_MaterialCode = item.MaterialCode;
             }
-            if (brandItem.Sheenlac_details.length) {
+            if (brandItem.Sheenlac_details && brandItem.Sheenlac_details.length) {
               commonDataByEcomcode[ecomcode].Sheenlac_details = brandItem.Sheenlac_details;
             }
           });
