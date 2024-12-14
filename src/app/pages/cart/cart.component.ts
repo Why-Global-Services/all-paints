@@ -463,7 +463,7 @@ export class CartComponent implements OnInit {
       try {
         console.log((this.cartlogicData[index]));
 
-        let individualPrice = (this.cartlogicData[index].price) * this.cartlogicData[index].qty
+        let individualPrice = (this.cartlogicData[index].originalprice) * this.cartlogicData[index].qty
         let data = this.fb.group({
           id: this.cartlogicData[index].id.toString(),
           customerId: this.cartlogicData[index].customerId,
