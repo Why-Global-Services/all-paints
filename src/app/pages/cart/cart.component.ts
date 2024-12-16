@@ -634,12 +634,12 @@ export class CartComponent implements OnInit {
 
 
     // Exclude unwanted properties like materialCode
-    // const { materialCode, productname, distributorcode,company_name, category, ...updatedLeast } = least[0];
-    console.log(`Updated least product at index ${index}:`, least[0]);
+    const {category, ...updatedLeast } = least[0];
+    console.log(`Updated least product at index ${index}:`, updatedLeast);
 
     // Create a FormGroup for the updated product only
     const updatedData = this.fb.group({
-      ...least[0],
+      ...updatedLeast,
     });
     console.log(updatedData.value, "value");
 
