@@ -649,7 +649,7 @@ export class CartComponent implements OnInit {
         console.log(response, "Cart updated successfully");
         this.getAllCartdata();
         // Avoid reloading the page unnecessarily. You can update the data in the UI directly.
-        // this.getAllCartdata();  // Make sure this method updates the UI with fresh data
+        this.getAllCartdata();  // Make sure this method updates the UI with fresh data
       },
       error: (err: HttpErrorResponse) => {
         console.error("Error updating cart", err);
