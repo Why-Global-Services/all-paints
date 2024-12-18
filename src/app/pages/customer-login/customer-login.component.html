@@ -50,7 +50,7 @@
       <p [style.display]="countdownTime > 0 ? 'block':'none'" class="bg-(var(--prim))">{{ formatTime(countdownTime) }}
       </p>
       <p [style.display]="countdownTime > 0 ? 'none':'block'" (click)="resendOtp()"
-        class="underline text-[var(--prim)]">resend Otp</p>
+        class="underline text-[var(--prim)]  cursor-pointer">Resend Otp</p>
     </div>
     <button [disabled]="otpForm.get('filtervalue2')?.invalid" (click)="verfiyOtp()" class="bttn">Submit</button>
   </div>
