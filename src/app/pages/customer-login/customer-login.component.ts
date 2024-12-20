@@ -22,12 +22,14 @@ import { interval, takeWhile } from 'rxjs';
 export class CustomerLoginComponent {
   @ViewChild('popbtn') popbtn!: ElementRef<HTMLButtonElement>;
   @ViewChild('customerModal') customerModal!: ElementRef<HTMLDialogElement>;
+  @ViewChild('already') already!: ElementRef<HTMLDialogElement>;
 
   fb = inject(FormBuilder);
   service = inject(ApiService);
   logic = inject(LogicsService);
   router = inject(Router);
   customerDetails: any[] = [];
+  duplicateCustomerDetails: any[] = []
   cusForm = this.fb.group({
     customer_Gst_no: [''],
     firstname: ['', Validators.required],
@@ -82,8 +84,17 @@ export class CustomerLoginComponent {
       const formData = this.cusForm.value;
       this.service.createCustomer(formData).subscribe((res: any) => {
         console.log(res[0][0], "login data");
-        localStorage.setItem('apCusId', res[0][0].CUSTOMER.CUSTOMER)
-        if (res != 'Mobile Number Already Registered') {
+        Array.isArray(res)&&localStorage.setItem('apCusId', res[0][0].CUSTOMER.CUSTOMER)
+        console.log(res == `Mobile Number Already Registered for this CustomerCode: ${res.split(":")[res?.split(":").length-1]?.trim()}`,"response")
+        if(res == `Mobile Number Already Registered for this CustomerCode: ${res.split(":")[res?.split(":").length-1]?.trim()}`){
+         console.log(this.already)
+          this.already.nativeElement.click();
+          return
+
+        }
+
+        if (res != `Mobile Number Already Registered for this CustomerCode: ${res.split(":")[res?.split(":").length-1]?.trim()}`) {
+          console.log(res,"--",`Mobile Number Already Registered for this CustomerCode: ${this.cusForm.get('customer_Mobile')?.value}`)
           if (this.cusForm.get('customer_Mobile')?.value) {
             this.otpForm.patchValue({
               filtervalue1: this.number,
@@ -144,6 +155,7 @@ export class CustomerLoginComponent {
           try {
             // Parse the string if it's JSON formatted
             this.customerDetails = JSON.parse(res);
+            this.duplicateCustomerDetails=JSON.parse(res);
           } catch (e) {
             console.error('Failed to parse response:', e);
             this.customerDetails = [];
@@ -151,9 +163,11 @@ export class CustomerLoginComponent {
         } else if (Array.isArray(res)) {
           // If it's already an array, assign it directly
           this.customerDetails = res;
+          this.duplicateCustomerDetails=res
         } else {
           // If the response is neither a string nor an array, assume empty
           this.customerDetails = [];
+          this.duplicateCustomerDetails=[]
         }
 
         console.log(this.customerDetails, 'Parsed customer details');
@@ -234,4 +248,24 @@ export class CustomerLoginComponent {
       perctange: 20
     }
   }
+
+FilterByName(e:any){
+  console.log(e.target.value)
+  if(e.target.value){
+    let filter=this.duplicateCustomerDetails.filter((item)=>{
+          return Object.keys(item).some((key:any)=>item[key].toString().toLowerCase().includes(e.target.value.toString().toLowerCase()))
+    })
+    this.customerDetails=filter
+  }
+  else{
+    this.customerDetails=this.duplicateCustomerDetails
+  }
+
+
+
+
+}
+
+
+
 }

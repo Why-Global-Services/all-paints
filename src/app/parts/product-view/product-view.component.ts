@@ -731,6 +731,11 @@ export class ProductViewComponent implements OnInit {
   addtocart() {
     let cartProducts: any[] = [];
 
+    if(this.InputIndexUpdate.length==0){
+      this.logic.cus("error", "", "No Product Selected");
+return
+    }
+
     this.InputIndexUpdate.forEach((product: any) => {
 
 
@@ -818,6 +823,12 @@ export class ProductViewComponent implements OnInit {
 
   addCart() {
     console.log("cart creation");
+
+    if(this.logic.cartProducts.length==0){
+      this.logic.cus('error', '', 'No Product Selected');
+      return
+
+    }
 
     // this.logic.cartProducts = [...this.logic.cartProducts, this.productDetails[0]];
     // console.log(this.logic.cartProducts, "product details");

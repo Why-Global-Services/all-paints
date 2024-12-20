@@ -69,9 +69,10 @@
         <table class="w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead>
             <tr class="bg-gray-200">
-              <th class="p-3 text-left text-gray-700 font-semibold">Customer Name</th>
-              <th class=" text-left text-gray-700 font-semibold"><input class="px-2 " placeholder="Search by Name or Code" /></th>
-
+              <div class="flex justify-between w-full px-5 items-center">
+              <p class="p-3 text-left text-gray-700 font-semibold">Customer Name</p>
+        <input (input)="this.FilterByName($event)"  class="p-1 rounded-md " placeholder="Search by Name or Code" />
+      </div>
             </tr>
           </thead>
           <tbody>
@@ -87,4 +88,19 @@
 
 
   </div>
+</dialog>
+<button #already style="display: none;" class="btn" onclick="already.showModal()">open modal</button>
+
+<dialog #already id="already" class="bg-white p-5 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+  <div class="relative w-full h-full p-5">
+  <div class=" bg-white text-xl font-semibold flex gap-2">
+    
+    Mobile Number Already Registered  <img class="w-4 h-5 object-contain" src="../../../assets/images/exclamation-punctuation.gif" />
+  </div>
+  <button class="absolute -top-5 -right-2 text-2xl" onclick="document.getElementById('already').close()">x</button>
+  <div class=" bg-red-500 text-white p-2 mt-5 rounded-md shadow-md block mx-auto w-fit">
+    <button (click)="getCustomerDetails()">Get Customer Details</button>
+
+  </div>
+</div>
 </dialog>
