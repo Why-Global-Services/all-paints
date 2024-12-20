@@ -21,7 +21,7 @@ import { interval, takeWhile } from 'rxjs';
 })
 export class CustomerLoginComponent {
   @ViewChild('popbtn') popbtn!: ElementRef<HTMLButtonElement>;
-  @ViewChild('customerModal') customerModal!: ElementRef<HTMLButtonElement>;
+  @ViewChild('customerModal') customerModal!: ElementRef<HTMLDialogElement>;
 
   fb = inject(FormBuilder);
   service = inject(ApiService);
@@ -174,8 +174,8 @@ export class CustomerLoginComponent {
     window.history.back()
   }
 
-  closeCustomerModal() {
-    this.customerModal.nativeElement.click(); // Adjust based on your modal close mechanism
+  closeCustomerModal() :void {
+    this.customerModal.nativeElement.close();
   }
 
 

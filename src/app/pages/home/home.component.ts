@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit {
   originalData: any = [];
   groupedData: any = {};
   username: any
-  cartCount: any
+  cartCount: any=this.logic.lengthOfcart
   // sortDisplay: Observable<string>=of('Low to High')
   filterForm = this.fb.group({
     "filtervalue1": "Summary",

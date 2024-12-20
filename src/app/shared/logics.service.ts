@@ -18,6 +18,7 @@ export class LogicsService {
   paymentDetails:any
   colorUrl: any = 'assets/categorized_sheenlac_colors.json'
   leastProductArray:any[]=[]
+  lengthOfcart:number=0
 
   constructor() { }
   getcolor(): Observable<any> {

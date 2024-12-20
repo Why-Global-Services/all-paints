@@ -836,7 +836,8 @@ export class ProductViewComponent implements OnInit {
 
           // Check if the status is available in the error
           if (err.status === 200) {
-            console.log("test");
+            console.log(this.logic.lengthOfcart,"test",this.logic.cartProducts.length);
+            this.logic.lengthOfcart=this.logic.cartProducts.length
             this.logic.cus('success', '', 'Cart Updated!');
           } else {
             // Handle other error statuses
