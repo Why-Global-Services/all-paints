@@ -87,7 +87,8 @@ export class CartComponent implements OnInit {
     "filtervalue8": ""
   })
   getCart = this.fb.group({
-    "customerId": localStorage.getItem("apCusId")
+    "customerId": localStorage.getItem("apCusId"),
+    "sessionid": this.api.getSessionId()
 
   })
   data: any[] = [];
@@ -634,7 +635,7 @@ export class CartComponent implements OnInit {
 
 
     // Exclude unwanted properties like materialCode
-    const {category, ...updatedLeast } = least[0];
+    const { category, ...updatedLeast } = least[0];
     console.log(`Updated least product at index ${index}:`, updatedLeast);
 
     // Create a FormGroup for the updated product only
