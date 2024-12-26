@@ -85,16 +85,15 @@ export class CustomerLoginComponent {
       this.service.createCustomer(formData).subscribe((res: any) => {
         console.log(res[0][0], "login data");
         Array.isArray(res)&&localStorage.setItem('apCusId', res[0][0].CUSTOMER.CUSTOMER)
-        console.log(res == `Mobile Number Already Registered for this CustomerCode: ${res.split(":")[res?.split(":").length-1]?.trim()}`,"response")
-        if(res == `Mobile Number Already Registered for this CustomerCode: ${res.split(":")[res?.split(":").length-1]?.trim()}`){
+        if(res?.includes(`Mobile Number Already Registered for this CustomerCode`)){
          console.log(this.already)
           this.already.nativeElement.click();
           return
 
         }
 
-        if (res != `Mobile Number Already Registered for this CustomerCode: ${res.split(":")[res?.split(":").length-1]?.trim()}`) {
-          console.log(res,"--",`Mobile Number Already Registered for this CustomerCode: ${this.cusForm.get('customer_Mobile')?.value}`)
+        if (Object.keys(res).length>0) {
+          console.log(Object.keys(res),"--",`Mobile Number Already Registered for this CustomerCode: ${this.cusForm.get('customer_Mobile')?.value}`)
           if (this.cusForm.get('customer_Mobile')?.value) {
             this.otpForm.patchValue({
               filtervalue1: this.number,

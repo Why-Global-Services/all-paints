@@ -24,6 +24,7 @@
     "jspdf-autotable": "^3.8.4",
     "ng-zorro-antd": "^18.1.1",
     "ng2-cookies": "^1.0.12",
+    "ng2-tooltip-directive": "^2.10.3",
     "ngx-toaster": "^1.0.1",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",

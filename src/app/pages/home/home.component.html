@@ -72,6 +72,7 @@
         </span>
       </div>
       <span 
+      title="Logout"
       routerLink="/login"
       class=" bg-red-600  text-white text-xs font-bold cursor-pointer rounded-full h-10 p-2 w-10 flex items-center justify-center">
       <svg fill="#ffffff" height="70px" width="70px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
@@ -100,7 +101,7 @@ viewBox="0 0 384.971 384.971" xml:space="preserve">
 </g>
 </svg>
     </span>
-      <div class="relative">
+      <div title="Cart" class="relative">
         <img routerLink="/home" fragment="cart" class="h-[40px] cursor-pointer" src="../../../assets/images/cart.png"
           alt="" />
         <span *ngIf="this.logic.lengthOfcart > 0"

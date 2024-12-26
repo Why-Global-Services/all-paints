@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, NgModule, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../parts/header/header.component';
 import { ToolsMenuComponent } from '../../parts/tools-menu/tools-menu.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -10,6 +10,7 @@ import { FormBuilder, FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 interface SelectDetails {
   price: number; // Price of the selected product
@@ -53,7 +54,7 @@ export interface CartData {
 @Component({
   selector: 'cart',
   standalone: true,
-  imports: [HeaderComponent, RouterModule, ToolsMenuComponent, NzButtonModule, CommonModule, FormsModule],
+  imports: [HeaderComponent, RouterModule, ToolsMenuComponent, NzButtonModule, CommonModule, FormsModule,TooltipModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
@@ -191,6 +192,17 @@ export class CartComponent implements OnInit {
 
     this.api.getCart(this.getCart.value).subscribe((res: any) => {
       const parsedData = JSON.parse(res);
+      if(parsedData.length==0){
+        this.alldiscountValue=0
+        this.total = 0
+        this.logic.cartTotal=0
+        this.logic.cartItems=[]
+        this.cartlogicData =[]
+        this.duplogicData=[]
+        this.logic.lengthOfcart=0
+        return
+      }
+      this.logic.lengthOfcart=parsedData.length
       this.cartlogicData = parsedData;
       this.logic.cartItems = parsedData;
       this.cartlogicData.map((item: any) => {
@@ -248,7 +260,7 @@ export class CartComponent implements OnInit {
   }
 
   getPaintBrandKey(product: any): string | null {
-
+console.log(product, "product");
     const value = product.company_name && product.company_name.split("_")[0]
     if (value && value.toLowerCase() == 'jn') {
       return 'JN_PAINTS';
@@ -522,6 +534,13 @@ export class CartComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           if (err.status == 200) {
+            this.productLeastArray.splice(index, 1);
+            this.alldiscountValue=0
+            this.total = 0
+            this.logic.cartTotal=0
+            this.logic.cartItems=[]
+            this.cartlogicData =[]
+            this.duplogicData=[]
             this.getAllCartdata()
           }
         },
@@ -650,11 +669,16 @@ export class CartComponent implements OnInit {
         console.log(response, "Cart updated successfully");
         this.getAllCartdata();
         // Avoid reloading the page unnecessarily. You can update the data in the UI directly.
-        this.getAllCartdata();  // Make sure this method updates the UI with fresh data
       },
       error: (err: HttpErrorResponse) => {
         console.error("Error updating cart", err);
         if (err.status === 200) {
+          this.alldiscountValue=0
+            this.total = 0
+            this.logic.cartTotal=0
+            this.logic.cartItems=[]
+            this.cartlogicData =[]
+            this.duplogicData=[]
           this.getAllCartdata();  // Re-fetch data if necessary
         }
       },
