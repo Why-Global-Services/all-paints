@@ -51,6 +51,16 @@ export class PaymentComponent {
         // Assuming res is a success response
         this.logic.cus('success', '', 'Order Created Successfully!');
         this.router.navigate(['/paid']);
+        this.logic.cartItems = [];
+        this.logic.cartTotal = 0;
+        this.api.clearSessionId();
+        const randomSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
+        this.api.setSessionId(randomSessionId);
+        console.log(randomSessionId)
+        localStorage.removeItem("apCusId")
+        localStorage.removeItem("apEmail")
+        localStorage.removeItem("apName")
+        localStorage.removeItem("apNumber")
       },
       error: (err: HttpErrorResponse) => {
         console.log('Error occurred:', err);
@@ -65,6 +75,7 @@ export class PaymentComponent {
           this.api.clearSessionId();
           const randomSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
           this.api.setSessionId(randomSessionId);
+          console.log(randomSessionId)
           localStorage.removeItem("apCusId")
           localStorage.removeItem("apEmail")
           localStorage.removeItem("apName")
