@@ -80,10 +80,9 @@ export class CheckOutComponent implements OnInit {
     let name = localStorage.getItem('apName')
     let number = localStorage.getItem('apNumber')
     let email = localStorage.getItem('apEmail')
-    console.log(this.logic.cartItems, "cart options");
-    console.log(this.logic.cartTotal, "cart options");
+
     this.totalPay = this.logic.cartTotal;
-    console.log(this.totalPay);
+ 
     this.transformData(this.logic.cartItems)
     this.form.patchValue({
       filtervalue7: name,
@@ -127,7 +126,7 @@ export class CheckOutComponent implements OnInit {
 
 
   transformData(data: SourceData): TargetData {
-    console.log(data, "checkout data  ");
+  
 
     // const transformedProducts = data.products.flat(3).map(product => {
     // console.log(product, "product");
@@ -183,7 +182,6 @@ export class CheckOutComponent implements OnInit {
       sessionid:this.api.getSessionId(),
       products: this.formattedDetails
     };
-    console.log(this.customerData, "customer");
 
     return this.customerData
   }
@@ -192,24 +190,20 @@ export class CheckOutComponent implements OnInit {
     //   console.log(res);
 
     // })
-    console.log(this.form.value, "form data");
 
     this.logic.paymentDetails = this.form.value;
-    console.log(this.customerData);
+ 
 
     this.api.createCart(this.customerData).subscribe({
       next: (res: any) => {
         // Assuming res is a success response
-        console.log('Response received:', res);
         this.logic.cus('success', '', 'Cart Updated!');
         this.router.navigate(['/payment']);
       },
       error: (err: HttpErrorResponse) => {
-        console.log('Error occurred:', err);
 
         // Check if the status is available in the error
         if (err.status === 200) {
-          console.log("test");
           this.logic.cus('success', '', 'Order Created Successfully!');
           this.router.navigate(['/payment']);
         } else {
@@ -221,7 +215,6 @@ export class CheckOutComponent implements OnInit {
   }
   adval: any
   check(v: any) {
-    console.log(v.target.checked);
     if (v.target.checked) {
       this.form.patchValue({
         filtervalue5: this.adval

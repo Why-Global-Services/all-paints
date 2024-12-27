@@ -96,19 +96,16 @@ export class ProductViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.logic.getcolor().subscribe((res: any) => {
-      console.log(res, 'colors');
       this.colors = res;
       this.selectColor('red');
     });
 
 
     this.logic.productDetails.subscribe((res: any) => {
-      console.log('prodcut', res);
       this.data = res;
     });
     this.api.getAllSchemes(this.schemesForm.value).subscribe((res: any) => {
       const parsedData = JSON.parse(res);
-      console.log(parsedData);
 
       if (Array.isArray(parsedData) && parsedData.length > 0) {
         this.schemes = parsedData;
@@ -157,7 +154,6 @@ export class ProductViewComponent implements OnInit {
     }
 
     this.selectedEcomcode = data.ecomcode;
-    console.log(this.selectedEcomcode);
     let packdetail =
     {
       "filtervalue1": "Packs",
@@ -171,14 +167,11 @@ export class ProductViewComponent implements OnInit {
     this.packDetails = [];
     this.api.getAllPacks(packdetail).subscribe({
       next: (responseSessionData: any) => {
-        console.log(responseSessionData, "pack details");
         this.allPacks = responseSessionData;
         this.allPacks.forEach((packD: any) => {
-          console.log(packD, "d");
 
           const product = packD.products[0];
 
-          console.log(product);
 
           if (product && product[paintDetails] && product[paintDetails].length > 0) {
             const productname = product[paint_name]
@@ -193,7 +186,6 @@ export class ProductViewComponent implements OnInit {
               paintName: paint_name,
               category: packD.CATEGORY
             });
-            console.log(this.packDetails, "pack details data");
 
           } else {
             console.log('No pack or price details available.');
@@ -206,7 +198,6 @@ export class ProductViewComponent implements OnInit {
       }
     });
 
-    console.log(this.packDetails, "pack details data");
 
     this.selectedPack = v;
     this.details = details;
@@ -822,7 +813,6 @@ return
   }
 
   addCart() {
-    console.log("cart creation");
 
     if(this.logic.cartProducts.length==0){
       this.logic.cus('error', '', 'No Product Selected');
@@ -839,7 +829,6 @@ return
 
         next: (res: any) => {
           // Assuming res is a success response
-          console.log('Response received:', res);
           this.logic.cus('success', '', 'Cart Updated!');
         },
         error: (err: HttpErrorResponse) => {
@@ -847,7 +836,6 @@ return
 
           // Check if the status is available in the error
           if (err.status === 200) {
-            console.log(this.logic.lengthOfcart,"test",this.logic.cartProducts.length);
             this.logic.lengthOfcart=this.logic.cartProducts.length
             this.logic.cus('success', '', 'Cart Updated!');
           } else {
@@ -903,7 +891,6 @@ return
   colors: any = [];
   searchColor(v: any) {
     v = v.trim();
-    console.log(v);
     if (!v) {
       this.selectedColors = this.defaultColors;
     }

@@ -131,9 +131,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // this.filterDummy();
     this.newCats = this.dummyCategories;
-    console.log(this.newCats, "static cats");
     this.activatedRoute.fragment.subscribe((fragment: string | null) => {
-      console.log(this.show, "show");
       if (fragment) {
         this.show = fragment;
       }
@@ -150,17 +148,13 @@ export class HomeComponent implements OnInit {
     if (this.show == 'image' || this.show == 'list') {
 
       this.activatedRoute.queryParams.subscribe((res: any) => {
-        console.log(res, 'res');
         if (res.cat) {
           this.selectedCat = res.cat;
 
-          console.log(this.selectedCat, "selectedCat");
           this.selectedSubIndex = this.final.findIndex((r: any) => {
-            console.log(r.Division, "sub index");
 
             return r.Division == this.selectedCat;
           });
-          console.log(this.selectedSubIndex, "sub Index");
         }
         if (res.subCat) {
           this.selectedCatSub = res.subCat;
@@ -188,7 +182,6 @@ export class HomeComponent implements OnInit {
   }
   searchNow(value: any) {
     let searchTerm = value.trim().toLowerCase();
-    console.log(searchTerm, "search");
 
     if (!searchTerm) {
       // If no search term, revert to original data
@@ -208,7 +201,6 @@ export class HomeComponent implements OnInit {
       });
     }
     this.data$ = of(this.final);
-    console.log(this.final, 'search');
   }
 
   // selectCat(v: any) {
@@ -375,11 +367,9 @@ export class HomeComponent implements OnInit {
     // Loop through the final grouped data and collect items matching the Division
     this.final.forEach((group: ProductGroup) => {
       group.products.forEach((item: ProductItem) => {
-        console.log(this.final, "final");
 
 
         if (item.Division == this.selectedCat.Division) {
-          console.log(this.selectedCat.Division, item.Division, "on load seleced division");
 
           const ecomcode = item.ECOMCODE;
           // console.log(ecomcode, item, "ecomcodee");
@@ -455,7 +445,6 @@ export class HomeComponent implements OnInit {
 
   getAll() {
     this.api.getAllProducts(this.filterForm.value).subscribe((res: any) => {
-      console.log(res, 'data from api');
       this.arData = res;
       this.selectedCat = res[0].CATEGORY
 
@@ -511,7 +500,6 @@ export class HomeComponent implements OnInit {
   // }
 
   filterData() {
-    console.log(this.arData, "arData");
 
     const groupedProducts = new Map<string, ProductGroup>();
 
@@ -550,7 +538,6 @@ export class HomeComponent implements OnInit {
     // Convert the map values to an array and then to an observable
     this.final = Array.from(groupedProducts.values());  // Convert the Map to an array
     this.data$ = from(this.final) as Observable<ProductGroup[]>; // Create an observable from the array of ProductGroup
-    console.log(this.final, "final grouped output");
     this.selectCat({ "Division": this.selectedCategory });
 
   }
@@ -584,7 +571,6 @@ export class HomeComponent implements OnInit {
       });
     }
 
-    console.log('Sorted data:', this.final, this.sortValue);
   }
 
   sortBackend(tag: HTMLElement, v: any) {

@@ -71,10 +71,8 @@ export class CustomerLoginComponent {
   })
 
   formSubmit() {
-    console.log('working');
     this.number = this.cusForm.get('customer_Mobile')?.value;
     if (this.cusForm.valid) {
-      console.log('working2');
       let name = this.cusForm.get('firstname')?.value
       let number = this.cusForm.get('customer_Mobile')?.value
       let email = this.cusForm.get('customer_Email')?.value
@@ -83,17 +81,14 @@ export class CustomerLoginComponent {
       localStorage.setItem('apEmail', email || 'no email')
       const formData = this.cusForm.value;
       this.service.createCustomer(formData).subscribe((res: any) => {
-        console.log(res[0][0], "login data");
         Array.isArray(res)&&localStorage.setItem('apCusId', res[0][0].CUSTOMER.CUSTOMER)
         if(res?.includes(`Mobile Number Already Registered for this CustomerCode`)){
-         console.log(this.already)
           this.already.nativeElement.click();
           return
 
         }
 
         if (Object.keys(res).length>0) {
-          console.log(Object.keys(res),"--",`Mobile Number Already Registered for this CustomerCode: ${this.cusForm.get('customer_Mobile')?.value}`)
           if (this.cusForm.get('customer_Mobile')?.value) {
             this.otpForm.patchValue({
               filtervalue1: this.number,
@@ -120,7 +115,6 @@ export class CustomerLoginComponent {
 
   resendOtp() {
     this.service.reSendOtp(this.otpForm.value).subscribe((res: any) => {
-      console.log(res);
       this.startCountdown();
     });
   }
@@ -133,7 +127,6 @@ export class CustomerLoginComponent {
     }
     if (this.otpForm.valid)
       this.service.verfiyOtp(this.otpForm.value).subscribe((res: any) => {
-        console.log(res);
         if (res == 'OTP Verified') {
           this.popbtn.nativeElement.click();
           this.logic.cus('success', '', 'OTP verfied!');
@@ -147,7 +140,6 @@ export class CustomerLoginComponent {
   getCustomerDetails() {
     this.service.getCustomerDetails(this.customerRequest.value).subscribe(
       (res: any) => {
-        console.log('API Response:', res);
 
         // Check if the response is a JSON string and parse it if necessary
         if (typeof res === 'string') {
@@ -169,7 +161,6 @@ export class CustomerLoginComponent {
           this.duplicateCustomerDetails=[]
         }
 
-        console.log(this.customerDetails, 'Parsed customer details');
         this.customerModal.nativeElement.click();
       },
       (err) => {
@@ -183,7 +174,6 @@ export class CustomerLoginComponent {
     localStorage.setItem("apName", name)
     const randomSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
     this.service.setSessionId(randomSessionId);
-    console.log('Session ID saved!');
     window.history.back()
   }
 
@@ -193,7 +183,6 @@ export class CustomerLoginComponent {
 
 
   formReset() {
-    console.log('working');
     this.popbtn.nativeElement.click();
     this.logic.cus('success', '', 'Form reset!');
     this.cusForm.reset();
@@ -249,7 +238,6 @@ export class CustomerLoginComponent {
   }
 
 FilterByName(e:any){
-  console.log(e.target.value)
   if(e.target.value){
     let filter=this.duplicateCustomerDetails.filter((item)=>{
           return Object.keys(item).some((key:any)=>item[key].toString().toLowerCase().includes(e.target.value.toString().toLowerCase()))

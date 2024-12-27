@@ -25,7 +25,6 @@ export class PaymentComponent {
   }
   ngOnInit(): void {
     this.paymentDetails = this.logic.paymentDetails;
-    console.log(this.paymentDetails, "payment");
 
   }
   form = this.fb.group(
@@ -53,10 +52,10 @@ export class PaymentComponent {
         this.router.navigate(['/paid']);
         this.logic.cartItems = [];
         this.logic.cartTotal = 0;
+        this.logic.leastProductArray=[]
         this.api.clearSessionId();
         const randomSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
         this.api.setSessionId(randomSessionId);
-        console.log(randomSessionId)
         localStorage.removeItem("apCusId")
         localStorage.removeItem("apEmail")
         localStorage.removeItem("apName")
@@ -67,7 +66,6 @@ export class PaymentComponent {
 
         // Check if the status is available in the error
         if (err.status === 200) {
-          console.log("test");
           this.logic.cus('success', '', 'Order Created Successfully!');
           this.router.navigate(['/paid']);
           this.logic.cartItems = [];
@@ -75,7 +73,6 @@ export class PaymentComponent {
           this.api.clearSessionId();
           const randomSessionId = 'session-' + Math.random().toString(36).substr(2, 9);
           this.api.setSessionId(randomSessionId);
-          console.log(randomSessionId)
           localStorage.removeItem("apCusId")
           localStorage.removeItem("apEmail")
           localStorage.removeItem("apName")

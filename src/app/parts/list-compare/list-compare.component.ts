@@ -29,7 +29,6 @@ export class ListCompareComponent implements OnInit {
   }
   ngOnChanges(changes: SimpleChanges): void {
   
-    console.log(this.data);
     
     if (changes['data'] && this.data) {
       this.subscribeToData();
@@ -42,7 +41,6 @@ export class ListCompareComponent implements OnInit {
       this.dataSubscription.unsubscribe();  
     }
     this.dataSubscription = this.data.subscribe((value: any) => {
-      console.log('Data received:', value);  
       this.final = value;  // Update the final data with the latest
     });
   }
@@ -54,7 +52,6 @@ export class ListCompareComponent implements OnInit {
     })
   }
   filterData(){
-    console.log(typeof this.data);
     
     this.arData.forEach((item:any)=>{
       let index = this.final.findIndex((value:any)=>{
@@ -68,7 +65,6 @@ export class ListCompareComponent implements OnInit {
         this.final.push({CATEGORY:item.CATEGORY,SUB_CATEGORY:item['SUB CATEGORY'],items:[item]})
       }
     })
-    console.log(this.final,'sdfsdf',this.final[0]);
   // this.final[0].items.f
   }
 }

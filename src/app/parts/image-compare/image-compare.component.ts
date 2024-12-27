@@ -41,7 +41,6 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes['sort2'] && this.sort2) {
-      console.log('Sorting data');
       this.subscribeToSort(); 
     }
   }
@@ -63,7 +62,6 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
     
     if (this.sort2 && typeof this.sort2.subscribe === 'function') {
       this.sortSubscription = this.sort2.subscribe((sortValue: string) => {
-        console.log('Sort value received:', sortValue);
         this.sortProducts(sortValue);  // Sort the products based on the sort value
       });
     } else {
@@ -77,7 +75,6 @@ export class ImageCompareComponent implements OnInit, OnChanges, OnDestroy {
     } else if (sortValue === 'High to Low') {
       this.final[0].items.sort((a: any, b: any) => b['DPL / BT'] - a['DPL / BT']);
     }
-    console.log('Sorted data:', this.final);
   }
 
 

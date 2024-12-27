@@ -107,11 +107,9 @@ export class CartComponent implements OnInit {
   // productname: "AP ACE EXT EMULSION BASE AC12G"
   currentDateTime: string = "";
   ngOnInit(): void {
-    console.log("cart page");
     this.getAllCartdata();
 
     this.productLeastArray = this.logic.leastProductArray
-    console.log(this.productLeastArray, "hise")
     //this.cartData = this.logic.cart;
     // // this.findLeastPricedProducts()
     // console.log(this.logic.cart, "cart data");
@@ -181,14 +179,13 @@ export class CartComponent implements OnInit {
 
 
     this.cartLength = totalProductCount;
-    console.log('Total number of products:', totalProductCount);
-    console.log(this.cartLength, "cart length");
+   
 
     // Calculate initial total price
   }
 
   getAllCartdata() {
-    console.log("test");
+ 
 
     this.api.getCart(this.getCart.value).subscribe((res: any) => {
       const parsedData = JSON.parse(res);
@@ -208,8 +205,7 @@ export class CartComponent implements OnInit {
       this.cartlogicData.map((item: any) => {
         this.total += item.price
         this.logic.cartTotal = this.total;
-        console.log(this.logic.cartTotal);
-        console.log(this.logic.cartItems);
+      
 
       })
       this.alldiscountValue = this.cartlogicData.reduce((acc, current) => {
@@ -217,7 +213,6 @@ export class CartComponent implements OnInit {
         return acc = acc + (current.discountamount * current.qty)
 
       }, 0)
-      console.log(this.alldiscountValue, "disount")
       this.duplogicData = parsedData.map((item: any, index: any) => {
         return {
           ...item
@@ -244,7 +239,6 @@ export class CartComponent implements OnInit {
             pack: item.details[0].pack
           }));
 
-        console.log(priceDetails, "pricedetails");
 
 
         // Return the least priced product for the current product
@@ -256,11 +250,9 @@ export class CartComponent implements OnInit {
       return prices[0]; // Since each sub-array contains only one product object
     });
 
-    console.log("Least Priced Products:", this.leastPricedProducts);
   }
 
   getPaintBrandKey(product: any): string | null {
-console.log(product, "product");
     const value = product.company_name && product.company_name.split("_")[0]
     if (value && value.toLowerCase() == 'jn') {
       return 'JN_PAINTS';
@@ -331,7 +323,6 @@ console.log(product, "product");
   //   return this.products;
   // }
   ChangeProduct(product: any) {
-    console.log(product, "changed product");
 
   }
 
@@ -457,7 +448,6 @@ console.log(product, "product");
   handlePlusMinus(val: any, index: any) {
 
     if (val > 0) {
-      console.log(val, 'plus')
       this.cartlogicData[index].qty = this.cartlogicData[index].qty + val
     }
     else {
@@ -471,10 +461,8 @@ console.log(product, "product");
   }
 
   updateCartData(index: any) {
-    console.log(index)
     if (index > -1) {
       try {
-        console.log((this.cartlogicData[index]));
 
         let individualPrice = (this.cartlogicData[index].originalprice) * this.cartlogicData[index].qty
         let data = this.fb.group({
@@ -494,11 +482,9 @@ console.log(product, "product");
           sessionid: this.api.getSessionId()
 
         })
-        console.log(data)
 
         this.api.updateCart(data.value).subscribe({
           next: (response) => {
-            console.log(response, "ji");
             this.getAllCartdata()
             // window.location.reload();
           },
@@ -526,11 +512,9 @@ console.log(product, "product");
         customerId: this.cartlogicData[index].customerId,
       });
 
-      console.log(data.value); // Debugging log to ensure data is correct
 
       this.api.DeleteCartItem(data.value).subscribe({
         next: (res: any) => {
-          console.log(res); // Check if the response is successful
         },
         error: (err: HttpErrorResponse) => {
           if (err.status == 200) {
@@ -618,8 +602,7 @@ console.log(product, "product");
   // }
   swapProduct(index: number) {
     this.isSwitched[index] = true;
-    console.log(index);
-    console.log(this.logic.cartItems, "cart items");
+  
 
     // Ensure cartItems and leastProductArray exist
     if (!this.logic.cartItems || !this.logic.leastProductArray) {
@@ -640,7 +623,7 @@ console.log(product, "product");
       console.warn(`No least product found at index ${index}`);
       return;
     }
-    console.log(least[0]);
+
 
     // Update the least product with the cart item details
     least[0].id = product.id.toString();
@@ -655,18 +638,15 @@ console.log(product, "product");
 
     // Exclude unwanted properties like materialCode
     const { category, ...updatedLeast } = least[0];
-    console.log(`Updated least product at index ${index}:`, updatedLeast);
 
     // Create a FormGroup for the updated product only
     const updatedData = this.fb.group({
       ...updatedLeast,
     });
-    console.log(updatedData.value, "value");
 
     // Call API to update only the specific index
     this.api.updateCart(updatedData.value).subscribe({
       next: (response) => {
-        console.log(response, "Cart updated successfully");
         this.getAllCartdata();
         // Avoid reloading the page unnecessarily. You can update the data in the UI directly.
       },

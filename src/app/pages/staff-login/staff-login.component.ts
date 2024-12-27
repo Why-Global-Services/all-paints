@@ -47,7 +47,6 @@ export class StaffLoginComponent implements OnInit {
   submit() {
     if (this.staffForm.valid) {
       this.api.loginStaff(this.staffForm.value).subscribe((res: any) => {
-        console.log(res);
         this.token = res
         Cookie.set("apToken", this.token)
         this.getCustomerDetails()
