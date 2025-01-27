@@ -1,0 +1,76 @@
+<div *ngIf="data | async as value" class="all-box">
+  <div class="image-container">
+    <div class="img-box">
+      <img src="../../../assets/images/ap.png" alt="" />
+    </div>
+    <div class="img-box">
+      <img src="../../../assets/images/berger.png" alt="" srcset="" />
+    </div>
+    <div class="img-box">
+      <img src="../../../assets/images/jandN.png" alt="" srcset="" />
+    </div>
+    <div class="img-box">
+      <img src="../../../assets/images/sheenlac.png" alt="" srcset="" />
+    </div>
+  </div>
+  <div class="image-container img-grid">
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div routerLink="/home" fragment="detail" class="p-box">
+        <h3>{{item.asiaN_PAINTS }}</h3>
+        <div class="flex items-center gap-[10px]">
+          <h3>₹{{ item.asian_details[0].price }}</h3>
+          <!-- <span class="stk">8,999</span> -->
+        </div>
+      </div>
+      }
+    </div>
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div
+       routerLink="/home" fragment="detail"
+        [class.na-box]="item['BERGER PAINTS'] == 'NA'"
+        class="p-box"
+      >
+        @if (item['BERGER PAINTS']== 'NA') {
+        <p>NA</p>
+        }@else if (item['BERGER PAINTS']!== 'NA') {
+        <h3>{{ item.bergeR_PAINTS }}</h3>
+        <div class="flex items-center gap-[10px]">
+          <h3>₹{{item.bergeR_details[0].price }}</h3>
+          <!-- <span class="stk">8,999</span> -->
+        </div>
+        }
+      </div>
+
+      }
+    </div>
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div
+       routerLink="/home" fragment="detail"
+        [class.na-box]="item['J&N PAINTS'] == 'NA'"
+        class="p-box"
+      >
+        @if (item['J&N PAINTS']== 'NA') {
+        <p>NA</p>
+        }@else if (item['J&N PAINTS']!== 'NA') {
+        <h3>{{item.jN_PAINTS}}</h3>
+        <div class="flex items-center gap-[10px]">
+          <h3>₹{{ item.jN_details[0].price  }}</h3>
+          <!-- <span class="stk">8,999</span> -->
+        </div>
+        }
+      </div>
+
+      }
+    </div>
+    <div class="img-col">
+      @for (item of final; track $index) {
+      <div class="p-box na-box">
+        <p>NA</p>
+      </div>
+      }
+    </div>
+  </div>
+</div>

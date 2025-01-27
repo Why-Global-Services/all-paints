@@ -1,0 +1,30 @@
+.main-box{
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    div{
+        height: 400px;
+        width: 800px;
+        border: 1px solid rgba(0, 0, 0, 0.34);
+        border-radius: 15px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        h2{
+            font-size: 24px;
+            font-weight: 700;
+            color: #0EBE04;
+        }
+        p{
+            font-size: 19px;
+        }
+        button{
+            background-color: #0EBE04;
+        }
+    }
+}

@@ -1,0 +1,284 @@
+.pay-box {
+    min-height: 80vh;
+    width: 100%;
+    display: flex;
+    // background-color: red;
+    // margin: 20px;
+    padding: 20px;
+    .detail-box {
+      background-color: white;
+      height: 100%;
+      border-radius: 10px;
+      width: 60%;
+      border: 1px solid rgba(0, 0, 0, 0.356);
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      h2 {
+        font-weight: 600;
+        font-size: 26px;
+        padding: 10px 0 0 10px;
+      }
+      .inp2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+      }
+      .add {
+        textarea {
+          padding-left: 10px;
+          padding-top: 5px;
+          height: 120px;
+          border-radius: 10px;
+          border: 1px solid rgba(0, 0, 0, 0.356);
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+            rgba(0, 0, 0, 0.23) 0px 3px 6px;
+        }
+      }
+      .inputs {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        label {
+          font-weight: 600;
+          font-size: 24px;
+        }
+        input[type="text"], input[type="email"] {
+          padding-left: 10px;
+          height: 60px;
+          border-radius: 10px;
+          border: 1px solid rgba(0, 0, 0, 0.356);
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+            rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          &:focus-visible {
+            border: 1px solid var(--prim);
+          }
+        }
+      }
+      .btn-holder {
+        display: flex;
+        justify-content: space-evenly;
+        button {
+          padding: 7px 45px;
+          border: 1px solid rgba(0, 0, 0, 0.356);
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+            rgba(0, 0, 0, 0.23) 0px 3px 6px;
+        }
+        .can {
+          background-color: white;
+          color: black;
+          border: 1px solid #0000003b;
+        }
+      }
+      .checkboxes {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 10px;
+        label {
+          font-size: 16px;
+        }
+        input[type="checkbox"] {
+          accent-color: var(--prim);
+        }
+      }
+    }
+    .bill-box {
+      display: flex;
+      width: 40%;
+      align-items: center;
+      justify-content: center;
+      .content {
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height: 420px;
+        width: 520px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.356);
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+        padding: 0px 40px;
+        h2 {
+          font-weight: 600;
+          font-size: 26px;
+        }
+        .det {
+          display: grid;
+          width: 100%;
+          grid-template-columns: 1fr 1fr;
+          h3 {
+            font-weight: 600;
+            font-size: 20px;
+          }
+          p {
+            font-weight: 500;
+            font-size: 20px;
+          }
+        }
+        .det-2 {
+          display: grid;
+          width: 100%;
+          grid-template-columns: 70% 40%;
+          padding-right: 40px;
+          input {
+            border-radius: 10px;
+            width: 140px;
+            border: 1px solid rgba(0, 0, 0, 0.356);
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+              rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          }
+          p {
+            font-weight: 500;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+  .pay-details {
+    height: 400px;
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+  
+    .method {
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      h3 {
+        font-size: 26px;
+        font-weight: 600;
+      }
+      .opt {
+        width: 70%;
+        height: 55px;
+        border-radius: 5px;
+        margin-top: 15px;
+        padding: 0 12px;
+        border: 1px solid rgba(0, 0, 0, 0.356);
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+          rgba(0, 0, 0, 0.23) 0px 3px 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        label {
+          font-size: 26px;
+          font-weight: 500;
+        }
+        input {
+          width: 20px;
+        }
+        [type="radio"]:checked {
+          accent-color: var(--prim);
+          background-color: var(--prim);
+          border: 2px solid var(--prim);
+        }
+        div:first-child {
+          width: 80px;
+        }
+        div:nth-child(2) {
+          width: calc(100% - 80px);
+          display: flex;
+          justify-content: space-between;
+          padding-left: 10%;
+        }
+      }
+    }
+    .card-details {
+    
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.356);
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      .box {
+        width: 100%;
+        height: 60vh;
+        h2 {
+          font-weight: 600;
+          font-size: 28px;
+          padding-left: 10px;
+          padding-top: 10px;
+        }
+      }
+    
+      .visa {
+        .users-box{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          height: calc(100% - 85px) ;
+        }
+        .title-box { 
+          display: flex;
+          width: 100%;
+          height: 85px;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 30px;
+        }
+        .userInfo-box , .cardInfo-box{
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 100px;
+          padding: 0 20px;
+          .ins2{
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+        .cardInfo-box{
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .gpay {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        .details{
+          h2{
+            padding-left: 40px;
+            padding-top: 15px;
+          }
+        }
+        .form {
+          height: 80%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          width: 70%;
+          margin: 0 auto;
+        }
+        .qr-box {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          img {
+            height: 250px;
+            width: 250px;
+          }
+        }
+      }
+      .inputs {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        label {
+          font-weight: 600;
+          font-size: 24px;
+        }
+        input[type="text"] {
+          padding-left: 10px;
+          height: 60px;
+          border-radius: 10px;
+          border: 1px solid rgba(0, 0, 0, 0.356);
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+            rgba(0, 0, 0, 0.23) 0px 3px 6px;
+          &:focus-visible {
+            border: 1px solid var(--prim);
+          }
+        }
+      }
+    }
+  }
+  

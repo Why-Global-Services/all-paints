@@ -1,0 +1,226 @@
+<div class="pay-details">
+    <div class="method p-10">
+        <h3>Select payment method</h3>
+        <!-- <div class="opt">
+        <div>
+          <img src="../../../assets/images/google-pay 1.png" alt="" />
+        </div>
+        <div>
+          <label for="gpay">Gpay</label>
+          <input (change)="paymentChange('gpay')" [checked]="payment == 'gpay'" type="radio" name="pay" id="gpay" />
+        </div>
+      </div>
+      <div class="opt">
+        <div>
+          <img src="../../../assets/images/card.png" alt="" />
+        </div>
+        <div>
+          <label for="Card">Card</label>
+          <input (change)="paymentChange('card')" [checked]="payment == 'card'" type="radio" name="pay" id="Card" />
+        </div>
+      </div>
+      <div class="opt">
+        <div>
+          <img src="../../../assets/images/visa.png" alt="" />
+        </div>
+        <div>
+          <label class="" for="Visa">Visa</label>
+          <input (change)="paymentChange('visa')" [checked]="payment == 'visa'" type="radio" name="pay" id="Visa" />
+        </div>
+      </div> -->
+        <div class="opt">
+            <div>
+                <img src="../../../assets/images/money.png" alt="" />
+            </div>
+            <div>
+                <label for="Cash">Cash</label>
+                <input (change)="paymentChange('cash')" [checked]="payment == 'cash'" type="radio" name="pay"
+                    id="Cash" />
+            </div>
+        </div>
+    </div>
+    <div class="w-[70%] flex flex-col gap-4  p-10">
+
+   
+    <div class="card-details">
+        @switch (payment) {
+        @case ('gpay') {
+        <div class="gpay box">
+            <div class="details">
+                <h2>Payment info</h2>
+                <div class="form">
+                    <div class="inputs">
+                        <label for="">Name</label>
+                        <input  type="text" />
+                    </div>
+                    <div class="inputs">
+                        <label for="">Upi</label>
+                        <input type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="qr-box">
+                <img src="../../../assets/images/qr.png" alt="" srcset="" />
+            </div>
+        </div>
+
+        }
+        @case ('card') {
+        <div class="box visa">
+            <div class="title-box">
+                <h2>Payment info</h2>
+                test
+                <details class="dropdown dropdown-end w-[100px]">
+                    <summary role="button" class="btn m-1 dd w-full bg-[var(--sec)]">
+                        Debit
+                        <svg class="" fill="#000000" viewBox="0 0 24 24" id="mobile-data" data-name="Flat Color"
+                            xmlns="http://www.w3.org/2000/svg" class="icon flat-color h-[20px]">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path id="primary"
+                                    d="M10.71,17.29a1,1,0,0,1,0,1.42l-3,3a1,1,0,0,1-1.42,0l-3-3a1,1,0,0,1,1.42-1.42L6,18.59V3A1,1,0,0,1,8,3V18.59l1.29-1.3A1,1,0,0,1,10.71,17.29Zm10-12-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42L16,5.41V21a1,1,0,0,0,2,0V5.41l1.29,1.3a1,1,0,0,0,1.42,0A1,1,0,0,0,20.71,5.29Z"
+                                    style="fill: #000000"></path>
+                            </g>
+                        </svg>
+                    </summary>
+                    <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box">
+                        <li><a class="">Debit</a></li>
+                        <li><a>Credit</a></li>
+                    </ul>
+                </details>
+            </div>
+            <div class="users-box">
+                <div class="userInfo-box">
+                    <div class="inputs">
+                        <label for="">First name</label>
+                        <input type="text" />
+                    </div>
+                    <div class="inputs">
+                        <label for="">Last Name</label>
+                        <input type="text" />
+                    </div>
+                </div>
+                <div class="cardInfo-box">
+                    <div class="inputs">
+                        <label for="">Card number</label>
+                        <input type="text" />
+                    </div>
+                    <div class="ins2">
+                        <div class="inputs">
+                            <label for="">Expiration Date</label>
+                            <input type="text" />
+                        </div>
+                        <div class="inputs">
+                            <label for="">CVV/CVC</label>
+                            <input type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+        @case ('visa') {
+        <div class="box visa">
+            <div class="title-box">
+                <h2>Payment info</h2>
+                <details style="display: none;" class="dropdown dropdown-end w-[100px]">
+                    <summary role="button" class="btn m-1 dd w-full bg-[var(--sec)]">
+                        Debit
+                        <svg class="" fill="#000000" viewBox="0 0 24 24" id="mobile-data" data-name="Flat Color"
+                            xmlns="http://www.w3.org/2000/svg" class="icon flat-color h-[20px]">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path id="primary"
+                                    d="M10.71,17.29a1,1,0,0,1,0,1.42l-3,3a1,1,0,0,1-1.42,0l-3-3a1,1,0,0,1,1.42-1.42L6,18.59V3A1,1,0,0,1,8,3V18.59l1.29-1.3A1,1,0,0,1,10.71,17.29Zm10-12-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42L16,5.41V21a1,1,0,0,0,2,0V5.41l1.29,1.3a1,1,0,0,0,1.42,0A1,1,0,0,0,20.71,5.29Z"
+                                    style="fill: #000000"></path>
+                            </g>
+                        </svg>
+                    </summary>
+                    <ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box">
+                        <li><a class="">Debit</a></li>
+                        <li><a>Credit</a></li>
+                    </ul>
+                </details>
+            </div>
+            <div class="users-box">
+                <div class="userInfo-box">
+                    <div class="inputs">
+                        <label for="">First name</label>
+                        <input type="text" />
+                    </div>
+                    <div class="inputs">
+                        <label for="">Last Name</label>
+                        <input type="text" />
+                    </div>
+                </div>
+                <div class="cardInfo-box">
+                    <div class="inputs">
+                        <label for="">Card number</label>
+                        <input type="text" />
+                    </div>
+                    <div class="ins2">
+                        <div class="inputs">
+                            <label for="">Expiration Date</label>
+                            <input type="text" />
+                        </div>
+                        <div class="inputs">
+                            <label for="">CVV/CVC</label>
+                            <input type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+        @case('cash'){
+            <div class="w-full">
+        <div class="box visa">
+          
+                <h2>Payment info</h2>
+                
+            
+            <div class="users-box">
+                <div class="userInfo-box">
+                    <div class="">
+                        <label for="">First name</label>
+                        <input class="h-10 w-full border-2 rounded-md px-2" type="text" />
+                    </div>
+                    <div class="">
+                        <label for="">Last Name</label>
+                        <input class="h-10 w-full border-2 rounded-md px-2" type="text" />
+                    </div>
+                </div>
+                <div class="cardInfo-box">
+                    <div class="">
+                        <label for="">Cash In Take</label>
+                        <input class="h-10 w-full border-2 rounded-md px-2" type="text" />
+                    </div>
+                    <div class="ins2">
+                        <div class="">
+                            <label for="">Balance</label>
+                            <input class="h-10 w-full border-2 rounded-md px-2" type="text" />
+                        </div>
+                        <div class="">
+                            <label for="">Total</label>
+                            <input class="h-10 w-full border-2 rounded-md px-2" type="text" value="{{this.logic.cartTotal}}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+        }
+        }
+
+    </div>
+    <div class="w-full flex gap-2 justify-end">
+        <button (click)="handleBack()"  class="w-fit px-10 py-2  bg-transparent border border-red-500 rounded-md text-black shadow-md">
+            Back
+          </button>
+        <button (click)="submit()" style="margin: 0; width: auto" class="bttn">
+            Submit
+        </button>
+    </div>
+</div>
+</div>

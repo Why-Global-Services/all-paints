@@ -1,0 +1,124 @@
+
+<div class="tools-box">
+    <div class="tool-lft">
+      <div class="relative">
+        <input type="text" placeholder="Search..." />
+        <svg
+          class="absolute right-[10px] top-[12px] h-[20px]"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+              stroke="#858585"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </g>
+        </svg>
+      </div>
+
+      <details class="dropdown dropdown-end w-[160px]">
+        <summary role="button" class="btn m-1 dd w-full">
+          Low to High
+          <svg
+            class=""
+            fill="#000000"
+            viewBox="0 0 24 24"
+            id="mobile-data"
+            data-name="Flat Color"
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon flat-color h-[20px]"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                id="primary"
+                d="M10.71,17.29a1,1,0,0,1,0,1.42l-3,3a1,1,0,0,1-1.42,0l-3-3a1,1,0,0,1,1.42-1.42L6,18.59V3A1,1,0,0,1,8,3V18.59l1.29-1.3A1,1,0,0,1,10.71,17.29Zm10-12-3-3a1,1,0,0,0-1.42,0l-3,3a1,1,0,0,0,1.42,1.42L16,5.41V21a1,1,0,0,0,2,0V5.41l1.29,1.3a1,1,0,0,0,1.42,0A1,1,0,0,0,20.71,5.29Z"
+                style="fill: #000000"
+              ></path>
+            </g>
+          </svg>
+        </summary>
+        <ul
+          class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box"
+        >
+          <li><a class="">Low to High</a></li>
+          <li><a>High to Low</a></li>
+        </ul>
+      </details>
+      <details class="dropdown dropdown-end w-[170px]">
+        <summary
+          role="button"
+          class="btn m-1 dd w-full relative"
+          style="padding-left: 0"
+        >
+          Display By Image
+          <svg
+            viewBox="0 0 1024 1024"
+            class="icon absolute right-[10px] h-[20px]"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="#000000"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
+                fill="#000000"
+              ></path>
+            </g>
+          </svg>
+        </summary>
+        <ul
+          class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ul-box"
+        >
+          <li><a class="" [routerLink]="['image']">Display By Image</a></li>
+          <li><a [routerLink]="['list']">Display By Name</a></li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="tool-rt">
+      <img src="../../../assets/images/users.png" alt="" srcset="" />
+      <img
+        class="h-[40px]"
+        src="../../../assets/images/cart.png"
+        alt=""
+        srcset=""
+      />
+    </div>
+</div>
+<div class="main-title">
+    @for (item of mainTItle; track $index) {
+    <div class="title-b">
+      <p>{{ item }}</p>
+    </div>
+    }
+  </div>
+  <div class="sub-title">
+    @for (item of subTitle; track $index) {
+    <div class="title-b">
+      <p>{{ item }}</p>
+    </div>
+    }
+  </div>

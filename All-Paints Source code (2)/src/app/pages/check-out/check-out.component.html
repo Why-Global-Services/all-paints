@@ -1,0 +1,111 @@
+<section [formGroup]="form">
+  <app-header></app-header>
+  <div class="pay-box">
+    <div class="detail-box">
+      
+      <div class="px-10 py-5 h-[100%] flex flex-col gap-6 justify-start">
+        <p class="text-3xl pb-4 font-bold">Billing Address</p>
+        <div class="w-full grid grid-cols-3 gap-4 justify-items-center items-center">
+          <div class="w-full">
+            <label for="">Customer Name</label>
+            <input class="h-10 w-full border-2 rounded-md px-2" formControlName="filtervalue7" type="text" />
+          </div>
+          <div class="w-full">
+            <label for="">Email Id</label>
+            <input  class="h-10 w-full border-2 rounded-md px-2" type="email" formControlName="filtervalue14" />
+          </div>
+          <div class="w-full">
+            <label for="">Number</label>
+            <input class="h-10 w-full border-2 rounded-md px-2" type="text" formControlName="filtervalue10" />
+           
+          </div>
+        </div>
+        <!-- <div class="checkboxes">
+          <input type="checkbox" name="" id="phn" />
+          <label for="phn">Phone</label>
+          <input type="checkbox" name="" id="wp" />
+          <label for="wp">Whatsapp</label>
+        </div> -->
+         
+
+        <div class="grid grid-cols-2 gap-4 justify-items-center">
+          <div class="w-full">
+            <label for="">Address</label>
+            <textarea class=" w-full border-2 rounded-md px-2 " rows="4"  (keyup)="change(add.value)"  #add name="" id=""></textarea>
+          </div>
+       
+          <div class="w-full">
+            <label for="">Billing Address</label>
+            <textarea class=" w-full border-2 rounded-md px-2" rows="4" formControlName="filtervalue5"  name="" id=""></textarea>
+          </div>
+        </div>
+       
+        
+        <div class="flex gap-2 items-center ">
+          <input type="checkbox" class="h-3" id="same" (change)="check($event)">
+          <label for="same">Same as address</label> 
+        </div>
+
+        <div class="">
+          <label for="">GST Number</label>
+          <input class="h-10 w-full border-2 rounded-md px-2" type="text" />
+        </div>
+        <!-- <div class="inp2">
+          
+          <div class="inputs"> </div>
+        </div> -->
+        <!-- <div class="inp2">
+          <div class="inputs"></div>
+          <div class="btn-holder">
+            <button class="bttn can">Cancel</button>
+            <button class="bttn">Update</button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="flex flex-col items-end  w-fit gap-3">
+    <div class="bill-box">
+      <div class="content">
+        <h2>Order details</h2>
+        <div class="det">
+          <h3>Order#</h3>
+          <h3 class="text-right">5657213</h3>
+        </div>
+        <div class="w-full">
+          <div class="flex w-full justify-between items-center">
+            <p class="text-xl font-semibold">Coupon code</p>
+            <div class="flex gap-3"><input type="text" class="h-10 w-32 border-2 rounded-md px-2" /> <p class="text-white font-semibold p-2 active:translate-y-1 duration-200 active:shadow-xl rounded-md shadow-md text-right cursor-pointer bg-red-500">Apply</p></div>
+
+          </div>
+         
+        </div>
+        <div class="det">
+          <p>Order amount</p>
+          <p class="text-right">{{totalPay}}</p>
+        </div>
+        <div class="det">
+          <h3>Total Amount</h3>
+          <h3 class="text-right">{{totalPay}}</h3>
+        </div>
+      </div>
+      
+    </div>
+    <div class="flex gap-2 items-center">
+      <button (click)="handleBack()"  class="w-fit px-10 py-2  bg-transparent border border-red-500 rounded-md text-black shadow-md">
+        Back
+      </button>
+
+      <button (click)="submit()"  class="w-fit px-10 py-2  bg-red-500 rounded-md text-white shadow-md">
+        Submit
+      </button>
+    </div>
+    
+  </div>
+    
+
+  </div>
+  <div class=" flex w-full items-center justify-start pr-[20px]">
+    
+  </div>
+ 
+</section>
